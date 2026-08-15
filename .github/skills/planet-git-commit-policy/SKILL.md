@@ -1,6 +1,6 @@
 ---
 name: planet-git-commit-policy
-description: Apply this repository's Git commit policy. Use when Codex is asked to prepare, review, write, amend, or validate commit messages; split or stage changes for commits; summarize staged changes; or decide whether a local diff is commit-ready.
+description: Apply this repository's Git commit policy. Use when asked to prepare, review, write, amend, or validate commit messages; split or stage changes for commits; summarize staged changes; or decide whether a local diff is commit-ready.
 ---
 
 # Git Commit Policy

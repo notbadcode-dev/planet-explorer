@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Flow"
+  short_description: "Branch model, feature finish, releases and hotfixes"
+  default_prompt: "Use $planet-git-flow to finish a feature, cut a release, or perform a hotfix following this repo's branch model."

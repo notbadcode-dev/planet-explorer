@@ -1,0 +1,4 @@
+interface:
+  display_name: "Storybook Conventions"
+  short_description: "html-vite argTypes/actions conventions and gotchas"
+  default_prompt: "Use $planet-storybook-conventions when creating or fixing a *.stories.ts file for this repo's html-vite setup."
