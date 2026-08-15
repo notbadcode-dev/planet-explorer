@@ -83,4 +83,34 @@ describe('createPanel', () => {
 
         expect(contentMulti?.children.length).toBe(2);
     });
+
+    it('renderiza un icono de estado decorativo distinto por variante, sin depender solo del color', () => {
+        const highlightPanel = createPanel({
+            variant: 'highlight',
+            title: 'Destacado',
+            content: document.createElement('div'),
+        });
+        const dangerPanel = createPanel({
+            variant: 'danger',
+            title: 'Alerta',
+            content: document.createElement('div'),
+        });
+
+        const highlightIcon = highlightPanel.querySelector('.panel__status-icon');
+        const dangerIcon = dangerPanel.querySelector('.panel__status-icon');
+
+        expect(highlightIcon).toBeInstanceOf(SVGElement);
+        expect(highlightIcon?.getAttribute('aria-hidden')).toBe('true');
+        expect(dangerIcon).toBeInstanceOf(SVGElement);
+        expect(dangerIcon?.getAttribute('aria-hidden')).toBe('true');
+    });
+
+    it('no renderiza icono de estado para la variante default', () => {
+        const panel = createPanel({
+            title: 'Resumen',
+            content: document.createElement('div'),
+        });
+
+        expect(panel.querySelector('.panel__status-icon')).toBeNull();
+    });
 });

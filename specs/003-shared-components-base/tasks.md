@@ -248,3 +248,14 @@ Task: "Definir tipos de Progress en libs/components/progress/Progress.type.ts"
 
 **Checkpoint Convergence**: Las brechas detectadas quedan resueltas y verificables mediante `/speckit-implement`.
 
+## Phase 9: Convergence
+
+**Propósito**: Cerrar las brechas de cobertura de pruebas detectadas por una nueva ejecución de `/speckit-converge` tras completar la Fase 8. La implementación de `Input`, `Badge`, `Progress` y `Panel` ya satisface las reglas de accesibilidad/normalización/no-dependencia-del-color, pero la suite automatizada no lo verifica con regresión explícita.
+
+- [X] T052 Add tests to libs/components/input/Input.test.ts verifying resolved accessible name via `label`/`ariaLabel`, `aria-invalid` set when `error` is present, `aria-describedby` linking `hint`/`error` ids, and `onInput` invoked with the current field value per FR-009 / FR-010 / US1-AC2 (partial) — 7 tests añadidos (antes 1)
+- [X] T053 Add a test to libs/components/badge/Badge.test.ts verifying each `Badge` variant renders its non-color status icon (`BADGE_VARIANT_STATUS_ICON`) as decorative/`aria-hidden`, distinct from the optional consumer-provided icon per FR-012 / Constitution: Accesibilidad (partial) — 3 tests añadidos (antes 1)
+- [X] T054 Add tests to libs/components/progress/Progress.test.ts covering empty (value 0), partial, and complete (value === max) states plus `max <= 0` and negative `value` normalization edge cases per FR-013 / US1-AC3 (partial) — 5 tests añadidos (antes 1)
+- [X] T055 Add a test to libs/components/panel/Panel.test.ts verifying that `highlight`/`danger` `Panel` variants render their non-color status icon (`PANEL_VARIANT_STATUS_ICON`) as decorative/`aria-hidden` per FR-012 (analogous) / Constitution: Accesibilidad (partial) — 2 tests añadidos
+
+**Checkpoint Convergence**: Las brechas detectadas quedan resueltas y verificables mediante `/speckit-implement`.
+
