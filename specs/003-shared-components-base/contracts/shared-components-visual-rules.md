@@ -47,3 +47,11 @@ Fijar reglas obligatorias para estilos, tokens y uso de iconos en los nuevos com
 
 - Requisitos: FR-005, FR-006, FR-007, FR-008, FR-016, FR-017, FR-018.
 - Criterios de éxito: SC-002, SC-003, SC-004, SC-005, SC-006, SC-007.
+
+## Evidencia de cumplimiento (auditoría T038/T045)
+
+- **V1-V3 (tokens)**: los CSS de `input`, `panel`, `badge`, `progress` y `dialog` solo consumen `var(--...)` de `src/styles/`; no se detectan colores/medidas/fuentes hardcoded. Los tokens de icono de estado (`--size-icon-xs`, `--size-icon-sm`) ya existían en `_spacing.css`, sin necesidad de ampliar el set global.
+- **V4 (constantes)**: `check-components.mjs` (regla `isMagicLiteral`) pasa sin incidencias sobre los cinco componentes, confirmando ausencia de literales mágicos fuera de `*.constants.ts`.
+- **I1-I3 (iconografía centralizada)**: `grep` sobre `libs/components/**` confirma que los imports de `@phosphor-icons/core` existen únicamente en `libs/components/icon/Icon.constants.ts`; el catálogo se amplió ahí (`check-circle`, `warning-circle`, `x-circle`, `info-circle`) para cubrir los iconos de estado no-color de `Badge`/`Panel`.
+- **I4-I5 (decorativo vs. informativo)**: los iconos de estado automáticos de `Badge`/`Panel` se crean sin `ariaLabel` (decorativos, `aria-hidden`); el icono opcional de `Badge` y las acciones de `Dialog` exponen `ariaLabel`/texto accesible cuando transmiten significado.
+- **Q1-Q5 (gates)**: última ejecución registrada — `npm run lint` OK, `npm test` 40/40 OK, `npm run build` OK, `npm run build-storybook` OK; Storybook cubre las 5 variantes de `Badge` y las 3 de `Panel` mediante controles interactivos (`argTypes.variant`).

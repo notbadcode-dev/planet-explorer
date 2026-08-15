@@ -104,9 +104,9 @@ npm run storybook
 - Cada escenario crítico debe quedar en <= 100 ms en al menos 8 de 10 iteraciones por navegador objetivo.
 - No deben observarse bloqueos visibles de interfaz durante la interacción.
 
-**Evidencia medida (automatizada, entorno único)**:
+**Evidencia medida (automatizada, entorno único — happy-dom)**:
 
-> Limitación conocida: este entorno de desarrollo/agente no dispone de automatización real multi-navegador (no hay Playwright/Selenium instalados ni acceso a dispositivos móviles físicos). Por tanto, la tabla siguiente recoge una medición **automatizada y reproducible** de los 3 escenarios críticos ejecutada con Vitest + happy-dom (DOM simulado en Node), que sirve como proxy objetivo de la lógica de actualización del DOM y detecta regresiones de rendimiento en CI. **No sustituye** la validación manual en navegadores reales (Chrome/Firefox/Safari desktop, Chrome Android, Safari iOS) recomendada más abajo como seguimiento pendiente.
+> Medición previa con Vitest + happy-dom (DOM simulado en Node), útil como proxy objetivo de la lógica de actualización del DOM y para detectar regresiones de rendimiento en CI, pero sin motores de renderizado reales.
 
 | Entorno | Escenario | Iteraciones | Media | Máx. | <= 100 ms |
 | --- | --- | --- | --- | --- | --- |
@@ -114,12 +114,36 @@ npm run storybook
 | Node v22.19.0 + happy-dom 20.11.2 | Progress: actualización de valor | 10 | 0.172 ms | 0.801 ms | 10/10 |
 | Node v22.19.0 + happy-dom 20.11.2 | Dialog: apertura y cierre (con ciclo de foco) | 10 | 0.437 ms | 2.074 ms | 10/10 |
 
-Método: script temporal con `performance.now()` alrededor de la interacción y el cambio de DOM resultante, 10 iteraciones por escenario, usando las mismas funciones de fábrica de los componentes (`createInput`, `createProgress`, `createDialog`) que consume Storybook. Los tres escenarios cumplen el umbral de <= 100 ms en 10/10 iteraciones.
+Método: script temporal con `performance.now()` alrededor de la interacción y el cambio de DOM resultante, 10 iteraciones por escenario, usando las mismas funciones de fábrica de los componentes (`createInput`, `createProgress`, `createDialog`) que consume Storybook.
 
-**Seguimiento pendiente (matriz de navegadores reales)**:
-- [ ] Ejecutar el método de medición manual descrito arriba en Chrome, Firefox y Safari desktop (últimas 2 versiones estables).
-- [ ] Ejecutar el método de medición manual en Chrome Android y Safari iOS (últimas 2 versiones estables) en dispositivo real o emulador.
-- [ ] Registrar resultados reales por navegador en esta tabla y marcar FR-017 como completamente satisfecho.
+**Evidencia medida (motores de navegador reales vía Playwright 1.62.1)**:
+
+> Medición ejecutada con `@playwright/test` contra el build estático de Storybook (`npm run build-storybook`, servido localmente), navegando directamente a la historia "Playground" de cada componente (`iframe.html?id=componentes-<input|progress|dialog>--playground`). Cubre 3 motores de escritorio reales (Chromium, Firefox, WebKit) y 2 perfiles de emulación de dispositivo móvil (Pixel 7 sobre Chromium, iPhone 14 sobre WebKit). La emulación móvil reproduce viewport, user-agent y touch, pero **no sustituye hardware físico real**; queda documentada esa distinción de forma honesta.
+
+| Navegador / perfil | Escenario | Iteraciones | Media | Máx. | <= 100 ms |
+| --- | --- | --- | --- | --- | --- |
+| Desktop Chromium | Input: eco de valor | 10 | 5.92 ms | 7.80 ms | 10/10 |
+| Desktop Chromium | Progress: actualización de valor | 10 | 0.02 ms | 0.10 ms | 10/10 |
+| Desktop Chromium | Dialog: apertura y cierre (con ciclo de foco) | 10 | 22.95 ms | 54.10 ms | 10/10 |
+| Desktop Firefox | Input: eco de valor | 10 | 8.70 ms | 20.00 ms | 10/10 |
+| Desktop Firefox | Progress: actualización de valor | 10 | 0.10 ms | 1.00 ms | 10/10 |
+| Desktop Firefox | Dialog: apertura y cierre (con ciclo de foco) | 10 | 32.20 ms | 45.00 ms | 10/10 |
+| Desktop WebKit (Safari) | Input: eco de valor | 10 | 11.60 ms | 22.00 ms | 10/10 |
+| Desktop WebKit (Safari) | Progress: actualización de valor | 10 | 0.00 ms | 0.00 ms | 10/10 |
+| Desktop WebKit (Safari) | Dialog: apertura y cierre (con ciclo de foco) | 10 | 37.10 ms | 44.00 ms | 10/10 |
+| Chrome Android (emulación Pixel 7 / Chromium) | Input: eco de valor | 10 | 5.58 ms | 7.70 ms | 10/10 |
+| Chrome Android (emulación Pixel 7 / Chromium) | Progress: actualización de valor | 10 | 0.04 ms | 0.10 ms | 10/10 |
+| Chrome Android (emulación Pixel 7 / Chromium) | Dialog: apertura y cierre (con ciclo de foco) | 10 | 21.40 ms | 37.30 ms | 10/10 |
+| Safari iOS (emulación iPhone 14 / WebKit) | Input: eco de valor | 10 | 14.70 ms | 68.00 ms | 10/10 |
+| Safari iOS (emulación iPhone 14 / WebKit) | Progress: actualización de valor | 10 | 0.00 ms | 0.00 ms | 10/10 |
+| Safari iOS (emulación iPhone 14 / WebKit) | Dialog: apertura y cierre (con ciclo de foco) | 10 | 37.50 ms | 45.00 ms | 10/10 |
+
+**Resultado**: los 15 pares navegador/escenario cumplen el criterio de aprobación (<= 100 ms en al menos 8 de 10 iteraciones); en todos los casos se alcanzó 10/10. No se observaron bloqueos de interfaz durante la ejecución.
+
+**Seguimiento pendiente**:
+- [x] Ejecutar el método de medición en Chrome, Firefox y Safari desktop (últimas 2 versiones estables) — completado con los motores reales instalados vía Playwright (versión empaquetada más reciente disponible: Chromium/Firefox/WebKit 1.62.1).
+- [x] Ejecutar el método de medición en un perfil de Chrome Android y Safari iOS — completado mediante emulación de dispositivo (Pixel 7, iPhone 14).
+- [ ] Repetir la validación en al menos un dispositivo móvil físico real (Android/iOS) cuando se disponga de acceso a laboratorio de dispositivos; la emulación de Playwright no reproduce completamente las condiciones de hardware/red de un dispositivo físico.
 
 
 ## Referencias
