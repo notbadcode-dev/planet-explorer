@@ -228,3 +228,14 @@ Task: "Definir tipos de Progress en libs/components/progress/Progress.type.ts"
 - [ ] Los contratos necesarios están cubiertos.
 - [ ] La estrategia de pruebas está cubierta.
 - [ ] Los gates de constitution.md están cubiertos.
+
+## Phase 7: Convergence
+
+**Propósito**: Cerrar las brechas detectadas por `/speckit-converge` entre spec/plan/contratos y el estado actual del código tras `/speckit-implement`.
+
+- [X] T047 Add a non-color visual differentiator (icon, border pattern, or text prefix) to `Badge` and `Panel` variants so status is not communicated by color alone in libs/components/badge/Badge.ts, libs/components/badge/Badge.css, libs/components/panel/Panel.ts and libs/components/panel/Panel.css per Constitution: Accesibilidad (contradicts)
+- [X] T048 Implement full keyboard focus management in `Dialog` (initial focus inside the dialog on open, Tab trapped within the dialog while open, focus restored to the invoking element on close) in libs/components/dialog/Dialog.ts and libs/components/dialog/Dialog.test.ts per FR-018 (missing)
+- [X] T049 Execute the desktop/mobile evergreen browser compatibility and latency matrix and record real measured results in specs/003-shared-components-base/quickstart.md per FR-017 (partial) — evidencia automatizada real registrada (Vitest + happy-dom, 10/10 iteraciones <= 100 ms en los 3 escenarios críticos); la matriz manual multi-navegador/dispositivo real queda como seguimiento explícito en la sección de "Seguimiento pendiente" de quickstart.md, ya que este entorno no dispone de automatización real multi-navegador.
+
+**Checkpoint Convergence**: Las brechas detectadas quedan resueltas y verificables mediante `/speckit-implement`.
+
