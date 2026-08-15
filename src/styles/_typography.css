@@ -1,0 +1,154 @@
+/*
+ * Global typography tokens for Explorador Espacial.
+ */
+
+@font-face {
+    font-family: 'Atkinson Hyperlegible Next';
+    src: url('../assets/fonts/atkinson-hyperlegible-next/AtkinsonHyperlegibleNext-Medium-latin.woff2')
+        format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 500;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308,
+        U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Atkinson Hyperlegible Next';
+    src: url('../assets/fonts/atkinson-hyperlegible-next/AtkinsonHyperlegibleNext-Medium-latin-ext.woff2')
+        format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 500;
+    unicode-range:
+        U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+        U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
+        U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Fredoka';
+    src: url('../assets/fonts/fredoka/Fredoka-SemiBoldBold-latin.woff2') format('woff2');
+    font-display: swap;
+    font-stretch: 100%;
+    font-style: normal;
+    font-weight: 600 700;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308,
+        U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Fredoka';
+    src: url('../assets/fonts/fredoka/Fredoka-SemiBoldBold-latin-ext.woff2') format('woff2');
+    font-display: swap;
+    font-stretch: 100%;
+    font-style: normal;
+    font-weight: 600 700;
+    unicode-range:
+        U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+        U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
+        U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/inter/InterVariable.woff2') format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 100 900;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/inter/InterVariable-Italic.woff2') format('woff2');
+    font-display: swap;
+    font-style: italic;
+    font-weight: 100 900;
+}
+
+@font-face {
+    font-family: 'Nunito';
+    src: url('../assets/fonts/nunito/Nunito-SemiBoldBold-latin.woff2') format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 600 700;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308,
+        U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Nunito';
+    src: url('../assets/fonts/nunito/Nunito-SemiBoldBold-latin-ext.woff2') format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 600 700;
+    unicode-range:
+        U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+        U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
+        U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+    --font-family-display: 'Fredoka', 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
+    --font-family-heading: var(--font-family-display);
+    --font-family-control: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+    --font-family-reading:
+        'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', 'Inter', 'Segoe UI', system-ui,
+        sans-serif;
+    --font-family-base: var(--font-family-reading);
+
+    /*
+     * Usage map:
+     * Fredoka: logo, H1/H2, planet names, rewards.
+     * Nunito: buttons, tabs, inputs, labels, navigation.
+     * Atkinson Hyperlegible Next: instructions, questions, astronomy facts, child-readable copy.
+     */
+    --font-family-logo: var(--font-family-display);
+    --font-family-title: var(--font-family-heading);
+    --font-family-planet-name: var(--font-family-display);
+    --font-family-reward: var(--font-family-display);
+    --font-family-button: var(--font-family-control);
+    --font-family-tab: var(--font-family-control);
+    --font-family-input: var(--font-family-control);
+    --font-family-label: var(--font-family-control);
+    --font-family-navigation: var(--font-family-control);
+    --font-family-instruction: var(--font-family-reading);
+    --font-family-question: var(--font-family-reading);
+    --font-family-astronomy-fact: var(--font-family-reading);
+    --font-family-child-copy: var(--font-family-reading);
+
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.5rem;
+    --font-size-2xl: 2rem;
+    --font-size-display: 3rem;
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+    --font-weight-reading: 500;
+    --font-weight-control: 600;
+    --font-weight-control-strong: 700;
+    --font-weight-heading: 600;
+    --font-weight-display: 700;
+
+    --line-height-tight: 1.1;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.65;
+
+    --letter-spacing-default: 0;
+    --letter-spacing-label: 0;
+    --letter-spacing-display: 0;
+}
+
+html {
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-reading);
+}

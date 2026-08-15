@@ -3,7 +3,7 @@
 title: "Explorador Espacial Constitution"
 project: "Explorador Espacial"
 type: "constitution"
-version: "1.5.0"
+version: "1.6.0"
 ratified: "2026-08-15"
 updated: "2026-08-15"
 status: "Active"
@@ -22,16 +22,18 @@ tags:
 * education
 * astronomy
 * components
+* design
+* typography
 
 ---
 
 <!--
 Sync Impact Report
-Version change: 1.4.0 → 1.5.0 (MINOR: new governance section added)
+Version change: 1.5.0 → 1.6.0 (MINOR: new typography governance section added)
 Modified principles: none
-Added sections: "Estrategia de release" (versionado semver, cadencia de release, despliegue a GitHub Pages)
+Added sections: "Tipografía" (familias tipográficas, usos semánticos, tokens y carga local)
 Removed sections: none
-Templates requiring updates: none pending (no plan/spec/tasks templates reference release strategy directly)
+Templates requiring updates: none pending (templates read constitution rules dynamically)
 Follow-up TODOs: none
 -->
 
@@ -791,6 +793,46 @@ La política de iconografía MUST respetar las reglas existentes de `libs/compon
 
 ---
 
+## Tipografía
+
+El sistema tipográfico del proyecto MUST favorecer:
+
+* legibilidad para niños;
+* claridad en controles;
+* jerarquía visual inmediata;
+* una sensación espacial, moderna, amable y limpia;
+* coherencia visual entre juego, navegación y componentes compartidos.
+
+Las familias tipográficas base MUST ser:
+
+* `Fredoka` para identidad visual, títulos y textos expresivos;
+* `Nunito` para controles e interfaz operativa;
+* `Atkinson Hyperlegible Next` para texto de lectura dirigido al niño.
+
+`Atkinson Hyperlegible` MAY mantenerse como fallback de la familia de lectura cuando resulte útil por compatibilidad, pero la familia principal de lectura del proyecto MUST ser `Atkinson Hyperlegible Next`.
+
+El uso semántico de tipografía MUST seguir este mapa:
+
+* `Fredoka`: logo, H1/H2, nombres de planetas o destinos, recompensas.
+* `Nunito`: botones, tabs, inputs, labels, navegación y controles.
+* `Atkinson Hyperlegible Next`: instrucciones, preguntas, datos astronómicos y cualquier texto que el niño deba leer o comprender.
+
+Los componentes y pantallas SHOULD consumir tokens tipográficos semánticos definidos por el sistema global de estilos.
+
+Cuando exista un token semántico adecuado, los componentes MUST NOT fijar directamente una familia tipográfica concreta.
+
+Las fuentes utilizadas en producción MUST cargarse como assets locales o empaquetados por Vite.
+
+La aplicación MUST NOT depender en runtime de Google Fonts, CDNs de fuentes u otros proveedores remotos para renderizar su tipografía principal.
+
+La incorporación de una nueva familia tipográfica MUST requerir una necesidad visual, educativa o de accesibilidad concreta, documentada en la especificación o plan correspondiente.
+
+Los pesos tipográficos SHOULD limitarse a los necesarios para la jerarquía definida.
+
+**Motivo**: la tipografía es una regla transversal de identidad, legibilidad y accesibilidad. Debe ser consistente en todo el producto, sin convertir cada pantalla en una decisión visual aislada ni introducir dependencias remotas innecesarias.
+
+---
+
 ## Modularidad
 
 Las características específicas de cada dominio SHOULD mantenerse agrupadas.
@@ -1321,6 +1363,8 @@ Después de completar el diseño:
 * [ ] No se introduce ninguna dependencia de ejecución server-side no aprobada.
 * [ ] La iconografía general prevista reutiliza Phosphor Icons cuando existe una alternativa adecuada.
 * [ ] Los SVG personalizados previstos están justificados por necesidades específicas de identidad visual o representación astronómica.
+* [ ] La tipografía prevista respeta el mapa semántico del sistema tipográfico.
+* [ ] No se introducen fuentes nuevas ni dependencias remotas de fuentes sin justificación.
 
 ---
 
@@ -1368,6 +1412,8 @@ Antes de considerar una funcionalidad completada:
 * [ ] Los iconos generales utilizan Phosphor Icons cuando corresponde.
 * [ ] Los SVG personalizados están optimizados, son escalables y no contienen scripts ni dependencias externas.
 * [ ] Los nombres y rutas de los assets respetan las convenciones en inglés del proyecto.
+* [ ] Los componentes y pantallas usan tokens tipográficos semánticos cuando existe un token adecuado.
+* [ ] Las fuentes principales se sirven como assets locales o empaquetados por Vite.
 
 ---
 
@@ -1627,6 +1673,7 @@ Una revisión de cumplimiento SHOULD comprobar:
 * uso correcto de `libs/components/`;
 * componentes compartidos pendientes de aprobación;
 * duplicaciones de componentes;
+* sistema tipográfico;
 * contratos;
 * estructura de `contracts/`;
 * front matter de contratos Markdown;
@@ -1657,6 +1704,6 @@ La complejidad adicional MUST estar justificada por una necesidad concreta y act
 
 ---
 
-**Versión**: 1.2.0
+**Versión**: 1.6.0
 **Ratificada**: 2026-08-15
 **Última modificación**: 2026-08-15

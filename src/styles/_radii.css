@@ -1,0 +1,19 @@
+/*
+ * Global radius tokens extracted from the Stardust UI reference.
+ */
+
+:root {
+    --radius-none: 0;
+    --radius-xs: 0.25rem;
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.375rem;
+    --radius-pill: 999px;
+
+    --radius-card: var(--radius-sm);
+    --radius-panel: var(--radius-lg);
+    --radius-control: var(--radius-xl);
+    --radius-input: var(--radius-md);
+    --radius-badge: var(--radius-pill);
+}

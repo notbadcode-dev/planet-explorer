@@ -1,0 +1,143 @@
+/*
+ * Global color tokens extracted from the Stardust UI reference.
+ *
+ * Import this file once from the app entrypoint or from Storybook preview styles
+ * before component styles that consume these variables.
+ */
+
+:root {
+    color-scheme: dark;
+
+    /* Core palette */
+    --color-black: #000000;
+    --color-white: #ffffff;
+    --color-deep-navy: #0b1120;
+    --color-cosmic-indigo: #3b49b7;
+    --color-nebula-purple: #785cf6;
+    --color-sky-cyan: #4dd6ff;
+    --color-starlight-yellow: #ffd166;
+    --color-cosmic-white: #f5f7ff;
+
+    /* RGB channels for alpha-composited tokens */
+    --color-black-rgb: 0 0 0;
+    --color-white-rgb: 255 255 255;
+    --color-cosmic-indigo-rgb: 59 73 183;
+    --color-nebula-purple-rgb: 120 92 246;
+    --color-sky-cyan-rgb: 77 214 255;
+    --color-starlight-yellow-rgb: 255 209 102;
+    --color-danger-hover-rgb: 255 77 93;
+    --color-input-border-error-rgb: 255 91 82;
+
+    /* Backgrounds and surfaces */
+    --color-background: var(--color-deep-navy);
+    --color-background-deep: #050914;
+    --color-surface: #081b35;
+    --color-surface-raised: #0d2345;
+    --color-surface-muted: #18284b;
+    --color-surface-disabled: #34405f;
+
+    /* Text */
+    --color-text-primary: var(--color-cosmic-white);
+    --color-text-secondary: #c2c9ef;
+    --color-text-muted: #8e99c7;
+    --color-text-disabled: #9aa4c5;
+    --color-text-inverse: #07101f;
+
+    /* Borders and outlines */
+    --color-border-subtle: #21375f;
+    --color-border-strong: #31598f;
+    --color-border-indigo: #6f7dff;
+    --color-border-purple: var(--color-nebula-purple);
+    --color-border-cyan: #6ee7ff;
+    --color-focus-ring: var(--color-sky-cyan);
+
+    /* Actions */
+    --color-primary: var(--color-cosmic-indigo);
+    --color-primary-hover: #5267f5;
+    --color-primary-pressed: #203fcb;
+    --color-primary-disabled: #546088;
+
+    --color-secondary: #0c1c38;
+    --color-secondary-hover: #18295a;
+    --color-secondary-pressed: #0a1430;
+    --color-secondary-disabled: #09162a;
+
+    --color-danger: #f23f55;
+    --color-danger-hover: #ff4d5d;
+    --color-danger-pressed: #6f202d;
+    --color-danger-disabled: #794457;
+
+    /* Form feedback */
+    --color-input-background: #071831;
+    --color-input-border: var(--color-nebula-purple);
+    --color-input-border-focus: var(--color-sky-cyan);
+    --color-input-border-error: #ff5b52;
+    --color-input-placeholder: #8993c0;
+    --color-validation-success: var(--color-sky-cyan);
+    --color-validation-error: #ff6b61;
+
+    /* Decorative accents */
+    --color-accent-star: var(--color-starlight-yellow);
+    --color-accent-planet: var(--color-nebula-purple);
+    --color-accent-orbit: #9a7cff;
+    --color-accent-rocket: #c7dcff;
+
+    /* Button semantics */
+    --color-button-primary-background: var(--color-primary);
+    --color-button-primary-foreground: var(--color-text-primary);
+    --color-button-primary-border: var(--color-border-indigo);
+    --color-button-primary-border-hover: var(--color-accent-orbit);
+    --color-button-secondary-background: var(--color-secondary);
+    --color-button-secondary-foreground: var(--color-text-primary);
+    --color-button-secondary-border: var(--color-border-purple);
+    --color-button-secondary-background-hover: var(--color-secondary-hover);
+    --color-button-secondary-background-pressed: var(--color-secondary-pressed);
+    --color-button-secondary-border-hover: var(--color-starlight-yellow);
+    --color-button-secondary-border-pressed: var(--color-border-indigo);
+    --color-button-danger-background: var(--color-danger);
+    --color-button-danger-foreground: var(--color-text-primary);
+    --color-button-danger-border: var(--color-danger-pressed);
+    --color-button-disabled-background: var(--color-surface-disabled);
+    --color-button-disabled-foreground: var(--color-text-disabled);
+    --color-button-disabled-border: var(--color-primary-disabled);
+
+    /* Gradient stop colors */
+    --color-gradient-primary-start: #6376ff;
+    --color-gradient-primary-end: #2f42dd;
+    --color-gradient-primary-hover-start: #7b80ff;
+    --color-gradient-primary-hover-end: #4051e6;
+    --color-gradient-danger-start: #ff5462;
+    --color-gradient-danger-end: #cf2e44;
+    --color-gradient-danger-pressed-start: #7a2630;
+    --color-gradient-danger-pressed-end: #4b1722;
+    --color-gradient-surface-start: #102f5a;
+    --color-gradient-surface-middle: #07142a;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(
+        180deg,
+        var(--color-gradient-primary-start) 0%,
+        var(--color-gradient-primary-end) 100%
+    );
+    --gradient-primary-hover: linear-gradient(
+        180deg,
+        var(--color-gradient-primary-hover-start) 0%,
+        var(--color-gradient-primary-hover-end) 100%
+    );
+    --gradient-danger: linear-gradient(
+        180deg,
+        var(--color-gradient-danger-start) 0%,
+        var(--color-gradient-danger-end) 100%
+    );
+    --gradient-danger-pressed: linear-gradient(
+        180deg,
+        var(--color-gradient-danger-pressed-start) 0%,
+        var(--color-gradient-danger-pressed-end) 100%
+    );
+    --gradient-surface: radial-gradient(
+        circle at 50% 0%,
+        var(--color-gradient-surface-start) 0%,
+        var(--color-gradient-surface-middle) 64%,
+        var(--color-background-deep) 100%
+    );
+}

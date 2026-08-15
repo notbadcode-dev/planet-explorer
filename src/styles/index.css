@@ -1,0 +1,11 @@
+/*
+ * Global design tokens.
+ *
+ * Import this file once at the app boundary before component styles.
+ */
+
+@import './_colors.css';
+@import './_spacing.css';
+@import './_radii.css';
+@import './_shadows.css';
+@import './_typography.css';
