@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createDialog } from './Dialog';
-import { DIALOG_ESCAPE_KEY } from './Dialog.constants';
 
 describe('createDialog', () => {
     it('renderiza dialogo accesible con accion de cierre', () => {
@@ -100,5 +99,73 @@ describe('createDialog', () => {
         closeButtons[0].click();
 
         expect(onClose).toHaveBeenCalledTimes(1);
+    });
+
+    it('coloca el foco inicial dentro del diálogo al abrirse', async () => {
+        const dialog = createDialog({
+            title: 'Modal con foco inicial',
+            onClose: () => {},
+        });
+        document.body.append(dialog);
+
+        await Promise.resolve();
+
+        const closeButton = dialog.querySelector('button');
+
+        expect(document.activeElement).toBe(closeButton);
+
+        dialog.remove();
+    });
+
+    it('atrapa el foco con Tab dentro del diálogo', async () => {
+        const onClose = vi.fn();
+        const extraAction = document.createElement('button');
+        extraAction.textContent = 'Confirmar';
+
+        const dialog = createDialog({
+            title: 'Modal con trap de foco',
+            actions: extraAction,
+            onClose,
+        });
+        document.body.append(dialog);
+
+        await Promise.resolve();
+
+        const dialogElement = dialog.querySelector('[role="dialog"]') as HTMLElement;
+        const buttons = dialogElement.querySelectorAll('button');
+        const closeButton = buttons[0];
+        const confirmButton = buttons[1];
+
+        confirmButton.focus();
+        const tabEvent = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true });
+        dialogElement.dispatchEvent(tabEvent);
+
+        expect(document.activeElement).toBe(closeButton);
+
+        dialog.remove();
+    });
+
+    it('restaura el foco al elemento invocador al cerrar', async () => {
+        const invoker = document.createElement('button');
+        invoker.textContent = 'Abrir modal';
+        document.body.append(invoker);
+        invoker.focus();
+
+        const onClose = vi.fn();
+        const dialog = createDialog({
+            title: 'Modal con retorno de foco',
+            onClose,
+        });
+        document.body.append(dialog);
+
+        await Promise.resolve();
+
+        const closeButton = dialog.querySelector('button') as HTMLButtonElement;
+        closeButton.click();
+
+        expect(onClose).toHaveBeenCalledTimes(1);
+        expect(document.activeElement).toBe(invoker);
+
+        invoker.remove();
     });
 });

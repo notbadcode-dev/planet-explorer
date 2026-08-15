@@ -18,6 +18,12 @@
     height: var(--size-icon-sm);
 }
 
+.badge__status-icon {
+    width: var(--size-icon-xs);
+    height: var(--size-icon-xs);
+    flex-shrink: 0;
+}
+
 .badge__label {
     white-space: nowrap;
 }

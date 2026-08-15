@@ -24,6 +24,11 @@ export const DIALOG_CLOSE_TYPE_BUTTON = 'button';
 export const DIALOG_CLOSE_TEXT_DEFAULT = 'Cerrar';
 
 export const DIALOG_ESCAPE_KEY = 'Escape';
+export const DIALOG_TAB_KEY = 'Tab';
 export const DIALOG_KEYDOWN_EVENT = 'keydown';
 export const DIALOG_CLICK_EVENT = 'click';
 export const DIALOG_EMPTY_COLLECTION_LENGTH = 0;
+export const DIALOG_FIRST_FOCUSABLE_INDEX = 0;
+export const DIALOG_LAST_FOCUSABLE_OFFSET = 1;
+export const DIALOG_FOCUSABLE_SELECTOR =
+    'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';

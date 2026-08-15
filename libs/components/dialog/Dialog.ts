@@ -15,14 +15,18 @@ import {
     DIALOG_DESCRIPTION_TAG,
     DIALOG_EMPTY_COLLECTION_LENGTH,
     DIALOG_ESCAPE_KEY,
+    DIALOG_FIRST_FOCUSABLE_INDEX,
+    DIALOG_FOCUSABLE_SELECTOR,
     DIALOG_KEYDOWN_EVENT,
     DIALOG_LABEL_ATTRIBUTE,
+    DIALOG_LAST_FOCUSABLE_OFFSET,
     DIALOG_MODAL_ATTRIBUTE,
     DIALOG_OVERLAY_CLASS,
     DIALOG_OVERLAY_TAG,
     DIALOG_ROLE_ATTRIBUTE,
     DIALOG_ROLE_VALUE,
     DIALOG_SECTION_TAG,
+    DIALOG_TAB_KEY,
     DIALOG_TITLE_CLASS,
     DIALOG_TITLE_TAG,
     DIALOG_TRUE_VALUE,
@@ -41,6 +45,7 @@ function toNodes(content: HTMLElement | HTMLElement[] | undefined): HTMLElement[
 
 export function createDialog(props: DialogProps): HTMLElement {
     const { title, description, content, actions, onClose, closeLabel = DIALOG_CLOSE_TEXT_DEFAULT } = props;
+    const invokerElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 
     const overlay = document.createElement(DIALOG_OVERLAY_TAG);
     overlay.classList.add(DIALOG_OVERLAY_CLASS);
@@ -74,11 +79,22 @@ export function createDialog(props: DialogProps): HTMLElement {
     const actionsContainer = document.createElement(DIALOG_SECTION_TAG);
     actionsContainer.classList.add(DIALOG_ACTIONS_CLASS);
 
+    function restoreFocusToInvoker(): void {
+        if (invokerElement && document.contains(invokerElement)) {
+            invokerElement.focus();
+        }
+    }
+
+    function handleClose(): void {
+        onClose();
+        restoreFocusToInvoker();
+    }
+
     const closeButton = document.createElement(DIALOG_CLOSE_TAG);
     closeButton.classList.add(DIALOG_CLOSE_CLASS);
     closeButton.setAttribute(DIALOG_CLOSE_TYPE_ATTRIBUTE, DIALOG_CLOSE_TYPE_BUTTON);
     closeButton.textContent = closeLabel;
-    closeButton.addEventListener(DIALOG_CLICK_EVENT, () => onClose());
+    closeButton.addEventListener(DIALOG_CLICK_EVENT, handleClose);
     actionsContainer.append(closeButton);
 
     const actionElements = toNodes(actions);
@@ -88,13 +104,47 @@ export function createDialog(props: DialogProps): HTMLElement {
 
     dialog.append(actionsContainer);
 
+    function getFocusableElements(): HTMLElement[] {
+        return Array.from(dialog.querySelectorAll<HTMLElement>(DIALOG_FOCUSABLE_SELECTOR));
+    }
+
+    function trapFocus(event: KeyboardEvent): void {
+        const focusableElements = getFocusableElements();
+        if (focusableElements.length === DIALOG_EMPTY_COLLECTION_LENGTH) {
+            return;
+        }
+
+        const firstFocusable = focusableElements[DIALOG_FIRST_FOCUSABLE_INDEX];
+        const lastFocusable = focusableElements[focusableElements.length - DIALOG_LAST_FOCUSABLE_OFFSET];
+
+        if (event.shiftKey && document.activeElement === firstFocusable) {
+            event.preventDefault();
+            lastFocusable.focus();
+        } else if (!event.shiftKey && document.activeElement === lastFocusable) {
+            event.preventDefault();
+            firstFocusable.focus();
+        }
+    }
+
     dialog.addEventListener(DIALOG_KEYDOWN_EVENT, (event) => {
         if (event.key === DIALOG_ESCAPE_KEY) {
-            onClose();
+            handleClose();
+            return;
+        }
+
+        if (event.key === DIALOG_TAB_KEY) {
+            trapFocus(event);
         }
     });
 
     overlay.append(dialog);
+
+    queueMicrotask(() => {
+        if (dialog.isConnected) {
+            const focusableElements = getFocusableElements();
+            (focusableElements[DIALOG_FIRST_FOCUSABLE_INDEX] ?? closeButton).focus();
+        }
+    });
 
     return overlay;
 }

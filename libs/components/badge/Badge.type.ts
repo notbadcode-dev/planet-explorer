@@ -1,5 +1,5 @@
-import type { BADGE_VARIANTS } from './Badge.constants';
 import type { IconName } from '../icon';
+import type { BADGE_VARIANTS } from './Badge.constants';
 
 export type BadgeVariant = (typeof BADGE_VARIANTS)[number];
 

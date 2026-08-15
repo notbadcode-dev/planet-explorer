@@ -1,5 +1,6 @@
 import './Panel.css';
 
+import { createIcon } from '../icon';
 import {
     DEFAULT_PANEL_VARIANT,
     PANEL_BASE_CLASS,
@@ -10,9 +11,11 @@ import {
     PANEL_HEADER_CLASS,
     PANEL_HEADER_TAG,
     PANEL_ROOT_TAG,
+    PANEL_STATUS_ICON_CLASS,
     PANEL_TITLE_CLASS,
     PANEL_TITLE_TAG,
     PANEL_VARIANT_CLASS_PREFIX,
+    PANEL_VARIANT_STATUS_ICON,
     PANEL_VARIANTS,
 } from './Panel.constants';
 import type { PanelProps, PanelVariant } from './Panel.type';
@@ -33,9 +36,16 @@ function toNodes(content: HTMLElement | HTMLElement[]): HTMLElement[] {
 
 export function createPanel(props: PanelProps): HTMLElement {
     const { title, description, variant, content } = props;
+    const resolvedVariant = resolveVariant(variant);
 
     const panel = document.createElement(PANEL_ROOT_TAG);
-    panel.classList.add(PANEL_BASE_CLASS, PANEL_VARIANT_CLASS_PREFIX + resolveVariant(variant));
+    panel.classList.add(PANEL_BASE_CLASS, PANEL_VARIANT_CLASS_PREFIX + resolvedVariant);
+
+    const statusIconName = PANEL_VARIANT_STATUS_ICON[resolvedVariant];
+    if (statusIconName) {
+        const statusIcon = createIcon({ name: statusIconName, className: PANEL_STATUS_ICON_CLASS });
+        panel.append(statusIcon);
+    }
 
     if (title?.trim() || description?.trim()) {
         const header = document.createElement(PANEL_HEADER_TAG);

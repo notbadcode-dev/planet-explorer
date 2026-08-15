@@ -1,4 +1,5 @@
 .panel {
+    position: relative;
     display: grid;
     gap: var(--space-4);
     padding: var(--space-panel-padding);
@@ -39,4 +40,12 @@
 
 .panel--danger {
     border-color: var(--color-validation-error);
+}
+
+.panel__status-icon {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    width: var(--size-icon-sm);
+    height: var(--size-icon-sm);
 }

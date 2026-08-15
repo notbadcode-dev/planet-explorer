@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createPanel } from './Panel';
-import { PANEL_VARIANTS, PANEL_BASE_CLASS } from './Panel.constants';
+import { PANEL_BASE_CLASS, PANEL_VARIANTS } from './Panel.constants';
 
 describe('createPanel', () => {
     it('renderiza contenido compuesto preservando orden', () => {
