@@ -1,0 +1,20 @@
+/*
+ * Global shadow and glow tokens extracted from the Stardust UI reference.
+ */
+
+:root {
+    --shadow-none: none;
+    --shadow-panel: 0 16px 44px rgb(var(--color-black-rgb) / 32%);
+    --shadow-control: 0 8px 20px rgb(var(--color-black-rgb) / 24%);
+
+    --shadow-primary-glow: 0 0 18px rgb(var(--color-nebula-purple-rgb) / 48%);
+    --shadow-primary-hover-glow: 0 0 22px rgb(var(--color-nebula-purple-rgb) / 58%);
+    --shadow-secondary-glow: 0 0 14px rgb(var(--color-nebula-purple-rgb) / 38%);
+    --shadow-secondary-hover-glow: 0 0 20px rgb(var(--color-starlight-yellow-rgb) / 24%);
+    --shadow-cyan-glow: 0 0 20px rgb(var(--color-sky-cyan-rgb) / 52%);
+    --shadow-danger-glow: 0 0 18px rgb(var(--color-danger-hover-rgb) / 45%);
+
+    --shadow-focus-ring: 0 0 0 3px rgb(var(--color-sky-cyan-rgb) / 28%);
+    --shadow-error-ring: 0 0 0 3px rgb(var(--color-input-border-error-rgb) / 24%);
+    --shadow-inset-highlight: inset 0 1px 0 rgb(var(--color-white-rgb) / 42%);
+}

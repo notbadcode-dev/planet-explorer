@@ -1,0 +1,53 @@
+/*
+ * Global spacing and sizing tokens extracted from the Stardust UI reference.
+ */
+
+:root {
+    /* Base spacing scale */
+    --space-0: 0;
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-20: 5rem;
+
+    /* Layout spacing */
+    --space-page-inline: clamp(1rem, 4vw, 3.75rem);
+    --space-page-block: var(--space-6);
+    --space-section-gap: var(--space-8);
+    --space-panel-padding: var(--space-6);
+    --space-toolbar-gap: var(--space-4);
+    --space-grid-gap: var(--space-6);
+
+    /* Control spacing */
+    --space-control-inline: var(--space-6);
+    --space-control-block: var(--space-3);
+    --space-control-gap: var(--space-3);
+    --space-helper-text-gap: var(--space-2);
+    --space-press-offset: 1px;
+
+    /* Component sizing */
+    --size-touch-target-min: 44px;
+    --size-button-min-width: 11rem;
+    --size-control-sm: 2.75rem;
+    --size-control-md: 3.25rem;
+    --size-control-lg: 4rem;
+    --size-input: 3.5rem;
+
+    /* Border sizing */
+    --size-border-control: 1px;
+    --size-border-emphasis: 2px;
+
+    /* Icon sizing */
+    --size-icon-xs: 0.875rem;
+    --size-icon-sm: 1rem;
+    --size-icon-md: 1.5rem;
+    --size-icon-lg: 2rem;
+    --size-icon-xl: 2.75rem;
+}
