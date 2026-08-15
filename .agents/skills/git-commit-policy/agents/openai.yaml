@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Commit Policy"
+  short_description: "Commit policy and message checks"
+  default_prompt: "Use $git-commit-policy to prepare a clean commit message and verify the staged Git changes."
