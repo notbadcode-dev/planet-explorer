@@ -1,0 +1,7 @@
+hooks:
+  before_specify:
+    - extension: "local"
+      command: "speckit.branch.create"
+      description: "Crea la rama de git para la nueva feature. Siempre parte de develop/main/master, salvo relación explícita con la spec de la rama actual."
+      optional: false
+      enabled: true
