@@ -9,46 +9,140 @@
  */
 
 .button {
-  font-family: inherit;
-  cursor: pointer;
+    appearance: none;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-control-gap);
+    min-width: var(--size-button-min-width);
+    font-family: var(--font-family-button);
+    font-weight: var(--font-weight-control-strong);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-default);
+    border-radius: var(--radius-control);
+    box-shadow: var(--shadow-control), var(--shadow-inset-highlight);
+    cursor: pointer;
+    transition:
+        background 160ms ease,
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        color 160ms ease,
+        transform 120ms ease;
+    user-select: none;
+}
+
+.button__icon {
+    flex: 0 0 auto;
+    width: var(--size-icon-md);
+    height: var(--size-icon-md);
+    pointer-events: none;
+}
+
+.button__label {
+    min-width: 0;
+}
+
+.button:focus-visible {
+    outline: 0;
+    box-shadow: var(--shadow-control), var(--shadow-inset-highlight), var(--shadow-focus-ring);
 }
 
 .button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    background: var(--color-button-disabled-background);
+    color: var(--color-button-disabled-foreground);
+    border-color: var(--color-button-disabled-border);
+    box-shadow: var(--shadow-none);
+    cursor: not-allowed;
+}
+
+.button:not(:disabled):active {
+    transform: translateY(var(--space-press-offset));
 }
 
 .button--primary {
-  background-color: #2563eb;
-  color: #ffffff;
-  border: 1px solid #2563eb;
+    background: var(--gradient-primary);
+    color: var(--color-button-primary-foreground);
+    border: var(--size-border-control) solid var(--color-button-primary-border);
+    box-shadow: var(--shadow-primary-glow), var(--shadow-control), var(--shadow-inset-highlight);
+}
+
+.button--primary:not(:disabled):hover {
+    background: var(--gradient-primary-hover);
+    border-color: var(--color-button-primary-border-hover);
+    box-shadow:
+        var(--shadow-primary-hover-glow), var(--shadow-control), var(--shadow-inset-highlight);
+}
+
+.button--primary:not(:disabled):active {
+    background: var(--color-primary-pressed);
+    border-color: var(--color-border-indigo);
+    box-shadow: var(--shadow-primary-glow), var(--shadow-inset-highlight);
 }
 
 .button--secondary {
-  background-color: #ffffff;
-  color: #2563eb;
-  border: 1px solid #2563eb;
+    background: var(--color-button-secondary-background);
+    color: var(--color-button-secondary-foreground);
+    border: var(--size-border-control) solid var(--color-button-secondary-border);
+    box-shadow: var(--shadow-secondary-glow), var(--shadow-control), var(--shadow-inset-highlight);
+}
+
+.button--secondary:not(:disabled):hover {
+    background: var(--color-button-secondary-background-hover);
+    border-color: var(--color-button-secondary-border-hover);
+    box-shadow:
+        var(--shadow-secondary-hover-glow), var(--shadow-secondary-glow), var(--shadow-control),
+        var(--shadow-inset-highlight);
+}
+
+.button--secondary:not(:disabled):active {
+    background: var(--color-button-secondary-background-pressed);
+    border-color: var(--color-button-secondary-border-pressed);
+    box-shadow: var(--shadow-secondary-glow), var(--shadow-inset-highlight);
 }
 
 .button--danger {
-  background-color: #dc2626;
-  color: #ffffff;
-  border: 2px dashed #7f1d1d;
+    background: var(--gradient-danger);
+    color: var(--color-button-danger-foreground);
+    border: var(--size-border-emphasis) solid var(--color-button-danger-border);
+    box-shadow: var(--shadow-danger-glow), var(--shadow-control), var(--shadow-inset-highlight);
+}
+
+.button--danger:not(:disabled):hover {
+    background: var(--color-danger-hover);
+    border-color: var(--color-input-border-error);
+}
+
+.button--danger:not(:disabled):active {
+    background: var(--gradient-danger-pressed);
+    box-shadow: var(--shadow-danger-glow), var(--shadow-inset-highlight);
 }
 
 .button--small {
-  min-width: 44px;
-  min-height: 44px;
-  padding: 4px 8px;
-  font-size: 0.75rem;
+    min-width: var(--size-touch-target-min);
+    min-height: var(--size-touch-target-min);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--font-size-sm);
+}
+
+.button--small .button__icon {
+    width: var(--size-icon-sm);
+    height: var(--size-icon-sm);
 }
 
 .button--medium {
-  padding: 8px 16px;
-  font-size: 1rem;
+    min-height: var(--size-control-md);
+    padding: var(--space-control-block) var(--space-control-inline);
+    font-size: var(--font-size-lg);
 }
 
 .button--large {
-  padding: 12px 24px;
-  font-size: 1.25rem;
+    min-height: var(--size-control-lg);
+    padding: var(--space-4) var(--space-8);
+    font-size: var(--font-size-xl);
+}
+
+.button--large .button__icon {
+    width: var(--size-icon-lg);
+    height: var(--size-icon-lg);
 }

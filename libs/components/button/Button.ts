@@ -7,50 +7,51 @@
 
 import './Button.css';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'danger';
-export type ButtonSize = 'small' | 'medium' | 'large';
+import {
+    BUTTON_ACCESSIBLE_NAME_ERROR,
+    BUTTON_ARIA_LABEL_ATTRIBUTE,
+    BUTTON_BASE_CLASS,
+    BUTTON_CLICK_EVENT,
+    BUTTON_ELEMENT_TAG,
+    BUTTON_ICON_CLASS,
+    BUTTON_ICON_POSITIONS,
+    BUTTON_LABEL_CLASS,
+    BUTTON_LABEL_ELEMENT_TAG,
+    BUTTON_MODIFIER_CLASS_PREFIX,
+    BUTTON_SIZES,
+    BUTTON_TYPE_ATTRIBUTE_VALUE,
+    BUTTON_VARIANTS,
+    DEFAULT_BUTTON_ICON_POSITION,
+    DEFAULT_BUTTON_SIZE,
+    DEFAULT_BUTTON_VARIANT,
+} from './Button.constants';
+import { createIcon } from '../icon';
+import type { ButtonIconPosition, ButtonProps, ButtonSize, ButtonVariant } from './Button.type';
 
-const VALID_VARIANTS: readonly ButtonVariant[] = ['primary', 'secondary', 'danger'];
-const VALID_SIZES: readonly ButtonSize[] = ['small', 'medium', 'large'];
+export type { ButtonIconPosition, ButtonProps, ButtonSize, ButtonVariant } from './Button.type';
 
-const DEFAULT_VARIANT: ButtonVariant = 'primary';
-const DEFAULT_SIZE: ButtonSize = 'medium';
-
-export interface ButtonProps {
-  /** Texto visible del botón. Opcional si se proporciona `ariaLabel`. */
-  label?: string;
-
-  /**
-   * Etiqueta accesible alternativa para tecnologías de asistencia.
-   * Obligatoria si `label` no está presente o está vacío.
-   */
-  ariaLabel?: string;
-
-  /** Acción a ejecutar cuando el botón se activa (clic, o Enter/Espacio con foco). */
-  onClick: () => void;
-
-  /** Indica si el botón está deshabilitado. Por defecto `false`. */
-  disabled?: boolean;
-
-  /**
-   * Énfasis visual/semántico del botón. Catálogo cerrado.
-   * Por defecto `'primary'` si se omite o si se recibe un valor no soportado en runtime.
-   */
-  variant?: ButtonVariant;
-
-  /**
-   * Tamaño relativo del botón. Catálogo cerrado.
-   * Por defecto `'medium'` si se omite o si se recibe un valor no soportado en runtime.
-   */
-  size?: ButtonSize;
+function isButtonVariant(variant: unknown): variant is ButtonVariant {
+    return BUTTON_VARIANTS.includes(variant as ButtonVariant);
 }
 
-function resolveVariant(variant: ButtonProps['variant']): ButtonVariant {
-  return VALID_VARIANTS.includes(variant as ButtonVariant) ? (variant as ButtonVariant) : DEFAULT_VARIANT;
+function isButtonSize(size: unknown): size is ButtonSize {
+    return BUTTON_SIZES.includes(size as ButtonSize);
 }
 
-function resolveSize(size: ButtonProps['size']): ButtonSize {
-  return VALID_SIZES.includes(size as ButtonSize) ? (size as ButtonSize) : DEFAULT_SIZE;
+function isButtonIconPosition(iconPosition: unknown): iconPosition is ButtonIconPosition {
+    return BUTTON_ICON_POSITIONS.includes(iconPosition as ButtonIconPosition);
+}
+
+function resolveVariant(variant: unknown): ButtonVariant {
+    return isButtonVariant(variant) ? variant : DEFAULT_BUTTON_VARIANT;
+}
+
+function resolveSize(size: unknown): ButtonSize {
+    return isButtonSize(size) ? size : DEFAULT_BUTTON_SIZE;
+}
+
+function resolveIconPosition(iconPosition: unknown): ButtonIconPosition {
+    return isButtonIconPosition(iconPosition) ? iconPosition : DEFAULT_BUTTON_ICON_POSITION;
 }
 
 /**
@@ -59,41 +60,69 @@ function resolveSize(size: ButtonProps['size']): ButtonSize {
  * No contiene lógica de negocio: es una función pura respecto a sus props.
  */
 export function createButton(props: ButtonProps): HTMLButtonElement {
-  const { label, ariaLabel, onClick, disabled = false, variant, size } = props;
+    const {
+        label,
+        ariaLabel,
+        onClick,
+        disabled = false,
+        variant,
+        size,
+        icon,
+        iconPosition,
+    } = props;
 
-  const hasLabel = Boolean(label?.trim());
-  const hasAriaLabel = Boolean(ariaLabel?.trim());
+    const hasLabel = Boolean(label?.trim());
+    const hasAriaLabel = Boolean(ariaLabel?.trim());
 
-  if (!hasLabel && !hasAriaLabel) {
-    throw new Error(
-      'createButton: se requiere "label" o "ariaLabel" para que el botón tenga un nombre accesible.',
-    );
-  }
-
-  const resolvedVariant = resolveVariant(variant);
-  const resolvedSize = resolveSize(size);
-
-  const button = document.createElement('button');
-  button.type = 'button';
-
-  if (hasLabel) {
-    button.textContent = label as string;
-  }
-
-  if (hasAriaLabel) {
-    button.setAttribute('aria-label', ariaLabel as string);
-  }
-
-  button.disabled = disabled;
-
-  button.classList.add('button', `button--${resolvedVariant}`, `button--${resolvedSize}`);
-
-  button.addEventListener('click', () => {
-    if (button.disabled) {
-      return;
+    if (!hasLabel && !hasAriaLabel) {
+        throw new Error(BUTTON_ACCESSIBLE_NAME_ERROR);
     }
-    onClick();
-  });
 
-  return button;
+    const resolvedVariant = resolveVariant(variant);
+    const resolvedSize = resolveSize(size);
+    const resolvedIconPosition = resolveIconPosition(iconPosition);
+
+    const button = document.createElement(BUTTON_ELEMENT_TAG);
+    button.type = BUTTON_TYPE_ATTRIBUTE_VALUE;
+
+    const iconElement = icon ? createIcon({ name: icon, className: BUTTON_ICON_CLASS }) : undefined;
+    const labelElement = hasLabel ? document.createElement(BUTTON_LABEL_ELEMENT_TAG) : undefined;
+
+    if (labelElement) {
+        labelElement.textContent = label as string;
+    }
+
+    if (hasAriaLabel) {
+        button.setAttribute(BUTTON_ARIA_LABEL_ATTRIBUTE, ariaLabel as string);
+    }
+
+    button.disabled = disabled;
+
+    button.classList.add(
+        BUTTON_BASE_CLASS,
+        `${BUTTON_MODIFIER_CLASS_PREFIX}${resolvedVariant}`,
+        `${BUTTON_MODIFIER_CLASS_PREFIX}${resolvedSize}`,
+    );
+
+    if (iconElement && resolvedIconPosition === DEFAULT_BUTTON_ICON_POSITION) {
+        button.append(iconElement);
+    }
+
+    if (labelElement) {
+        labelElement.classList.add(BUTTON_LABEL_CLASS);
+        button.append(labelElement);
+    }
+
+    if (iconElement && resolvedIconPosition !== DEFAULT_BUTTON_ICON_POSITION) {
+        button.append(iconElement);
+    }
+
+    button.addEventListener(BUTTON_CLICK_EVENT, () => {
+        if (button.disabled) {
+            return;
+        }
+        onClick();
+    });
+
+    return button;
 }

@@ -38,6 +38,8 @@ export type { ButtonProps } from './Button';
 ```ts
 type ButtonVariant = 'primary' | 'secondary' | 'danger';
 type ButtonSize = 'small' | 'medium' | 'large';
+type ButtonIconPosition = 'start' | 'end';
+type IconName = 'orbit' | 'rocket' | 'sparkles' | 'star' | 'trash';
 
 interface ButtonProps {
   /** Texto visible del botón. Opcional si se proporciona `ariaLabel`. */
@@ -66,6 +68,12 @@ interface ButtonProps {
    * Por defecto `'medium'` si se omite o si se recibe un valor no soportado en runtime.
    */
   size?: ButtonSize;
+
+  /** Icono decorativo opcional del catálogo local de iconos. */
+  icon?: IconName;
+
+  /** Posición del icono respecto al texto visible. Por defecto `'start'`. */
+  iconPosition?: ButtonIconPosition;
 }
 
 function createButton(props: ButtonProps): HTMLButtonElement;
@@ -85,6 +93,7 @@ Reglas nuevas de esta versión:
 * **R11 (FR-009)**: La variante `'danger'` MUST distinguirse de `'primary'` y `'secondary'` mediante al menos un rasgo visual adicional al color (p. ej. borde, marcador, tipografía), de forma que no dependa exclusivamente del color.
 * **R12 (FR-011, aclaración de `/speckit-clarify`)**: Cuando `size` es `'small'`, el elemento devuelto MUST mantener un área táctil (hit area) mínima de 44×44 px CSS, incluso si su contenido visible es más compacto.
 * **R13**: `createButton` MUST seguir siendo una función pura respecto a sus props (R4 de v1.0): la resolución de `variant`/`size` (incluido el fallback de R10) MUST NOT depender de estado global ni de I/O.
+* **R14**: Si `icon` está presente, MUST pertenecer al catálogo local de `libs/components/icon`, implementado sobre Phosphor Icons según la constitución del proyecto, renderizarse como icono decorativo (`aria-hidden`) y no sustituir el nombre accesible obligatorio del botón.
 
 ## Ejemplo de uso
 
@@ -94,6 +103,7 @@ import { createButton } from 'libs/components/button';
 // Compatibilidad retro: comportamiento idéntico a v1.0 (primary/medium implícitos)
 const legacyButton = createButton({
   label: 'Explorar planeta',
+  icon: 'rocket',
   onClick: () => startExploration(),
 });
 
@@ -101,6 +111,7 @@ const legacyButton = createButton({
 const cancelButton = createButton({
   label: 'Cancelar',
   variant: 'secondary',
+  icon: 'orbit',
   onClick: () => closeDialog(),
 });
 
@@ -109,6 +120,7 @@ const deleteButton = createButton({
   label: 'Eliminar',
   variant: 'danger',
   size: 'small',
+  icon: 'trash',
   onClick: () => deleteProgress(),
 });
 ```
@@ -117,4 +129,4 @@ const deleteButton = createButton({
 
 * Estilos visuales concretos (colores exactos, tipografía): la elección de qué rasgo no-color distingue `danger` (R11) es una decisión de implementación de `Button.css`, no de esta API pública.
 * Ampliar el catálogo de `variant`/`size` más allá de los valores mínimos listados (ver Suposiciones de `spec.md`): fuera de alcance de esta versión.
-* Botones con icono incorporado: sigue fuera de alcance (ver contrato v1.0 y Suposiciones de `spec.md`).
+* Ampliar el catálogo local de iconos más allá de los nombres expuestos por `libs/components/icon`: fuera de alcance de este contrato.

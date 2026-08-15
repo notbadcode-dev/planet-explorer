@@ -121,6 +121,6 @@ Como persona que mantiene el proyecto, quiero que los botones ya creados antes d
 
 * El catálogo inicial de variantes se limita a `primary`, `secondary` y `danger`; variantes adicionales (por ejemplo `tertiary`, `ghost` o `link`) quedan fuera de alcance de esta primera versión y podrán añadirse en una futura ampliación si surge una necesidad concreta.
 * El catálogo inicial de tamaños se limita a `small`, `medium` y `large`; no se contemplan tamaños intermedios ni una API de tamaño arbitrario (numérico/CSS libre).
-* Los botones con icono incorporado (sin biblioteca de iconos disponible en el proyecto, según el contrato de la spec `001-component-library-architecture`) siguen fuera de alcance; esta funcionalidad no introduce soporte de iconos.
+* Los botones pueden usar iconos decorativos del catálogo local de `libs/components/icon`, que se implementa sobre Phosphor Icons conforme a la constitución del proyecto; ampliar ese catálogo queda fuera de alcance de esta versión.
 * El comportamiento de accesibilidad ya definido en el contrato actual del componente (nombre accesible obligatorio, `disabled` nativo, `onClick` no se invoca si está deshabilitado) se mantiene sin cambios; esta funcionalidad solo añade dimensiones visuales/semánticas nuevas.
 * `variant` y `size` se implementan como props opcionales adicionales de `ButtonProps`, sin romper la firma pública existente (`label`, `ariaLabel`, `onClick`, `disabled`).
