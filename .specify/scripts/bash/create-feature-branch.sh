@@ -2,10 +2,11 @@
 # create-feature-branch.sh
 #
 # Creates the git branch for a new feature, enforcing:
-#   New feature branches MUST be created from the single main branch
-#   (auto-detected as "main" or "master"). Branching directly from another
-#   "###-feature-name" branch is only permitted when the new feature is
-#   explicitly declared as related to that feature (--related-feature).
+#   New feature branches MUST be created from the single integration branch
+#   (auto-detected as "develop" when it exists, per the project's git-flow
+#   model; otherwise falls back to "main"/"master"). Branching directly from
+#   another "###-feature-name" branch is only permitted when the new feature
+#   is explicitly declared as related to that feature (--related-feature).
 #
 # This is invoked by the speckit-branch-create hook (before_specify) and
 # delegates branch-name/number computation to create-new-feature.sh so the
@@ -41,10 +42,10 @@ while [ $i -le $# ]; do
             echo "Creates a git branch for a new feature. Refuses to branch from another"
             echo "###-feature-name branch unless --related-feature matches the branch"
             echo "currently checked out, in which case the new feature is treated as a"
-            echo "follow-up of that spec and is branched from it instead of the main branch."
+            echo "follow-up of that spec and is branched from it instead of the base branch."
             echo ""
-            echo "The main branch is auto-detected (origin/HEAD, else local 'main', else"
-            echo "local 'master'). Override with SPECIFY_BASE_BRANCH=<name>."
+            echo "The base branch is auto-detected (local 'develop', else origin/HEAD, else"
+            echo "local 'main', else local 'master'). Override with SPECIFY_BASE_BRANCH=<name>."
             exit 0
             ;;
         *)
@@ -62,14 +63,19 @@ CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) || {
     exit 1
 }
 
-# Single main branch, auto-detected in this priority order:
+# Single base branch for new features, auto-detected in this priority order:
 #   1. SPECIFY_BASE_BRANCH env var (explicit override)
-#   2. origin/HEAD's target (the remote's default branch)
-#   3. local "main"
-#   4. local "master"
+#   2. local "develop" (git-flow integration branch, when it exists)
+#   3. origin/HEAD's target (the remote's default branch)
+#   4. local "main"
+#   5. local "master"
 detect_main_branch() {
     if [ -n "${SPECIFY_BASE_BRANCH:-}" ]; then
         printf '%s' "$SPECIFY_BASE_BRANCH"
+        return 0
+    fi
+    if git show-ref --verify --quiet refs/heads/develop; then
+        printf 'develop'
         return 0
     fi
     local remote_head
@@ -89,7 +95,7 @@ detect_main_branch() {
 }
 
 MAIN_BRANCH=$(detect_main_branch) || {
-    echo "Error: could not auto-detect the main branch (no origin/HEAD, no local 'main' or 'master')." >&2
+    echo "Error: could not auto-detect the base branch (no local 'develop', no origin/HEAD, no local 'main' or 'master')." >&2
     echo "Set SPECIFY_BASE_BRANCH=<name> to specify it explicitly." >&2
     exit 1
 }
@@ -115,14 +121,14 @@ elif related_matches_current "$RELATED_FEATURE" "$CURRENT_BRANCH"; then
 else
     {
         echo "Error: refusing to create a new feature branch from '$CURRENT_BRANCH'."
-        echo "New feature branches must be created from the main branch ('$MAIN_BRANCH')."
+        echo "New feature branches must be created from the base branch ('$MAIN_BRANCH')."
         if [ -n "$RELATED_FEATURE" ]; then
             echo "The provided --related-feature '$RELATED_FEATURE' does not match the current branch."
         else
             echo "If this feature is a follow-up directly related to the '$CURRENT_BRANCH' spec, rerun with:"
             echo "  --related-feature $CURRENT_BRANCH"
         fi
-        echo "Otherwise switch to the main branch first, e.g.: git checkout $MAIN_BRANCH"
+        echo "Otherwise switch to the base branch first, e.g.: git checkout $MAIN_BRANCH"
     } >&2
     exit 1
 fi
