@@ -3,7 +3,7 @@
 title: "Explorador Espacial Constitution"
 project: "Explorador Espacial"
 type: "constitution"
-version: "1.3.0"
+version: "1.4.0"
 ratified: "2026-08-15"
 updated: "2026-08-15"
 status: "Active"
@@ -24,6 +24,16 @@ tags:
 * components
 
 ---
+
+<!--
+Sync Impact Report
+Version change: 1.3.0 → 1.4.0 (MINOR: new governance section added)
+Modified principles: none
+Added sections: "Control de ramas (Git)" (git-flow simplificado: develop/master/feature/hotfix)
+Removed sections: none
+Templates requiring updates: none pending (no plan/spec/tasks templates reference branch strategy directly)
+Follow-up TODOs: none
+-->
 
 # Constitución de Explorador Espacial
 
@@ -1006,6 +1016,24 @@ refactor: extract shared progress component
 ```
 
 Los términos técnicos ampliamente aceptados MAY mantenerse en inglés cuando su traducción resulte artificial o menos precisa.
+
+---
+
+## Control de ramas (Git)
+
+El proyecto MUST seguir un modelo de ramas estilo git-flow simplificado: `develop` (integración), `master` (estable/release), ramas de feature `###-feature-name` y ramas `hotfix/*`.
+
+`develop` MUST ser la rama base para toda nueva funcionalidad. La detección de la rama base para crear una rama de feature MUST priorizar `develop` cuando exista localmente, antes que `origin/HEAD`, `main` o `master`.
+
+`master` MUST representar el estado estable/publicado del proyecto. `master` MUST NOT recibir merges directos de ramas de feature; solo se actualiza mediante un proceso de release (manual en esta fase del proyecto).
+
+Cerrar una funcionalidad ("feature finish") MUST consistir en fusionar su rama en `develop` (MUST usarse `--no-ff` para preservar el historial de la funcionalidad) y, tras la fusión, MUST eliminarse la rama de feature (local y remota).
+
+Las ramas `hotfix/*` MUST partir de `master` para corregir un problema urgente ya publicado, y MUST fusionarse de vuelta tanto en `master` como en `develop` para que la corrección no se pierda en la siguiente release.
+
+Una rama de feature nueva MUST NOT crearse partiendo de otra rama de feature, salvo que la nueva funcionalidad esté explícitamente relacionada con la spec de la rama actual (ver **Componentes compartidos** y el procedimiento del hook de creación de ramas).
+
+**Motivo**: mantener `master` siempre desplegable, permitir que varias funcionalidades convivan en `develop` antes de una release, y disponer de una vía rápida y aislada (`hotfix/*`) para corregir producción sin mezclar trabajo en curso de otras funcionalidades.
 
 ---
 
