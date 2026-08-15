@@ -3,7 +3,7 @@
 title: "Explorador Espacial Constitution"
 project: "Explorador Espacial"
 type: "constitution"
-version: "1.4.0"
+version: "1.5.0"
 ratified: "2026-08-15"
 updated: "2026-08-15"
 status: "Active"
@@ -27,11 +27,11 @@ tags:
 
 <!--
 Sync Impact Report
-Version change: 1.3.0 → 1.4.0 (MINOR: new governance section added)
+Version change: 1.4.0 → 1.5.0 (MINOR: new governance section added)
 Modified principles: none
-Added sections: "Control de ramas (Git)" (git-flow simplificado: develop/master/feature/hotfix)
+Added sections: "Estrategia de release" (versionado semver, cadencia de release, despliegue a GitHub Pages)
 Removed sections: none
-Templates requiring updates: none pending (no plan/spec/tasks templates reference branch strategy directly)
+Templates requiring updates: none pending (no plan/spec/tasks templates reference release strategy directly)
 Follow-up TODOs: none
 -->
 
@@ -1034,6 +1034,20 @@ Las ramas `hotfix/*` MUST partir de `master` para corregir un problema urgente y
 Una rama de feature nueva MUST NOT crearse partiendo de otra rama de feature, salvo que la nueva funcionalidad esté explícitamente relacionada con la spec de la rama actual (ver **Componentes compartidos** y el procedimiento del hook de creación de ramas).
 
 **Motivo**: mantener `master` siempre desplegable, permitir que varias funcionalidades convivan en `develop` antes de una release, y disponer de una vía rápida y aislada (`hotfix/*`) para corregir producción sin mezclar trabajo en curso de otras funcionalidades.
+
+---
+
+## Estrategia de release
+
+El proyecto MUST versionarse con [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PATCH`), reflejado en el campo `version` de `package.json` y en un tag de Git (`vX.Y.Z`) sobre `master`.
+
+Una release MUST consistir en fusionar `develop` en `master` (tras superar el Gate de finalización) y crear un tag `vX.Y.Z` sobre el commit resultante en `master`. MUST NOT usarse ramas `release/*` de estabilización: `develop` ya actúa como candidato a release una vez superado el Gate de finalización.
+
+El incremento de versión SHOULD seguir: `MAJOR` para cambios de ruptura o hitos mayores, `MINOR` para nuevas funcionalidades completas, `PATCH` para hotfixes (`hotfix/*`) publicados sobre `master`.
+
+La cadencia de release SHOULD ser frecuente y de bajo riesgo: liberar tras cerrar una funcionalidad (o un grupo pequeño de funcionalidades relacionadas) en lugar de acumular muchas funcionalidades sin publicar en `develop`.
+
+Cada push a `master` MUST disparar el despliegue automático a GitHub Pages mediante el pipeline de CI, de forma que `master` refleje siempre lo publicado.
 
 ---
 
