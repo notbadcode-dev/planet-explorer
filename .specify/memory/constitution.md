@@ -3,7 +3,7 @@
 title: "Explorador Espacial Constitution"
 project: "Explorador Espacial"
 type: "constitution"
-version: "1.2.0"
+version: "1.5.0"
 ratified: "2026-08-15"
 updated: "2026-08-15"
 status: "Active"
@@ -24,6 +24,16 @@ tags:
 * components
 
 ---
+
+<!--
+Sync Impact Report
+Version change: 1.4.0 → 1.5.0 (MINOR: new governance section added)
+Modified principles: none
+Added sections: "Estrategia de release" (versionado semver, cadencia de release, despliegue a GitHub Pages)
+Removed sections: none
+Templates requiring updates: none pending (no plan/spec/tasks templates reference release strategy directly)
+Follow-up TODOs: none
+-->
 
 # Constitución de Explorador Espacial
 
@@ -677,6 +687,110 @@ La lógica educativa, de progresión o de dominio MUST NOT incorporarse a compon
 
 ---
 
+## Iconografía
+
+Phosphor Icons MUST ser la librería principal para iconografía general de interfaz.
+
+El estilo `duotone` SHOULD utilizarse preferentemente cuando encaje con el diseño visual del proyecto.
+
+Antes de crear un icono general personalizado, MUST comprobarse si existe un icono adecuado en Phosphor Icons.
+
+Cuando exista un icono de Phosphor Icons que represente correctamente la necesidad visual o funcional, MUST reutilizarse en lugar de crear una alternativa equivalente.
+
+Un icono general personalizado MUST NOT crearse únicamente por preferencia estética si Phosphor Icons ya proporciona una alternativa adecuada, salvo que exista una necesidad visual o funcional explícitamente justificada.
+
+### SVG personalizados
+
+Los SVG personalizados MAY utilizarse para elementos específicos del universo y de la identidad visual del juego, incluyendo:
+
+* planetas;
+* planetas enanos;
+* lunas;
+* estrellas concretas;
+* sistemas planetarios;
+* exoplanetas;
+* galaxias;
+* nebulosas;
+* cuerpos astronómicos;
+* naves propias;
+* BOT-6;
+* criaturas;
+* artefactos;
+* otros elementos visuales propios del juego.
+
+Los cuerpos astronómicos reales SHOULD utilizar SVG personalizados cuando un icono genérico no permita reconocer adecuadamente el objeto representado.
+
+Por ejemplo, Marte, Júpiter o Saturno SHOULD representarse mediante assets específicos en lugar de utilizar el mismo icono genérico de planeta.
+
+### Reglas para SVG personalizados
+
+Todo SVG personalizado MUST:
+
+* mantener coherencia visual con el sistema de diseño del proyecto;
+* mantener una estética compatible con la iconografía `duotone` utilizada en la interfaz;
+* utilizar un `viewBox` apropiado;
+* ser completamente escalable;
+* utilizar fondo transparente;
+* evitar dimensiones fijas innecesarias;
+* estar optimizado para web;
+* evitar metadatos innecesarios;
+* evitar código o scripts embebidos;
+* evitar dependencias externas;
+* evitar recursos remotos;
+* utilizar nombres de archivo en inglés;
+* evitar texto embebido cuando pueda representarse mediante HTML o mediante el sistema de UI;
+* poder utilizarse de forma segura como asset estático en GitHub Pages.
+
+Los SVG generados SHOULD mantener, cuando resulte apropiado:
+
+* proporciones visuales coherentes;
+* grosor visual consistente;
+* estilo de formas consistente;
+* uso consistente de capas principales y secundarias;
+* paleta compatible con el sistema de diseño.
+
+### Organización de assets
+
+Los assets espaciales personalizados SHOULD almacenarse bajo una estructura clara como:
+
+```text
+public/
+└── assets/
+    └── icons/
+        └── space/
+```
+
+Ejemplos:
+
+```text
+public/assets/icons/space/mercury.svg
+public/assets/icons/space/venus.svg
+public/assets/icons/space/earth.svg
+public/assets/icons/space/mars.svg
+public/assets/icons/space/jupiter.svg
+public/assets/icons/space/saturn.svg
+public/assets/icons/space/uranus.svg
+public/assets/icons/space/neptune.svg
+public/assets/icons/space/moon.svg
+public/assets/icons/space/proxima-centauri.svg
+public/assets/icons/space/trappist-1.svg
+```
+
+La estructura definitiva MAY adaptarse durante `plan.md` cuando exista una razón arquitectónica concreta, manteniendo siempre nombres de ficheros y carpetas en inglés.
+
+### Separación entre iconos y componentes
+
+La política de iconografía MUST respetar las reglas existentes de `libs/components/`.
+
+* Los iconos y SVG son assets visuales y MUST NOT contener lógica de dominio.
+* Un componente reutilizable que encapsule comportamiento alrededor de un icono SHOULD seguir las reglas de `libs/components/`.
+* La creación de un nuevo SVG personalizado por sí sola MUST NOT implicar automáticamente la creación de un nuevo componente compartido.
+* Si para utilizar el icono se necesita un nuevo componente reutilizable que no existe en `libs/components/`, MUST aplicarse el procedimiento constitucional existente de detener la ejecución e informar al usuario antes de crear dicho componente (ver **Componentes compartidos → Componente reutilizable inexistente**).
+
+**Motivo**: mantener consistencia visual mediante una librería estándar, evitar duplicaciones innecesarias de iconos genéricos y reservar los SVG personalizados para representar de forma reconocible los elementos propios del universo del juego.
+
+---
+
 ## Modularidad
 
 Las características específicas de cada dominio SHOULD mantenerse agrupadas.
@@ -902,6 +1016,38 @@ refactor: extract shared progress component
 ```
 
 Los términos técnicos ampliamente aceptados MAY mantenerse en inglés cuando su traducción resulte artificial o menos precisa.
+
+---
+
+## Control de ramas (Git)
+
+El proyecto MUST seguir un modelo de ramas estilo git-flow simplificado: `develop` (integración), `master` (estable/release), ramas de feature `###-feature-name` y ramas `hotfix/*`.
+
+`develop` MUST ser la rama base para toda nueva funcionalidad. La detección de la rama base para crear una rama de feature MUST priorizar `develop` cuando exista localmente, antes que `origin/HEAD`, `main` o `master`.
+
+`master` MUST representar el estado estable/publicado del proyecto. `master` MUST NOT recibir merges directos de ramas de feature; solo se actualiza mediante un proceso de release (manual en esta fase del proyecto).
+
+Cerrar una funcionalidad ("feature finish") MUST consistir en fusionar su rama en `develop` (MUST usarse `--no-ff` para preservar el historial de la funcionalidad) y, tras la fusión, MUST eliminarse la rama de feature (local y remota).
+
+Las ramas `hotfix/*` MUST partir de `master` para corregir un problema urgente ya publicado, y MUST fusionarse de vuelta tanto en `master` como en `develop` para que la corrección no se pierda en la siguiente release.
+
+Una rama de feature nueva MUST NOT crearse partiendo de otra rama de feature, salvo que la nueva funcionalidad esté explícitamente relacionada con la spec de la rama actual (ver **Componentes compartidos** y el procedimiento del hook de creación de ramas).
+
+**Motivo**: mantener `master` siempre desplegable, permitir que varias funcionalidades convivan en `develop` antes de una release, y disponer de una vía rápida y aislada (`hotfix/*`) para corregir producción sin mezclar trabajo en curso de otras funcionalidades.
+
+---
+
+## Estrategia de release
+
+El proyecto MUST versionarse con [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PATCH`), reflejado en el campo `version` de `package.json` y en un tag de Git (`vX.Y.Z`) sobre `master`.
+
+Una release MUST consistir en fusionar `develop` en `master` (tras superar el Gate de finalización) y crear un tag `vX.Y.Z` sobre el commit resultante en `master`. MUST NOT usarse ramas `release/*` de estabilización: `develop` ya actúa como candidato a release una vez superado el Gate de finalización.
+
+El incremento de versión SHOULD seguir: `MAJOR` para cambios de ruptura o hitos mayores, `MINOR` para nuevas funcionalidades completas, `PATCH` para hotfixes (`hotfix/*`) publicados sobre `master`.
+
+La cadencia de release SHOULD ser frecuente y de bajo riesgo: liberar tras cerrar una funcionalidad (o un grupo pequeño de funcionalidades relacionadas) en lugar de acumular muchas funcionalidades sin publicar en `develop`.
+
+Cada push a `master` MUST disparar el despliegue automático a GitHub Pages mediante el pipeline de CI, de forma que `master` refleje siempre lo publicado.
 
 ---
 
@@ -1173,6 +1319,8 @@ Después de completar el diseño:
 * [ ] Se han identificado los componentes específicos de feature y los realmente compartidos.
 * [ ] La solución propuesta mantiene compatibilidad completa con GitHub Pages.
 * [ ] No se introduce ninguna dependencia de ejecución server-side no aprobada.
+* [ ] La iconografía general prevista reutiliza Phosphor Icons cuando existe una alternativa adecuada.
+* [ ] Los SVG personalizados previstos están justificados por necesidades específicas de identidad visual o representación astronómica.
 
 ---
 
@@ -1191,6 +1339,8 @@ Antes de ejecutar `tasks.md`:
 * [ ] Todo componente compartido nuevo necesario ha recibido aprobación explícita del usuario antes de su creación.
 * [ ] Los componentes específicos de una feature permanecen dentro de dicha feature salvo justificación contraria.
 * [ ] Ninguna tarea requiere infraestructura incompatible con GitHub Pages sin aprobación explícita del usuario.
+* [ ] No se prevé crear iconografía general personalizada que duplique innecesariamente iconos disponibles en Phosphor Icons.
+* [ ] Los SVG personalizados requeridos tienen definida una ubicación y convención de nombres coherentes.
 
 Si durante la implementación aparece una necesidad de componente compartido no identificada previamente, la ejecución MUST detenerse y aplicar el procedimiento definido en **Componentes compartidos → Componente reutilizable inexistente**.
 
@@ -1215,6 +1365,9 @@ Antes de considerar una funcionalidad completada:
 * [ ] Los criterios de éxito verificables en esta fase se cumplen o tienen un mecanismo definido de medición.
 * [ ] La build de producción funciona correctamente bajo la subruta configurada para GitHub Pages.
 * [ ] Rutas, assets y recursos funcionan correctamente en el despliegue estático.
+* [ ] Los iconos generales utilizan Phosphor Icons cuando corresponde.
+* [ ] Los SVG personalizados están optimizados, son escalables y no contienen scripts ni dependencias externas.
+* [ ] Los nombres y rutas de los assets respetan las convenciones en inglés del proyecto.
 
 ---
 

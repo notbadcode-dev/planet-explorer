@@ -1,1 +1,11 @@
 .DS_Store
+
+# Node.js / TypeScript / Vite / Storybook
+node_modules/
+dist/
+storybook-static/
+*.log
+.env
+.env.*
+coverage/
+
