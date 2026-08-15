@@ -1,5 +1,5 @@
 ---
-name: git-flow
+name: planet-git-flow
 description: Apply this repository's simplified git-flow branch and release model. Use when finishing a feature branch (merge into develop), cutting a release (develop -> master + semver tag), performing a hotfix (master -> hotfix/* -> master + develop), or deciding/creating a new branch outside the automated /speckit-specify flow.
 ---
 
@@ -91,6 +91,6 @@ git rev-list --left-right --count master...develop   # divergencia esperada: dev
 
 ## Referencias cruzadas
 
-- Mensajes de commit: usa el formato de `.github/skills/git-commit-policy/SKILL.md` (Conventional Commits) para cualquier commit que no sea el propio merge/tag de release.
+- Mensajes de commit: usa el formato de `.github/skills/planet-git-commit-policy/SKILL.md` (Conventional Commits) para cualquier commit que no sea el propio merge/tag de release.
 - Creación de ramas de feature: `.github/skills/speckit-branch-create/SKILL.md`.
 - Reglas normativas completas: `.specify/memory/constitution.md` § "Control de ramas (Git)" y § "Estrategia de release".
