@@ -1,0 +1,54 @@
+.dialog {
+    position: fixed;
+    inset: var(--space-0);
+    display: grid;
+    place-items: center;
+    padding: var(--space-6);
+    background: rgb(var(--color-black-rgb) / 60%);
+}
+
+.dialog__container {
+    inline-size: min(100%, 36rem);
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    border: var(--size-border-control) solid var(--color-border-strong);
+    border-radius: var(--radius-panel);
+    background: var(--color-surface-raised);
+    box-shadow: var(--shadow-panel);
+}
+
+.dialog__title {
+    margin: 0;
+    color: var(--color-text-primary);
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-xl);
+}
+
+.dialog__description {
+    margin: 0;
+    color: var(--color-text-secondary);
+}
+
+.dialog__content {
+    display: grid;
+    gap: var(--space-3);
+}
+
+.dialog__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.dialog__close {
+    min-height: var(--size-touch-target-min);
+    padding: var(--space-2) var(--space-4);
+    border: var(--size-border-control) solid var(--color-border-indigo);
+    border-radius: var(--radius-control);
+    background: var(--gradient-primary);
+    color: var(--color-button-primary-foreground);
+    font-family: var(--font-family-button);
+    font-weight: var(--font-weight-control-strong);
+    cursor: pointer;
+}
