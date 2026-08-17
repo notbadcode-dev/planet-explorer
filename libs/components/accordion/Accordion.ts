@@ -5,6 +5,8 @@ import {
     ACCORDION_ARIA_CONTROLS_ATTRIBUTE,
     ACCORDION_ARIA_EXPANDED_ATTRIBUTE,
     ACCORDION_ARIA_LABELLEDBY_ATTRIBUTE,
+    ACCORDION_ARROW_DOWN_KEY,
+    ACCORDION_ARROW_UP_KEY,
     ACCORDION_BASE_CLASS,
     ACCORDION_BUTTON_TYPE_VALUE,
     ACCORDION_CLICK_EVENT,
@@ -15,9 +17,13 @@ import {
     ACCORDION_ICON_NAME,
     ACCORDION_ITEM_CLASS,
     ACCORDION_ITEM_TAG,
+    ACCORDION_KEYDOWN_EVENT,
+    ACCORDION_NEXT_DIRECTION,
+    ACCORDION_NOT_FOUND_INDEX,
     ACCORDION_PANEL_CLASS,
     ACCORDION_PANEL_ID_PREFIX,
     ACCORDION_PANEL_TAG,
+    ACCORDION_PREVIOUS_DIRECTION,
     ACCORDION_ROLE_ATTRIBUTE,
     ACCORDION_ROLE_REGION,
     ACCORDION_ROOT_TAG,
@@ -45,6 +51,7 @@ export function createAccordion(props: AccordionProps): HTMLElement {
     root.classList.add(ACCORDION_BASE_CLASS);
 
     const entries: AccordionEntry[] = [];
+    const triggers: HTMLButtonElement[] = [];
 
     function collapseOthers(exceptId: string): void {
         for (const entry of entries) {
@@ -66,11 +73,12 @@ export function createAccordion(props: AccordionProps): HTMLElement {
         const heading = document.createElement(ACCORDION_HEADING_TAG);
         heading.classList.add(ACCORDION_HEADING_CLASS);
 
-        const trigger = document.createElement(ACCORDION_TRIGGER_TAG);
+        const trigger = document.createElement(ACCORDION_TRIGGER_TAG) as HTMLButtonElement;
         trigger.id = triggerId;
         trigger.classList.add(ACCORDION_TRIGGER_CLASS);
         trigger.setAttribute(ACCORDION_TYPE_ATTRIBUTE, ACCORDION_BUTTON_TYPE_VALUE);
         trigger.setAttribute(ACCORDION_ARIA_CONTROLS_ATTRIBUTE, panelId);
+        triggers.push(trigger);
 
         const titleElement = document.createElement(ACCORDION_TITLE_TAG);
         titleElement.classList.add(ACCORDION_TITLE_CLASS);
@@ -122,6 +130,25 @@ export function createAccordion(props: AccordionProps): HTMLElement {
         item.append(heading, panel);
         root.append(item);
     }
+
+    root.addEventListener(ACCORDION_KEYDOWN_EVENT, (event) => {
+        const keyboardEvent = event as KeyboardEvent;
+        if (keyboardEvent.key !== ACCORDION_ARROW_DOWN_KEY && keyboardEvent.key !== ACCORDION_ARROW_UP_KEY) {
+            return;
+        }
+
+        const currentIndex = triggers.indexOf(document.activeElement as HTMLButtonElement);
+        if (currentIndex === ACCORDION_NOT_FOUND_INDEX) {
+            return;
+        }
+
+        keyboardEvent.preventDefault();
+
+        const direction =
+            keyboardEvent.key === ACCORDION_ARROW_DOWN_KEY ? ACCORDION_NEXT_DIRECTION : ACCORDION_PREVIOUS_DIRECTION;
+        const nextIndex = (currentIndex + direction + triggers.length) % triggers.length;
+        triggers[nextIndex].focus();
+    });
 
     return root;
 }

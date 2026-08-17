@@ -13,7 +13,7 @@ export const ACCORDION_PANEL_CLASS = 'accordion__panel';
 export const ACCORDION_ICON_CLASS = 'accordion__icon';
 
 export const ACCORDION_TITLE_TAG = 'span';
-export const ACCORDION_ICON_NAME = 'caret-down';
+export const ACCORDION_ICON_NAME = 'arrow-down-flat';
 
 export const ACCORDION_TRIGGER_ID_PREFIX = 'accordion-trigger-';
 export const ACCORDION_PANEL_ID_PREFIX = 'accordion-panel-';
@@ -29,3 +29,9 @@ export const ACCORDION_ROLE_ATTRIBUTE = 'role';
 export const ACCORDION_ROLE_REGION = 'region';
 
 export const ACCORDION_CLICK_EVENT = 'click';
+export const ACCORDION_KEYDOWN_EVENT = 'keydown';
+export const ACCORDION_ARROW_DOWN_KEY = 'ArrowDown';
+export const ACCORDION_ARROW_UP_KEY = 'ArrowUp';
+export const ACCORDION_NEXT_DIRECTION = 1;
+export const ACCORDION_PREVIOUS_DIRECTION = -1;
+export const ACCORDION_NOT_FOUND_INDEX = -1;

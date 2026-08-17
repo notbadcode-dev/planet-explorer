@@ -147,6 +147,34 @@ describe('createAccordion', () => {
         expect(accordion.childElementCount).toBe(0);
     });
 
+    it('mueve el foco entre triggers con las flechas arriba/abajo', () => {
+        const accordion = createAccordion({
+            sections: [
+                { id: 'a', title: 'A', content: createContent('Contenido A') },
+                { id: 'b', title: 'B', content: createContent('Contenido B') },
+                { id: 'c', title: 'C', content: createContent('Contenido C') },
+            ],
+        });
+        document.body.append(accordion);
+
+        const triggers = Array.from(accordion.querySelectorAll('button'));
+
+        triggers[0]?.focus();
+        accordion.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+        expect(document.activeElement).toBe(triggers[1]);
+
+        accordion.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+        expect(document.activeElement).toBe(triggers[2]);
+
+        accordion.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+        expect(document.activeElement).toBe(triggers[0]);
+
+        accordion.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+        expect(document.activeElement).toBe(triggers[2]);
+
+        accordion.remove();
+    });
+
     it('en modo exclusive sin secciones preexpandidas, el usuario puede expandir a su elección', () => {
         const onToggle = vi.fn();
         const accordion = createAccordion({
