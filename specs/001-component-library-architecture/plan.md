@@ -169,7 +169,7 @@ Ver [data-model.md](./data-model.md). Resumen: no existen datos persistentes; se
 ## Contratos e interfaces
 
 * **Interfaz pública del componente `Button`**: Ver [contracts/button-component.md](./contracts/button-component.md).
-* **Convención estructural de la librería de componentes**: Ver [contracts/component-library-convention.md](./contracts/component-library-convention.md).
+* **Convención estructural de la librería de componentes**: Ver [docs/conventions/components/structure.md](../../docs/conventions/components/structure.md).
 
 ## Riesgos y compromisos
 

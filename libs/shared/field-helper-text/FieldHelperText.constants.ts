@@ -1,0 +1,6 @@
+export const FIELD_HELPER_TEXT_TAG = 'p';
+export const FIELD_HELPER_ARIA_INVALID_ATTRIBUTE = 'aria-invalid';
+export const FIELD_HELPER_ARIA_DESCRIBEDBY_ATTRIBUTE = 'aria-describedby';
+export const FIELD_HELPER_ARIA_INVALID_TRUE_VALUE = 'true';
+export const FIELD_HELPER_DESCRIBEDBY_SEPARATOR = ' ';
+export const FIELD_HELPER_EMPTY_COLLECTION_LENGTH = 0;

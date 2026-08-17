@@ -1,0 +1,139 @@
+- generic [ref=f11e4]:
+  - heading "CheckboxGroup" [level=1] [ref=f11e5]
+  - generic [ref=f11e6]:
+    - generic [ref=f11e7]:
+      - toolbar [ref=f11e8]:
+        - generic [ref=f11e9]:
+          - generic [ref=f11e10]:
+            - button "Reload story" [ref=f11e11] [cursor=pointer]
+            - button "Zoom in" [ref=f11e14] [cursor=pointer]
+            - button "Zoom out" [ref=f11e18] [cursor=pointer]
+            - button "Reset zoom" [ref=f11e22] [cursor=pointer]
+          - link "Open canvas in new tab" [ref=f11e26] [cursor=pointer]:
+            - /url: iframe.html?id=componentes-checkboxgroup--playground
+      - group "Selecciona todos los planetas rocosos" [ref=f11e37]:
+        - generic [ref=f11e39]:
+          - checkbox "Mercurio Mercurio Mercurio Mercurio" [ref=f11e40]
+          - generic [ref=f11e41]: Mercurio
+        - generic [ref=f11e42]:
+          - checkbox "Venus Venus Venus Venus" [ref=f11e43]
+          - generic [ref=f11e44]: Venus
+        - generic [ref=f11e45]:
+          - checkbox "Tierra Tierra Tierra Tierra" [ref=f11e46]
+          - generic [ref=f11e47]: Tierra
+        - generic [ref=f11e48]:
+          - checkbox "Marte Marte Marte Marte" [ref=f11e49]
+          - generic [ref=f11e50]: Marte
+    - generic [ref=f11e52]:
+      - switch "Show code" [ref=f11e53] [cursor=pointer]
+      - button "Copy code" [ref=f11e56] [cursor=pointer]
+  - generic [ref=f11e60]:
+    - button "Reset controls" [ref=f11e62] [cursor=pointer]
+    - table [ref=f11e65]:
+      - rowgroup [ref=f11e66]:
+        - row [ref=f11e67]:
+          - columnheader "Name" [ref=f11e68]
+          - columnheader "Description" [ref=f11e69]
+          - columnheader "Default" [ref=f11e70]
+          - columnheader "Control" [ref=f11e71]
+      - rowgroup [ref=f11e72]:
+        - row [ref=f11e73]:
+          - cell "options" [ref=f11e74]
+          - cell "array" [ref=f11e75]
+          - cell "-" [ref=f11e79]
+          - cell "-" [ref=f11e80]
+        - row [ref=f11e81]:
+          - cell "legend" [ref=f11e82]
+          - cell "string" [ref=f11e83]
+          - cell "-" [ref=f11e87]
+          - cell [ref=f11e88]:
+            - textbox [ref=f11e90]:
+              - /placeholder: Edit string...
+              - text: Selecciona todos los planetas rocosos
+        - row [ref=f11e91]:
+          - cell "values" [ref=f11e92]
+          - cell "-" [ref=f11e93]
+          - cell "-" [ref=f11e95]
+          - cell "-" [ref=f11e96]
+        - row [ref=f11e97]:
+          - cell "ariaLabel" [ref=f11e98]
+          - cell "-" [ref=f11e99]
+          - cell "-" [ref=f11e101]
+          - cell [ref=f11e102]:
+            - button "Set string" [ref=f11e103] [cursor=pointer]
+        - row [ref=f11e104]:
+          - cell "onChange" [ref=f11e105]
+          - cell "-" [ref=f11e106]
+          - cell "-" [ref=f11e108]
+          - cell "-" [ref=f11e109]
+  - heading [level=2] [ref=f11e110]:
+    - generic [ref=f11e111]:
+      - link "Copy heading URL to address bar" [ref=f11e113] [cursor=pointer]:
+        - /url: "#stories"
+      - text: Stories
+  - generic [ref=f11e114]:
+    - heading [level=3] [ref=f11e115]:
+      - generic [ref=f11e116]:
+        - link "Copy heading URL to address bar" [ref=f11e118] [cursor=pointer]:
+          - /url: "#playground"
+        - text: Playground
+    - group "Selecciona todos los planetas rocosos" [ref=f11e127]:
+      - generic [ref=f11e129]:
+        - checkbox [ref=f11e130]
+        - generic [ref=f11e131]: Mercurio
+      - generic [ref=f11e132]:
+        - checkbox [ref=f11e133]
+        - generic [ref=f11e134]: Venus
+      - generic [ref=f11e135]:
+        - checkbox [ref=f11e136]
+        - generic [ref=f11e137]: Tierra
+      - generic [ref=f11e138]:
+        - checkbox [ref=f11e139]
+        - generic [ref=f11e140]: Marte
+    - generic [ref=f11e142]:
+      - switch "Show code" [ref=f11e143] [cursor=pointer]
+      - button "Copy code" [ref=f11e146] [cursor=pointer]
+  - generic [ref=f11e149]:
+    - heading [level=3] [ref=f11e150]:
+      - generic [ref=f11e151]:
+        - link "Copy heading URL to address bar" [ref=f11e153] [cursor=pointer]:
+          - /url: "#default"
+        - text: Default
+    - group "Selecciona todos los planetas rocosos" [ref=f11e162]:
+      - generic [ref=f11e164]:
+        - checkbox [ref=f11e165]
+        - generic [ref=f11e166]: Mercurio
+      - generic [ref=f11e167]:
+        - checkbox [ref=f11e168]
+        - generic [ref=f11e169]: Venus
+      - generic [ref=f11e170]:
+        - checkbox [ref=f11e171]
+        - generic [ref=f11e172]: Tierra
+      - generic [ref=f11e173]:
+        - checkbox [ref=f11e174]
+        - generic [ref=f11e175]: Marte
+    - generic [ref=f11e177]:
+      - switch "Show code" [ref=f11e178] [cursor=pointer]
+      - button "Copy code" [ref=f11e181] [cursor=pointer]
+  - generic [ref=f11e184]:
+    - heading [level=3] [ref=f11e185]:
+      - generic [ref=f11e186]:
+        - link "Copy heading URL to address bar" [ref=f11e188] [cursor=pointer]:
+          - /url: "#con-selecciones-previas"
+        - text: Con Selecciones Previas
+    - group "Selecciona todos los planetas rocosos" [ref=f11e197]:
+      - generic [ref=f11e199]:
+        - checkbox [checked] [ref=f11e200]
+        - generic [ref=f11e201]: Mercurio
+      - generic [ref=f11e202]:
+        - checkbox [checked] [ref=f11e203]
+        - generic [ref=f11e204]: Venus
+      - generic [ref=f11e205]:
+        - checkbox [checked] [ref=f11e206]
+        - generic [ref=f11e207]: Tierra
+      - generic [ref=f11e208]:
+        - checkbox [ref=f11e209]
+        - generic [ref=f11e210]: Marte
+    - generic [ref=f11e212]:
+      - switch "Show code" [ref=f11e213] [cursor=pointer]
+      - button "Copy code" [ref=f11e216] [cursor=pointer]

@@ -38,4 +38,7 @@ export interface ButtonProps {
 
     /** Posición del icono respecto al texto visible. Por defecto `'start'`. */
     iconPosition?: ButtonIconPosition;
+
+    /** Texto de ayuda contextual opcional. Si se informa, se adjunta como tooltip (hover/foco). */
+    tooltip?: string;
 }

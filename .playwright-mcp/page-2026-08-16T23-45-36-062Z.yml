@@ -1,0 +1,152 @@
+- generic [ref=f9e4]:
+  - heading "Select" [level=1] [ref=f9e5]
+  - generic [ref=f9e6]:
+    - generic [ref=f9e7]:
+      - toolbar [ref=f9e8]:
+        - generic [ref=f9e9]:
+          - generic [ref=f9e10]:
+            - button "Reload story" [ref=f9e11] [cursor=pointer]
+            - button "Zoom in" [ref=f9e14] [cursor=pointer]
+            - button "Zoom out" [ref=f9e18] [cursor=pointer]
+            - button "Reset zoom" [ref=f9e22] [cursor=pointer]
+          - link "Open canvas in new tab" [ref=f9e26] [cursor=pointer]:
+            - /url: iframe.html?id=componentes-select--playground
+      - generic [ref=f9e37]:
+        - generic [ref=f9e38]: Planeta
+        - combobox "Planeta" [ref=f9e40]:
+          - option "Marte"
+          - option "Venus"
+          - option "Tierra"
+    - generic [ref=f9e42]:
+      - switch "Show code" [ref=f9e43] [cursor=pointer]
+      - button "Copy code" [ref=f9e46] [cursor=pointer]
+  - generic [ref=f9e50]:
+    - button "Reset controls" [ref=f9e52] [cursor=pointer]
+    - table [ref=f9e55]:
+      - rowgroup [ref=f9e56]:
+        - row [ref=f9e57]:
+          - columnheader "Name" [ref=f9e58]
+          - columnheader "Description" [ref=f9e59]
+          - columnheader "Default" [ref=f9e60]
+          - columnheader "Control" [ref=f9e61]
+      - rowgroup [ref=f9e62]:
+        - row [ref=f9e63]:
+          - cell "options" [ref=f9e64]
+          - cell "array" [ref=f9e65]
+          - cell "-" [ref=f9e69]
+          - cell "-" [ref=f9e70]
+        - row [ref=f9e71]:
+          - cell "label" [ref=f9e72]
+          - cell "string" [ref=f9e73]
+          - cell "-" [ref=f9e77]
+          - cell [ref=f9e78]:
+            - textbox [ref=f9e80]:
+              - /placeholder: Edit string...
+              - text: Planeta
+        - row [ref=f9e81]:
+          - cell "value" [ref=f9e82]
+          - cell "-" [ref=f9e83]
+          - cell "-" [ref=f9e85]
+          - cell [ref=f9e86]:
+            - button "Set string" [ref=f9e87] [cursor=pointer]
+        - row [ref=f9e88]:
+          - cell "ariaLabel" [ref=f9e89]
+          - cell "-" [ref=f9e90]
+          - cell "-" [ref=f9e92]
+          - cell [ref=f9e93]:
+            - button "Set string" [ref=f9e94] [cursor=pointer]
+        - row [ref=f9e95]:
+          - cell "disabled" [ref=f9e96]
+          - cell "-" [ref=f9e97]
+          - cell "-" [ref=f9e99]
+          - cell [ref=f9e100]:
+            - button "Set boolean" [ref=f9e101] [cursor=pointer]
+        - row [ref=f9e102]:
+          - cell "onChange" [ref=f9e103]
+          - cell "-" [ref=f9e104]
+          - cell "-" [ref=f9e106]
+          - cell "-" [ref=f9e107]
+  - heading [level=2] [ref=f9e108]:
+    - generic [ref=f9e109]:
+      - link "Copy heading URL to address bar" [ref=f9e111] [cursor=pointer]:
+        - /url: "#stories"
+      - text: Stories
+  - generic [ref=f9e112]:
+    - heading [level=3] [ref=f9e113]:
+      - generic [ref=f9e114]:
+        - link "Copy heading URL to address bar" [ref=f9e116] [cursor=pointer]:
+          - /url: "#playground"
+        - text: Playground
+    - generic [ref=f9e125]:
+      - generic [ref=f9e126]: Planeta
+      - combobox "Planeta" [ref=f9e128]:
+        - option "Marte"
+        - option "Venus"
+        - option "Tierra"
+    - generic [ref=f9e130]:
+      - switch "Show code" [ref=f9e131] [cursor=pointer]
+      - button "Copy code" [ref=f9e134] [cursor=pointer]
+  - generic [ref=f9e137]:
+    - heading [level=3] [ref=f9e138]:
+      - generic [ref=f9e139]:
+        - link "Copy heading URL to address bar" [ref=f9e141] [cursor=pointer]:
+          - /url: "#default"
+        - text: Default
+    - generic [ref=f9e150]:
+      - generic [ref=f9e151]: Planeta
+      - combobox "Planeta" [ref=f9e153]:
+        - option "Marte"
+        - option "Venus"
+        - option "Tierra"
+    - generic [ref=f9e155]:
+      - switch "Show code" [ref=f9e156] [cursor=pointer]
+      - button "Copy code" [ref=f9e159] [cursor=pointer]
+  - generic [ref=f9e162]:
+    - heading [level=3] [ref=f9e163]:
+      - generic [ref=f9e164]:
+        - link "Copy heading URL to address bar" [ref=f9e166] [cursor=pointer]:
+          - /url: "#con-valor-preseleccionado"
+        - text: Con Valor Preseleccionado
+    - generic [ref=f9e175]:
+      - generic [ref=f9e176]: Planeta
+      - combobox "Planeta" [ref=f9e178]:
+        - option "Marte"
+        - option "Venus" [selected]
+        - option "Tierra"
+    - generic [ref=f9e180]:
+      - switch "Show code" [ref=f9e181] [cursor=pointer]
+      - button "Copy code" [ref=f9e184] [cursor=pointer]
+  - generic [ref=f9e187]:
+    - heading [level=3] [ref=f9e188]:
+      - generic [ref=f9e189]:
+        - link "Copy heading URL to address bar" [ref=f9e191] [cursor=pointer]:
+          - /url: "#sin-etiqueta-visible"
+        - text: Sin Etiqueta Visible
+    - paragraph [ref=f9e192]:
+      - text: Renderiza un select sin etiqueta visible. Sigue siendo accesible gracias a
+      - code [ref=f9e193]: ariaLabel
+      - text: .
+    - combobox "Selecciona un planeta" [ref=f9e204]:
+      - option "Marte"
+      - option "Venus"
+      - option "Tierra"
+    - generic [ref=f9e206]:
+      - switch "Show code" [ref=f9e207] [cursor=pointer]
+      - button "Copy code" [ref=f9e210] [cursor=pointer]
+  - generic [ref=f9e213]:
+    - heading [level=3] [ref=f9e214]:
+      - generic [ref=f9e215]:
+        - link "Copy heading URL to address bar" [ref=f9e217] [cursor=pointer]:
+          - /url: "#sin-opciones"
+        - text: Sin Opciones
+    - paragraph [ref=f9e218]:
+      - text: Con
+      - code [ref=f9e219]: options
+      - text: vacío, el control se renderiza deshabilitado con una opción de marcador de posición, sin lanzar error en runtime.
+    - generic [ref=f9e228]:
+      - generic [ref=f9e229]: Planeta
+      - combobox "Planeta" [disabled] [ref=f9e231]:
+        - option "Sin opciones disponibles" [selected]
+    - generic [ref=f9e233]:
+      - switch "Show code" [ref=f9e234] [cursor=pointer]
+      - button "Copy code" [ref=f9e237] [cursor=pointer]

@@ -29,7 +29,7 @@ Determinar cómo introducir estilos visuales reales por primera vez en el proyec
 * **Especificación**: `./spec.md` (incluida la sección `## Clarifications`, sesión 2026-08-15)
 * **Plan**: `./plan.md`
 * **Código existente**: `libs/components/button/Button.ts`, `Button.test.ts`, `Button.stories.ts`, `index.ts` (`001-component-library-architecture`) — ningún fichero `.css` existe todavía en el repositorio.
-* **Contratos existentes**: `../001-component-library-architecture/contracts/button-component.md` (v1.0), `../001-component-library-architecture/contracts/component-library-convention.md` (v1.0).
+* **Contratos existentes**: `../001-component-library-architecture/contracts/button-component.md` (v1.0), `../../docs/conventions/components/structure.md` (v1.0).
 * **Restricciones aplicables**: Sin Angular/React/Vue ni CSS-in-JS sin justificación explícita; ningún uso existente de `createButton` puede cambiar de comportamiento; `danger` no puede depender solo del color; `small` MUST mantener 44×44 px CSS de área táctil (aclaración de `/speckit-clarify`).
 
 ## Resumen de decisiones
@@ -91,7 +91,7 @@ Determinar cómo introducir estilos visuales reales por primera vez en el proyec
 
 ### Consecuencias
 
-Se documenta en el contrato ampliado (`contracts/component-library-convention-css.md`) que un componente de `libs/components/` MAY incluir opcionalmente un fichero `<ComponentName>.css` co-localizado, importado desde su implementación.
+Se documenta en la convención ampliada (`docs/conventions/components/css.md`) que un componente de `libs/components/` MAY incluir opcionalmente un fichero `<ComponentName>.css` co-localizado, importado desde su implementación.
 
 ---
 

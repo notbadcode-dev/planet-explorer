@@ -1,0 +1,110 @@
+- generic [ref=f15e4]:
+  - heading "Toast" [level=1] [ref=f15e5]
+  - generic [ref=f15e6]:
+    - generic [ref=f15e7]:
+      - toolbar [ref=f15e8]:
+        - generic [ref=f15e9]:
+          - generic [ref=f15e10]:
+            - button "Reload story" [ref=f15e11] [cursor=pointer]
+            - button "Zoom in" [ref=f15e14] [cursor=pointer]
+            - button "Zoom out" [ref=f15e18] [cursor=pointer]
+            - button "Reset zoom" [ref=f15e22] [cursor=pointer]
+          - link "Open canvas in new tab" [ref=f15e26] [cursor=pointer]:
+            - /url: iframe.html?id=componentes-toast--info
+      - button "Mostrar toast" [ref=f15e38] [cursor=pointer]
+    - generic [ref=f15e41]:
+      - switch "Show code" [ref=f15e42] [cursor=pointer]
+      - button "Copy code" [ref=f15e45] [cursor=pointer]
+  - generic [ref=f15e49]:
+    - button "Reset controls" [ref=f15e51] [cursor=pointer]
+    - table [ref=f15e54]:
+      - rowgroup [ref=f15e55]:
+        - row [ref=f15e56]:
+          - columnheader "Name" [ref=f15e57]
+          - columnheader "Description" [ref=f15e58]
+          - columnheader "Default" [ref=f15e59]
+          - columnheader "Control" [ref=f15e60]
+      - rowgroup [ref=f15e61]:
+        - row [ref=f15e62]:
+          - cell "message" [ref=f15e63]
+          - cell "string" [ref=f15e64]
+          - cell "-" [ref=f15e68]
+          - cell [ref=f15e69]:
+            - textbox [ref=f15e71]:
+              - /placeholder: Edit string...
+              - text: Guardado automáticamente.
+        - row [ref=f15e72]:
+          - cell "variant" [ref=f15e73]
+          - cell "string" [ref=f15e74]
+          - cell "-" [ref=f15e78]
+          - cell [ref=f15e79]:
+            - generic [ref=f15e80]:
+              - generic [ref=f15e81]: variant
+              - combobox "variant" [ref=f15e82]:
+                - option "Choose option..."
+                - option "info" [selected]
+                - option "success"
+                - option "warning"
+                - option "danger"
+        - row [ref=f15e83]:
+          - cell "durationMs" [ref=f15e84]
+          - cell "-" [ref=f15e85]
+          - cell "-" [ref=f15e87]
+          - cell [ref=f15e88]:
+            - button "Set number" [ref=f15e89] [cursor=pointer]
+  - heading [level=2] [ref=f15e90]:
+    - generic [ref=f15e91]:
+      - link "Copy heading URL to address bar" [ref=f15e93] [cursor=pointer]:
+        - /url: "#stories"
+      - text: Stories
+  - generic [ref=f15e94]:
+    - heading [level=3] [ref=f15e95]:
+      - generic [ref=f15e96]:
+        - link "Copy heading URL to address bar" [ref=f15e98] [cursor=pointer]:
+          - /url: "#info"
+        - text: Info
+    - button "Mostrar toast" [ref=f15e108] [cursor=pointer]
+    - generic [ref=f15e111]:
+      - switch "Show code" [ref=f15e112] [cursor=pointer]
+      - button "Copy code" [ref=f15e115] [cursor=pointer]
+  - generic [ref=f15e118]:
+    - heading [level=3] [ref=f15e119]:
+      - generic [ref=f15e120]:
+        - link "Copy heading URL to address bar" [ref=f15e122] [cursor=pointer]:
+          - /url: "#success"
+        - text: Success
+    - button "Mostrar toast" [ref=f15e132] [cursor=pointer]
+    - generic [ref=f15e135]:
+      - switch "Show code" [ref=f15e136] [cursor=pointer]
+      - button "Copy code" [ref=f15e139] [cursor=pointer]
+  - generic [ref=f15e142]:
+    - heading [level=3] [ref=f15e143]:
+      - generic [ref=f15e144]:
+        - link "Copy heading URL to address bar" [ref=f15e146] [cursor=pointer]:
+          - /url: "#warning"
+        - text: Warning
+    - button "Mostrar toast" [ref=f15e156] [cursor=pointer]
+    - generic [ref=f15e159]:
+      - switch "Show code" [ref=f15e160] [cursor=pointer]
+      - button "Copy code" [ref=f15e163] [cursor=pointer]
+  - generic [ref=f15e166]:
+    - heading [level=3] [ref=f15e167]:
+      - generic [ref=f15e168]:
+        - link "Copy heading URL to address bar" [ref=f15e170] [cursor=pointer]:
+          - /url: "#danger"
+        - text: Danger
+    - button "Mostrar toast" [ref=f15e180] [cursor=pointer]
+    - generic [ref=f15e183]:
+      - switch "Show code" [ref=f15e184] [cursor=pointer]
+      - button "Copy code" [ref=f15e187] [cursor=pointer]
+  - generic [ref=f15e190]:
+    - heading [level=3] [ref=f15e191]:
+      - generic [ref=f15e192]:
+        - link "Copy heading URL to address bar" [ref=f15e194] [cursor=pointer]:
+          - /url: "#apilado"
+        - text: Apilado
+    - paragraph [ref=f15e195]: Varias instancias activas se apilan simultáneamente sin descartar ni retrasar ninguna (VAL-1503).
+    - button "Mostrar 3 toasts apilados" [ref=f15e205] [cursor=pointer]
+    - generic [ref=f15e208]:
+      - switch "Show code" [ref=f15e209] [cursor=pointer]
+      - button "Copy code" [ref=f15e212] [cursor=pointer]

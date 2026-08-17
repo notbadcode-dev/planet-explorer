@@ -9,3 +9,6 @@ storybook-static/
 .env.*
 coverage/
 
+# Capturas/snapshots de depuración de herramientas MCP (Playwright, etc.)
+.playwright-mcp/
+

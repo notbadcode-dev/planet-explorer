@@ -1,0 +1,27 @@
+/*
+ * Tokens de movimiento compartidos (duración/easing) para transiciones y
+ * animaciones CSS de los componentes de la librería (Fase 18, FR-046).
+ *
+ * `prefers-reduced-motion: reduce` reduce todas las duraciones/retrasos a 0
+ * para deshabilitar por completo el movimiento (FR-045).
+ */
+
+:root {
+    --motion-duration-fast: 150ms;
+    --motion-duration-base: 220ms;
+    --motion-duration-slow: 320ms;
+
+    --motion-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+    --motion-delay-tooltip: 300ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --motion-duration-fast: 0s;
+        --motion-duration-base: 0s;
+        --motion-duration-slow: 0s;
+        --motion-delay-tooltip: 0ms;
+    }
+}

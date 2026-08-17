@@ -1,0 +1,255 @@
+- generic [ref=f5e4]:
+  - heading "Input" [level=1] [ref=f5e5]
+  - generic [ref=f5e6]:
+    - generic [ref=f5e7]:
+      - toolbar [ref=f5e8]:
+        - generic [ref=f5e9]:
+          - generic [ref=f5e10]:
+            - button "Reload story" [ref=f5e11] [cursor=pointer]
+            - button "Zoom in" [ref=f5e14] [cursor=pointer]
+            - button "Zoom out" [ref=f5e18] [cursor=pointer]
+            - button "Reset zoom" [ref=f5e22] [cursor=pointer]
+          - link "Open canvas in new tab" [ref=f5e26] [cursor=pointer]:
+            - /url: iframe.html?id=componentes-input--playground
+      - generic [ref=f5e37]:
+        - textbox "Nombre de planeta" [ref=f5e38]:
+          - /placeholder: Escribe aqui
+        - generic [ref=f5e39]: Nombre de planeta
+        - paragraph [ref=f5e40]: Se mostrara en la tarjeta de exploracion
+    - generic [ref=f5e42]:
+      - switch "Show code" [ref=f5e43] [cursor=pointer]
+      - button "Copy code" [ref=f5e46] [cursor=pointer]
+  - generic [ref=f5e50]:
+    - button "Reset controls" [ref=f5e52] [cursor=pointer]
+    - table [ref=f5e55]:
+      - rowgroup [ref=f5e56]:
+        - row [ref=f5e57]:
+          - columnheader "Name" [ref=f5e58]
+          - columnheader "Description" [ref=f5e59]
+          - columnheader "Default" [ref=f5e60]
+          - columnheader "Control" [ref=f5e61]
+      - rowgroup [ref=f5e62]:
+        - row [ref=f5e63]:
+          - cell "label" [ref=f5e64]
+          - cell "string" [ref=f5e65]
+          - cell "-" [ref=f5e69]
+          - cell [ref=f5e70]:
+            - textbox [ref=f5e72]:
+              - /placeholder: Edit string...
+              - text: Nombre de planeta
+        - row [ref=f5e73]:
+          - cell "placeholder" [ref=f5e74]
+          - cell "string" [ref=f5e75]
+          - cell "-" [ref=f5e79]
+          - cell [ref=f5e80]:
+            - textbox [ref=f5e82]:
+              - /placeholder: Edit string...
+              - text: Escribe aqui
+        - row [ref=f5e83]:
+          - cell "hint" [ref=f5e84]
+          - cell "string" [ref=f5e85]
+          - cell "-" [ref=f5e89]
+          - cell [ref=f5e90]:
+            - textbox [ref=f5e92]:
+              - /placeholder: Edit string...
+              - text: Se mostrara en la tarjeta de exploracion
+        - row [ref=f5e93]:
+          - cell "value" [ref=f5e94]
+          - cell "-" [ref=f5e95]
+          - cell "-" [ref=f5e97]
+          - cell [ref=f5e98]:
+            - button "Set string" [ref=f5e99] [cursor=pointer]
+        - row [ref=f5e100]:
+          - cell "ariaLabel" [ref=f5e101]
+          - cell "-" [ref=f5e102]
+          - cell "-" [ref=f5e104]
+          - cell [ref=f5e105]:
+            - button "Set string" [ref=f5e106] [cursor=pointer]
+        - row [ref=f5e107]:
+          - cell "error" [ref=f5e108]
+          - cell "-" [ref=f5e109]
+          - cell "-" [ref=f5e111]
+          - cell [ref=f5e112]:
+            - button "Set string" [ref=f5e113] [cursor=pointer]
+        - row [ref=f5e114]:
+          - cell "disabled" [ref=f5e115]
+          - cell "-" [ref=f5e116]
+          - cell "-" [ref=f5e118]
+          - cell [ref=f5e119]:
+            - button "Set boolean" [ref=f5e120] [cursor=pointer]
+        - row [ref=f5e121]:
+          - cell "required" [ref=f5e122]
+          - cell "-" [ref=f5e123]
+          - cell "-" [ref=f5e125]
+          - cell [ref=f5e126]:
+            - button "Set boolean" [ref=f5e127] [cursor=pointer]
+        - row [ref=f5e128]:
+          - cell "size" [ref=f5e129]
+          - cell "-" [ref=f5e130]
+          - cell "-" [ref=f5e132]
+          - cell [ref=f5e133]:
+            - generic [ref=f5e134]:
+              - generic [ref=f5e135]: size
+              - combobox "size" [ref=f5e136]:
+                - option "Choose option..." [disabled] [selected]
+                - option "small"
+                - option "medium"
+                - option "large"
+        - row [ref=f5e137]:
+          - cell "onInput" [ref=f5e138]
+          - cell "-" [ref=f5e139]
+          - cell "-" [ref=f5e141]
+          - cell "-" [ref=f5e142]
+  - heading [level=2] [ref=f5e143]:
+    - generic [ref=f5e144]:
+      - link "Copy heading URL to address bar" [ref=f5e146] [cursor=pointer]:
+        - /url: "#stories"
+      - text: Stories
+  - generic [ref=f5e147]:
+    - heading [level=3] [ref=f5e148]:
+      - generic [ref=f5e149]:
+        - link "Copy heading URL to address bar" [ref=f5e151] [cursor=pointer]:
+          - /url: "#playground"
+        - text: Playground
+    - generic [ref=f5e160]:
+      - textbox "Nombre de planeta" [ref=f5e161]:
+        - /placeholder: Escribe aqui
+      - generic [ref=f5e162]: Nombre de planeta
+      - paragraph [ref=f5e163]: Se mostrara en la tarjeta de exploracion
+    - generic [ref=f5e165]:
+      - switch "Show code" [ref=f5e166] [cursor=pointer]
+      - button "Copy code" [ref=f5e169] [cursor=pointer]
+  - generic [ref=f5e172]:
+    - heading [level=3] [ref=f5e173]:
+      - generic [ref=f5e174]:
+        - link "Copy heading URL to address bar" [ref=f5e176] [cursor=pointer]:
+          - /url: "#por-defecto"
+        - text: Por Defecto
+    - generic [ref=f5e185]:
+      - textbox "Nombre de planeta" [ref=f5e186]:
+        - /placeholder: Escribe aqui
+      - generic [ref=f5e187]: Nombre de planeta
+    - generic [ref=f5e189]:
+      - switch "Show code" [ref=f5e190] [cursor=pointer]
+      - button "Copy code" [ref=f5e193] [cursor=pointer]
+  - generic [ref=f5e196]:
+    - heading [level=3] [ref=f5e197]:
+      - generic [ref=f5e198]:
+        - link "Copy heading URL to address bar" [ref=f5e200] [cursor=pointer]:
+          - /url: "#con-ayuda"
+        - text: Con Ayuda
+    - generic [ref=f5e209]:
+      - textbox "Nombre de planeta" [ref=f5e210]:
+        - /placeholder: Escribe aqui
+      - generic [ref=f5e211]: Nombre de planeta
+      - paragraph [ref=f5e212]: Se mostrara en la tarjeta de exploracion
+    - generic [ref=f5e214]:
+      - switch "Show code" [ref=f5e215] [cursor=pointer]
+      - button "Copy code" [ref=f5e218] [cursor=pointer]
+  - generic [ref=f5e221]:
+    - heading [level=3] [ref=f5e222]:
+      - generic [ref=f5e223]:
+        - link "Copy heading URL to address bar" [ref=f5e225] [cursor=pointer]:
+          - /url: "#con-error"
+        - text: Con Error
+    - generic [ref=f5e234]:
+      - textbox "Nombre de planeta" [invalid] [ref=f5e235]:
+        - /placeholder: Escribe aqui
+        - text: Kepler-9
+      - generic [ref=f5e236]: Nombre de planeta
+      - paragraph [ref=f5e237]: Ya existe un planeta con ese nombre
+    - generic [ref=f5e239]:
+      - switch "Show code" [ref=f5e240] [cursor=pointer]
+      - button "Copy code" [ref=f5e243] [cursor=pointer]
+  - generic [ref=f5e246]:
+    - heading [level=3] [ref=f5e247]:
+      - generic [ref=f5e248]:
+        - link "Copy heading URL to address bar" [ref=f5e250] [cursor=pointer]:
+          - /url: "#deshabilitado"
+        - text: Deshabilitado
+    - generic [ref=f5e259]:
+      - textbox "Nombre de planeta" [disabled] [ref=f5e260]:
+        - /placeholder: Escribe aqui
+        - text: Kepler-9
+      - generic [ref=f5e261]: Nombre de planeta
+    - generic [ref=f5e263]:
+      - switch "Show code" [ref=f5e264] [cursor=pointer]
+      - button "Copy code" [ref=f5e267] [cursor=pointer]
+  - generic [ref=f5e270]:
+    - heading [level=3] [ref=f5e271]:
+      - generic [ref=f5e272]:
+        - link "Copy heading URL to address bar" [ref=f5e274] [cursor=pointer]:
+          - /url: "#sin-etiqueta-visible"
+        - text: Sin Etiqueta Visible
+    - paragraph [ref=f5e275]:
+      - text: Renderiza un input sin etiqueta visible. Sigue siendo accesible gracias a
+      - code [ref=f5e276]: ariaLabel
+      - text: .
+    - textbox "Buscar planeta" [ref=f5e286]:
+      - /placeholder: Buscar...
+    - generic [ref=f5e288]:
+      - switch "Show code" [ref=f5e289] [cursor=pointer]
+      - button "Copy code" [ref=f5e292] [cursor=pointer]
+  - generic [ref=f5e295]:
+    - heading [level=3] [ref=f5e296]:
+      - generic [ref=f5e297]:
+        - link "Copy heading URL to address bar" [ref=f5e299] [cursor=pointer]:
+          - /url: "#con-ayuda-y-error"
+        - text: Con Ayuda Y Error
+    - paragraph [ref=f5e300]:
+      - text: Combina
+      - code [ref=f5e301]: hint
+      - text: "y"
+      - code [ref=f5e302]: error
+      - text: simultaneamente; ambos se vinculan a
+      - code [ref=f5e303]: aria-describedby
+      - text: en el mismo orden.
+    - generic [ref=f5e312]:
+      - textbox "Nombre de planeta" [invalid] [ref=f5e313]:
+        - /placeholder: Escribe aqui
+        - text: Kepler-9
+      - generic [ref=f5e314]: Nombre de planeta
+      - paragraph [ref=f5e315]: Se mostrara en la tarjeta de exploracion
+      - paragraph [ref=f5e316]: Ya existe un planeta con ese nombre
+    - generic [ref=f5e318]:
+      - switch "Show code" [ref=f5e319] [cursor=pointer]
+      - button "Copy code" [ref=f5e322] [cursor=pointer]
+  - generic [ref=f5e325]:
+    - heading [level=3] [ref=f5e326]:
+      - generic [ref=f5e327]:
+        - link "Copy heading URL to address bar" [ref=f5e329] [cursor=pointer]:
+          - /url: "#tamano-pequeno"
+        - text: Tamano Pequeno
+    - generic [ref=f5e338]:
+      - textbox "Nombre de planeta" [ref=f5e339]:
+        - /placeholder: Escribe aqui
+      - generic [ref=f5e340]: Nombre de planeta
+    - generic [ref=f5e342]:
+      - switch "Show code" [ref=f5e343] [cursor=pointer]
+      - button "Copy code" [ref=f5e346] [cursor=pointer]
+  - generic [ref=f5e349]:
+    - heading [level=3] [ref=f5e350]:
+      - generic [ref=f5e351]:
+        - link "Copy heading URL to address bar" [ref=f5e353] [cursor=pointer]:
+          - /url: "#tamano-medio"
+        - text: Tamano Medio
+    - generic [ref=f5e362]:
+      - textbox "Nombre de planeta" [ref=f5e363]:
+        - /placeholder: Escribe aqui
+      - generic [ref=f5e364]: Nombre de planeta
+    - generic [ref=f5e366]:
+      - switch "Show code" [ref=f5e367] [cursor=pointer]
+      - button "Copy code" [ref=f5e370] [cursor=pointer]
+  - generic [ref=f5e373]:
+    - heading [level=3] [ref=f5e374]:
+      - generic [ref=f5e375]:
+        - link "Copy heading URL to address bar" [ref=f5e377] [cursor=pointer]:
+          - /url: "#tamano-grande"
+        - text: Tamano Grande
+    - generic [ref=f5e386]:
+      - textbox "Nombre de planeta" [ref=f5e387]:
+        - /placeholder: Escribe aqui
+      - generic [ref=f5e388]: Nombre de planeta
+    - generic [ref=f5e390]:
+      - switch "Show code" [ref=f5e391] [cursor=pointer]
+      - button "Copy code" [ref=f5e394] [cursor=pointer]

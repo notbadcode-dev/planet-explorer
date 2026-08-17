@@ -1,0 +1,10 @@
+- dialog "Dialogo base" [ref=f31e5]:
+  - heading "Dialogo base" [level=2] [ref=f31e6]
+  - paragraph [ref=f31e7]: Confirma la accion para continuar.
+  - paragraph [ref=f31e9]: "Con 3 o mas acciones de confirmacion, el dialogo crece su ancho minimo para que quepan en una sola fila, aunque la talla elegida (`size`) se quede corta."
+  - generic [ref=f31e10]:
+    - button "Cerrar" [active] [ref=f31e11] [cursor=pointer]
+    - generic [ref=f31e13]:
+      - button "Guardar como borrador" [ref=f31e14] [cursor=pointer]
+      - button "Descartar" [ref=f31e16] [cursor=pointer]
+      - button "Publicar" [ref=f31e18] [cursor=pointer]
