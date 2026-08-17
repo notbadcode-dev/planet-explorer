@@ -10,6 +10,7 @@ import { APP_ICON_NAMES } from '../icon';
 
 const meta: Meta<ButtonProps> = {
     title: 'Componentes/Button',
+    tags: ['autodocs'],
     render: (args) => createButton(args),
     argTypes: {
         label: { control: 'text' },
@@ -19,6 +20,7 @@ const meta: Meta<ButtonProps> = {
         size: { control: 'select', options: BUTTON_SIZES },
         icon: { control: 'select', options: APP_ICON_NAMES },
         iconPosition: { control: 'radio', options: BUTTON_ICON_POSITIONS },
+        tooltip: { control: 'text' },
         // `html-vite` no tiene docgen automático: hay que declarar el argType de
         // `onClick` explícitamente para que Storybook lo reconozca y lo registre
         // en el panel "Actions". La detección automática por regex (`on[A-Z]`)
@@ -52,7 +54,7 @@ export const Disabled: Story = {
     },
 };
 
-export const SoloEtiquetaAccesible: Story = {
+export const AccessibleLabelOnly: Story = {
     args: {
         label: undefined,
         ariaLabel: 'Cerrar',
@@ -99,7 +101,7 @@ export const Large: Story = {
     },
 };
 
-export const DeshabilitadoConVariante: Story = {
+export const DisabledWithVariant: Story = {
     args: {
         label: 'Eliminar',
         variant: 'danger',
@@ -113,5 +115,70 @@ export const DeshabilitadoConVariante: Story = {
                 story: 'Verifica que el tratamiento visual de deshabilitado se aplica de forma consistente incluso en combinaciones de `variant`/`size` distintas de las por defecto (FR-006).',
             },
         },
+    },
+};
+
+export const WithTooltip: Story = {
+    args: {
+        label: undefined,
+        ariaLabel: 'Cerrar',
+        icon: 'star',
+        tooltip: 'Cerrar',
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'Botón icon-only sin texto visible: `tooltip` es opcional y, cuando se informa, se adjunta mediante `attachTooltip` para reforzar el nombre accesible con ayuda visual en hover/foco.',
+            },
+        },
+    },
+};
+
+export const WithoutIcon: Story = {
+    args: {
+        label: 'Aceptar',
+        icon: undefined,
+    },
+};
+
+export const SecondarySmall: Story = {
+    args: {
+        label: 'Cancelar',
+        variant: 'secondary',
+        size: 'small',
+    },
+};
+
+export const SecondaryLarge: Story = {
+    args: {
+        label: 'Siguiente',
+        variant: 'secondary',
+        size: 'large',
+    },
+};
+
+export const DangerLarge: Story = {
+    args: {
+        label: 'Eliminar permanentemente',
+        variant: 'danger',
+        size: 'large',
+        icon: 'trash',
+    },
+};
+
+export const IconEnd: Story = {
+    args: {
+        label: 'Descargar',
+        icon: 'rocket',
+        iconPosition: 'end',
+    },
+};
+
+export const SecondaryDisabledLarge: Story = {
+    args: {
+        label: 'Siguiente',
+        variant: 'secondary',
+        size: 'large',
+        disabled: true,
     },
 };

@@ -24,3 +24,7 @@ export const INPUT_EVENT = 'input';
 export const INPUT_SPACE_SEPARATOR = ' ';
 export const INPUT_EMPTY_VALUE = '';
 export const INPUT_EMPTY_COLLECTION_LENGTH = 0;
+
+export const INPUT_SIZES = ['small', 'medium', 'large'] as const;
+export const DEFAULT_INPUT_SIZE = INPUT_SIZES[1];
+export const INPUT_SIZE_CLASS_PREFIX = 'input--';

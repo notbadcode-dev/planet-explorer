@@ -59,4 +59,19 @@ describe('createProgress', () => {
 
         expect(bar.value).toBe(0);
     });
+
+    it('expone nombre accesible solo mediante ariaLabel sin label visible', () => {
+        const progress = createProgress({ value: 50, max: 100, label: undefined, ariaLabel: 'Progreso de descarga' });
+
+        expect(progress.querySelector('.progress__label')).toBeNull();
+        // aria-label se asigna al elemento <progress>, no al root
+        const progressBar = progress.querySelector('progress');
+        expect(progressBar?.getAttribute('aria-label')).toBe('Progreso de descarga');
+    });
+
+    it('tolera label y ariaLabel ambos ausentes usando nombre genérico', () => {
+        const progress = createProgress({ value: 50, max: 100 });
+
+        expect(progress.querySelector('.progress__label')).toBeNull();
+    });
 });

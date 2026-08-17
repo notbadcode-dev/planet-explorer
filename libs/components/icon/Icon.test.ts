@@ -45,4 +45,53 @@ describe('createIcon', () => {
         expect(icon.classList.contains(ICON_BASE_CLASS)).toBe(true);
         expect(icon.classList.contains('button__icon')).toBe(true);
     });
+
+    it('renderiza iconos del catálogo no usados en stories: sparkles', () => {
+        const icon = createIcon({ name: 'sparkles' });
+        expect(icon.querySelector('path')).not.toBeNull();
+    });
+
+    it('renderiza iconos del catálogo no usados en stories: star', () => {
+        const icon = createIcon({ name: 'star' });
+        expect(icon.querySelector('path')).not.toBeNull();
+    });
+
+    it('renderiza iconos del catálogo no usados en stories: check-circle', () => {
+        const icon = createIcon({ name: 'check-circle' });
+        expect(icon.querySelector('path')).not.toBeNull();
+    });
+
+    it('renderiza iconos del catálogo no usados en stories: warning-circle', () => {
+        const icon = createIcon({ name: 'warning-circle' });
+        expect(icon.querySelector('path')).not.toBeNull();
+    });
+
+    it('renderiza iconos del catálogo no usados en stories: x-circle', () => {
+        const icon = createIcon({ name: 'x-circle' });
+        expect(icon.querySelector('path')).not.toBeNull();
+    });
+
+    it('renderiza iconos del catálogo no usados en stories: info-circle', () => {
+        const icon = createIcon({ name: 'info-circle' });
+        expect(icon.querySelector('path')).not.toBeNull();
+    });
+
+    it('renderiza iconos del catálogo no usados en stories: caret-down', () => {
+        const icon = createIcon({ name: 'caret-down' });
+        expect(icon.querySelector('path')).not.toBeNull();
+    });
+
+    it('combina ariaLabel con tamaño personalizado', () => {
+        const icon = createIcon({ name: 'rocket', ariaLabel: 'Lanzar', size: 64 });
+        expect(icon.getAttribute('aria-label')).toBe('Lanzar');
+        expect(icon.getAttribute('width')).toBe('64');
+        expect(icon.getAttribute('height')).toBe('64');
+    });
+
+    it('combina tamaño personalizado con fill personalizado', () => {
+        const icon = createIcon({ name: 'star', size: 72, fill: '#ff00ff' });
+        expect(icon.getAttribute('width')).toBe('72');
+        expect(icon.getAttribute('height')).toBe('72');
+        expect(icon.getAttribute('fill')).toBe('#ff00ff');
+    });
 });

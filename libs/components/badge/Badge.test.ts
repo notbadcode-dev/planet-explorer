@@ -44,4 +44,34 @@ describe('createBadge', () => {
         expect(consumerIcon).toBeInstanceOf(SVGElement);
         expect(statusIcon).not.toBe(consumerIcon);
     });
+
+    it('renderiza icon con variantes no probadas: default+icon', () => {
+        const badge = createBadge({ label: 'Nuevo', variant: 'default', icon: 'sparkles' });
+        expect(badge.querySelector('.badge__icon')).not.toBeNull();
+    });
+
+    it('renderiza icon con variantes no probadas: warning+icon', () => {
+        const badge = createBadge({ label: 'Revisa', variant: 'warning', icon: 'warning-circle' });
+        expect(badge.querySelector('.badge__icon')).not.toBeNull();
+    });
+
+    it('renderiza icon con variantes no probadas: danger+icon', () => {
+        const badge = createBadge({ label: 'Crítico', variant: 'danger', icon: 'x-circle' });
+        expect(badge.querySelector('.badge__icon')).not.toBeNull();
+    });
+
+    it('combina tooltip con variante default', () => {
+        const badge = createBadge({ label: 'Desbloqueado', variant: 'default', tooltip: 'Acceso otorgado' });
+        expect(badge.getAttribute('aria-describedby')).not.toBeNull();
+    });
+
+    it('combina tooltip con variante warning', () => {
+        const badge = createBadge({ label: 'Pendiente', variant: 'warning', tooltip: 'Aún incompleto' });
+        expect(badge.getAttribute('aria-describedby')).not.toBeNull();
+    });
+
+    it('combina tooltip con variante danger', () => {
+        const badge = createBadge({ label: 'Error', variant: 'danger', tooltip: 'Fallo crítico' });
+        expect(badge.getAttribute('aria-describedby')).not.toBeNull();
+    });
 });

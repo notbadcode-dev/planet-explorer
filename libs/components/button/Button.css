@@ -2,7 +2,7 @@
  * Button — estilos del componente `libs/components/button/`.
  *
  * Contrato de convención: ver
- * `specs/002-button-variants/contracts/component-library-convention-css.md`.
+ * `docs/conventions/components/css.md`.
  *
  * Todas las clases están prefijadas con `button` para evitar colisiones con
  * estilos de otros componentes (R7/R8 del contrato).
@@ -133,13 +133,13 @@
 .button--medium {
     min-height: var(--size-control-md);
     padding: var(--space-control-block) var(--space-control-inline);
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-md);
 }
 
 .button--large {
     min-height: var(--size-control-lg);
     padding: var(--space-4) var(--space-8);
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-lg);
 }
 
 .button--large .button__icon {

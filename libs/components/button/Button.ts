@@ -26,6 +26,7 @@ import {
     DEFAULT_BUTTON_VARIANT,
 } from './Button.constants';
 import { createIcon } from '../icon';
+import { attachTooltip } from '../tooltip';
 import type { ButtonIconPosition, ButtonProps, ButtonSize, ButtonVariant } from './Button.type';
 
 export type { ButtonIconPosition, ButtonProps, ButtonSize, ButtonVariant } from './Button.type';
@@ -69,6 +70,7 @@ export function createButton(props: ButtonProps): HTMLButtonElement {
         size,
         icon,
         iconPosition,
+        tooltip,
     } = props;
 
     const hasLabel = Boolean(label?.trim());
@@ -123,6 +125,10 @@ export function createButton(props: ButtonProps): HTMLButtonElement {
         }
         onClick();
     });
+
+    if (tooltip?.trim()) {
+        attachTooltip({ target: button, content: tooltip });
+    }
 
     return button;
 }

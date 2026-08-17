@@ -3,9 +3,9 @@
 title: "Explorador Espacial Constitution"
 project: "Explorador Espacial"
 type: "constitution"
-version: "1.6.0"
+version: "1.11.0"
 ratified: "2026-08-15"
-updated: "2026-08-15"
+updated: "2026-08-17"
 status: "Active"
 tags:
 
@@ -29,9 +29,19 @@ tags:
 
 <!--
 Sync Impact Report
-Version change: 1.5.0 → 1.6.0 (MINOR: new typography governance section added)
+Version change: 1.10.1 → 1.11.0 (MINOR: nueva regla normativa en "Componentes
+  compartidos" sobre HTML/markup escrito fuera de `libs/components/`. Antes solo
+  existía el flujo de parada para cuando una funcionalidad *requiere* un
+  componente reutilizable que no existe. Ahora se añade una regla explícita
+  para el caso general de escribir HTML nuevo: MUST valorarse si ese HTML debe
+  convertirse en componente (mismas convenciones que el resto de
+  `libs/components/`) solo cuando sea genuinamente reutilizable o cuando el
+  mismo fragmento ya esté duplicado en otro sitio del repositorio; en caso
+  contrario MAY permanecer como HTML plano específico de la feature, sin
+  necesidad de pausar/justificar.)
 Modified principles: none
-Added sections: "Tipografía" (familias tipográficas, usos semánticos, tokens y carga local)
+Added sections: subsección "HTML fuera de un componente compartido" dentro de
+  "Componentes compartidos"
 Removed sections: none
 Templates requiring updates: none pending (templates read constitution rules dynamically)
 Follow-up TODOs: none
@@ -604,6 +614,21 @@ Su introducción MUST:
 
 Phaser MUST continuar siendo el motor principal salvo que una futura especificación establezca explícitamente otra decisión.
 
+### Arquitectura del motor de juego
+
+Aunque el código del motor de juego todavía no exista, su arquitectura MUST fijarse
+por anticipado en los siguientes documentos de `docs/conventions/architecture/`, de
+forma que ninguna spec de contenido o gameplay tenga que re-decidirla:
+
+* [`docs/conventions/architecture/game-engine-scenes.md`](../../docs/conventions/architecture/game-engine-scenes.md) — layout de `src/game/` (lógica pura vs. escenas Phaser) y separación lógica/renderizado (principio VII).
+* [`docs/conventions/architecture/content-model.md`](../../docs/conventions/architecture/content-model.md) — esquema conceptual `System > Destination > Expedition > Mission > Challenge` (principio V).
+* [`docs/conventions/architecture/challenge-engine-contract.md`](../../docs/conventions/architecture/challenge-engine-contract.md) — contrato genérico de generación/validación de retos (principio IX).
+* [`docs/conventions/architecture/progress-persistence-model.md`](../../docs/conventions/architecture/progress-persistence-model.md) — modelo de progreso por habilidad y persistencia local (principio IV).
+
+Toda spec que implemente o modifique el motor de juego MUST seguir estas decisiones
+salvo que una futura especificación justifique explícitamente un cambio, en cuyo
+caso el documento correspondiente MUST actualizarse como parte de la misma feature.
+
 ---
 
 ## Componentes compartidos
@@ -673,6 +698,25 @@ SHOULD existir:
 * reutilización real;
 * o una necesidad transversal clara.
 
+### HTML fuera de un componente compartido
+
+Antes de escribir HTML/markup nuevo fuera de `libs/components/` (directamente dentro de una feature, pantalla, escena o overlay), MUST valorarse si ese HTML debería ser en su lugar un componente de `libs/components/`.
+
+Cuando dicho HTML vaya a ser genuinamente reutilizable:
+
+* MAY crearse como componente nuevo dentro de `libs/components/`;
+* MUST seguir exactamente las mismas convenciones que el resto de componentes (estructura, CSS co-localizado, patrones de API, tests, Storybook, interacción/accesibilidad — ver enlaces en "Responsabilidades" más abajo);
+* MUST seguir el flujo de "Componente reutilizable inexistente" ya definido (detener, informar, esperar aprobación) antes de crearse.
+
+Cuando el mismo fragmento de HTML ya exista duplicado en otro sitio del repositorio (misma estructura/markup repetida en más de una feature o pantalla):
+
+* SHOULD extraerse como componente de `libs/components/` en lugar de mantener las copias divergentes, siguiendo el mismo flujo de aprobación anterior.
+
+Cuando el HTML sea específico de una única pantalla/feature, no esté duplicado en ningún otro sitio y no exista una necesidad transversal real:
+
+* MAY permanecer como HTML plano dentro de la feature;
+* MUST NOT provocar una parada de ejecución únicamente por no ser ya un componente (coherente con "Componentes específicos de una feature").
+
 ### Responsabilidades
 
 Los componentes de `libs/components/` MUST:
@@ -684,6 +728,16 @@ Los componentes de `libs/components/` MUST:
 * evitar conocimiento del dominio específico de una misión o destino.
 
 La lógica educativa, de progresión o de dominio MUST NOT incorporarse a componentes compartidos puramente visuales.
+
+Las convenciones técnicas transversales que apliquen a `libs/components/` en su conjunto (no a una feature concreta) SHOULD documentarse en `docs/conventions/` en lugar de dentro de `contracts/` de una única feature. Las convenciones ya existentes son:
+
+* [`docs/conventions/components/structure.md`](../../docs/conventions/components/structure.md) — estructura mínima obligatoria de todo componente.
+* [`docs/conventions/components/css.md`](../../docs/conventions/components/css.md) — convención de CSS co-localizado por componente.
+* [`docs/conventions/components/api-patterns.md`](../../docs/conventions/components/api-patterns.md) — patrones de API (factory, validación, callbacks, catálogos cerrados, composición).
+* [`docs/conventions/components/testing.md`](../../docs/conventions/components/testing.md) — entorno de test y estrategia de selectores.
+* [`docs/conventions/components/storybook.md`](../../docs/conventions/components/storybook.md) — nomenclatura de historias y cobertura de estados/variantes.
+* [`docs/conventions/components/interaction-patterns.md`](../../docs/conventions/components/interaction-patterns.md) — accesibilidad por tipo de componente.
+* [`docs/conventions/components/visual-rules.md`](../../docs/conventions/components/visual-rules.md) — estilos/tokens, iconografía, estabilidad de API y quality gates.
 
 **Motivo**: se debe favorecer la reutilización real sin crear una librería de componentes genéricos prematuramente ni duplicar componentes ya existentes.
 
@@ -724,61 +778,7 @@ Los cuerpos astronómicos reales SHOULD utilizar SVG personalizados cuando un ic
 
 Por ejemplo, Marte, Júpiter o Saturno SHOULD representarse mediante assets específicos en lugar de utilizar el mismo icono genérico de planeta.
 
-### Reglas para SVG personalizados
-
-Todo SVG personalizado MUST:
-
-* mantener coherencia visual con el sistema de diseño del proyecto;
-* mantener una estética compatible con la iconografía `duotone` utilizada en la interfaz;
-* utilizar un `viewBox` apropiado;
-* ser completamente escalable;
-* utilizar fondo transparente;
-* evitar dimensiones fijas innecesarias;
-* estar optimizado para web;
-* evitar metadatos innecesarios;
-* evitar código o scripts embebidos;
-* evitar dependencias externas;
-* evitar recursos remotos;
-* utilizar nombres de archivo en inglés;
-* evitar texto embebido cuando pueda representarse mediante HTML o mediante el sistema de UI;
-* poder utilizarse de forma segura como asset estático en GitHub Pages.
-
-Los SVG generados SHOULD mantener, cuando resulte apropiado:
-
-* proporciones visuales coherentes;
-* grosor visual consistente;
-* estilo de formas consistente;
-* uso consistente de capas principales y secundarias;
-* paleta compatible con el sistema de diseño.
-
-### Organización de assets
-
-Los assets espaciales personalizados SHOULD almacenarse bajo una estructura clara como:
-
-```text
-public/
-└── assets/
-    └── icons/
-        └── space/
-```
-
-Ejemplos:
-
-```text
-public/assets/icons/space/mercury.svg
-public/assets/icons/space/venus.svg
-public/assets/icons/space/earth.svg
-public/assets/icons/space/mars.svg
-public/assets/icons/space/jupiter.svg
-public/assets/icons/space/saturn.svg
-public/assets/icons/space/uranus.svg
-public/assets/icons/space/neptune.svg
-public/assets/icons/space/moon.svg
-public/assets/icons/space/proxima-centauri.svg
-public/assets/icons/space/trappist-1.svg
-```
-
-La estructura definitiva MAY adaptarse durante `plan.md` cuando exista una razón arquitectónica concreta, manteniendo siempre nombres de ficheros y carpetas en inglés.
+Todo SVG personalizado MUST cumplir la convención técnica y de organización de assets definida en [`docs/conventions/design-system/icon-assets.md`](../../docs/conventions/design-system/icon-assets.md) (checklist de requisitos técnicos, estructura de carpetas y nombrado).
 
 ### Separación entre iconos y componentes
 
@@ -803,19 +803,7 @@ El sistema tipográfico del proyecto MUST favorecer:
 * una sensación espacial, moderna, amable y limpia;
 * coherencia visual entre juego, navegación y componentes compartidos.
 
-Las familias tipográficas base MUST ser:
-
-* `Fredoka` para identidad visual, títulos y textos expresivos;
-* `Nunito` para controles e interfaz operativa;
-* `Atkinson Hyperlegible Next` para texto de lectura dirigido al niño.
-
-`Atkinson Hyperlegible` MAY mantenerse como fallback de la familia de lectura cuando resulte útil por compatibilidad, pero la familia principal de lectura del proyecto MUST ser `Atkinson Hyperlegible Next`.
-
-El uso semántico de tipografía MUST seguir este mapa:
-
-* `Fredoka`: logo, H1/H2, nombres de planetas o destinos, recompensas.
-* `Nunito`: botones, tabs, inputs, labels, navegación y controles.
-* `Atkinson Hyperlegible Next`: instrucciones, preguntas, datos astronómicos y cualquier texto que el niño deba leer o comprender.
+Las familias tipográficas base, el mapa de uso semántico y los tokens tipográficos concretos MUST definirse en [`docs/conventions/design-system/typography.md`](../../docs/conventions/design-system/typography.md).
 
 Los componentes y pantallas SHOULD consumir tokens tipográficos semánticos definidos por el sistema global de estilos.
 
@@ -837,25 +825,11 @@ Los pesos tipográficos SHOULD limitarse a los necesarios para la jerarquía def
 
 Las características específicas de cada dominio SHOULD mantenerse agrupadas.
 
-Una estructura conceptual MAY ser:
-
-```text
-src/
-└── game/
-    ├── core/
-    ├── scenes/
-    ├── destinations/
-    ├── expeditions/
-    ├── missions/
-    ├── challenges/
-    ├── progression/
-    └── rewards/
-
-libs/
-└── components/
-```
-
-La estructura definitiva MUST establecerse en `plan.md`.
+El layout concreto de `src/game/` (separación entre lógica pura sin Phaser y
+escenas, y dónde vive cada dominio: navegación, retos, contenido, progreso) MUST
+NOT volver a decidirse aquí: ya está fijado por anticipado en
+[`docs/conventions/architecture/game-engine-scenes.md`](../../docs/conventions/architecture/game-engine-scenes.md)
+(ver también "Arquitectura del motor de juego" más arriba).
 
 Añadir un nuevo destino SHOULD NOT requerir modificar numerosos módulos no relacionados.
 
@@ -1106,65 +1080,12 @@ La generación MUST partir de los artefactos relevantes existentes, incluyendo c
 
 `contracts/` MUST NOT generarse cuando la funcionalidad no introduzca ni modifique contratos.
 
-Los contratos MUST utilizar el formato más apropiado según su naturaleza.
-
-Ejemplos:
-
-```text
-REST API          → OpenAPI
-GraphQL           → GraphQL SDL
-Events            → AsyncAPI o Markdown estructurado
-Commands          → Markdown estructurado
-Public interfaces → Markdown estructurado
-CLI               → Markdown estructurado
-```
-
-Los contratos MUST NOT forzarse a utilizar una única plantilla universal.
-
-### Contratos Markdown
-
-Todo contrato basado en Markdown MUST:
-
-* incluir front matter YAML;
-* situar el front matter al inicio del fichero;
-* mantener el mismo estilo de front matter que el resto de artefactos del proyecto;
-* utilizar títulos claros;
-* utilizar una jerarquía explícita de encabezados;
-* utilizar secciones claramente delimitadas;
-* ser fácilmente navegable.
-
-El contenido documental de los contratos MUST escribirse en castellano.
-
-Esto incluye:
-
-* títulos;
-* descripciones;
-* explicaciones;
-* comentarios;
-* decisiones documentadas.
-
-Los elementos técnicos MUST mantenerse en inglés.
-
-Esto incluye:
-
-* nombres de ficheros;
-* rutas;
-* endpoints;
-* propiedades;
-* campos;
-* eventos;
-* comandos;
-* tipos;
-* identificadores;
-* nombres de esquemas.
-
-Todo contrato SHOULD incluir trazabilidad con:
-
-* `FR-xxx`;
-* `USx`;
-* `R-xxx`;
-
-cuando dicha trazabilidad aporte valor.
+El formato apropiado según la naturaleza del contrato, la estructura obligatoria de
+los contratos Markdown (front matter, idioma, trazabilidad) y el criterio para
+decidir qué reglas técnicas transversales SHOULD vivir en `docs/conventions/` en
+lugar de en `contracts/` MUST fijarse en
+[`docs/conventions/process/contracts.md`](../../docs/conventions/process/contracts.md)
+en lugar de aquí.
 
 `contracts/` MUST contener únicamente contratos realmente necesarios para la funcionalidad.
 
@@ -1520,17 +1441,11 @@ Si dos artefactos entran en conflicto:
 
 El proyecto MUST mantenerse compatible con hosting estático.
 
-El flujo inicial de despliegue será:
-
-```text
-GitHub
-   ↓
-GitHub Actions
-   ↓
-Vite build
-   ↓
-GitHub Pages
-```
+El pipeline real (workflow concreto, ficheros, ramas que lo disparan y en qué
+push se despliega) MUST fijarse y mantenerse actualizado en
+[`docs/conventions/architecture/overview.md`](../../docs/conventions/architecture/overview.md)
+(sección "Tooling y pipeline") en lugar de aquí: esta constitución únicamente fija
+los requisitos mínimos que ese pipeline MUST cumplir siempre.
 
 La integración continua MUST comprobar como mínimo:
 

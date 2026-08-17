@@ -1,6 +1,7 @@
 import './Input.css';
 
 import {
+    DEFAULT_INPUT_SIZE,
     INPUT_ARIA_DESCRIBEDBY_ATTRIBUTE,
     INPUT_ARIA_INVALID_ATTRIBUTE,
     INPUT_ARIA_LABEL_ATTRIBUTE,
@@ -19,14 +20,16 @@ import {
     INPUT_LABEL_CLASS,
     INPUT_LABEL_TAG,
     INPUT_ROOT_TAG,
+    INPUT_SIZES,
+    INPUT_SIZE_CLASS_PREFIX,
     INPUT_SPACE_SEPARATOR,
     INPUT_TRUE_VALUE,
     INPUT_TYPE_ATTRIBUTE,
     INPUT_TYPE_TEXT,
 } from './Input.constants';
-import type { InputProps } from './Input.type';
+import type { InputProps, InputSize } from './Input.type';
 
-export type { InputProps } from './Input.type';
+export type { InputProps, InputSize } from './Input.type';
 
 function resolveAccessibleName(label: string | undefined, ariaLabel: string | undefined): string | undefined {
     const trimmedLabel = label?.trim();
@@ -42,6 +45,14 @@ function resolveAccessibleName(label: string | undefined, ariaLabel: string | un
     return undefined;
 }
 
+function isInputSize(size: unknown): size is InputSize {
+    return INPUT_SIZES.includes(size as InputSize);
+}
+
+function resolveSize(size: unknown): InputSize {
+    return isInputSize(size) ? size : DEFAULT_INPUT_SIZE;
+}
+
 export function createInput(props: InputProps): HTMLDivElement {
     const {
         value = INPUT_EMPTY_VALUE,
@@ -52,11 +63,14 @@ export function createInput(props: InputProps): HTMLDivElement {
         error,
         disabled = false,
         required = false,
+        size,
         onInput,
     } = props;
 
+    const resolvedSize = resolveSize(size);
+
     const root = document.createElement(INPUT_ROOT_TAG);
-    root.classList.add(INPUT_BASE_CLASS);
+    root.classList.add(INPUT_BASE_CLASS, `${INPUT_SIZE_CLASS_PREFIX}${resolvedSize}`);
 
     if (label?.trim()) {
         const labelElement = document.createElement(INPUT_LABEL_TAG);
@@ -79,6 +93,8 @@ export function createInput(props: InputProps): HTMLDivElement {
     if (accessibleName) {
         inputElement.setAttribute(INPUT_ARIA_LABEL_ATTRIBUTE, accessibleName);
     }
+
+    root.append(inputElement);
 
     const describedByIds: string[] = [];
 
@@ -109,8 +125,6 @@ export function createInput(props: InputProps): HTMLDivElement {
         const target = event.currentTarget as HTMLInputElement;
         onInput(target.value);
     });
-
-    root.prepend(inputElement);
 
     return root;
 }

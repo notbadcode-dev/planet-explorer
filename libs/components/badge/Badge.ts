@@ -1,6 +1,7 @@
 import './Badge.css';
 
 import { createIcon } from '../icon';
+import { attachTooltip } from '../tooltip';
 import {
     BADGE_BASE_CLASS,
     BADGE_ICON_CLASS,
@@ -26,7 +27,7 @@ function resolveVariant(value: unknown): BadgeVariant {
 }
 
 export function createBadge(props: BadgeProps): HTMLElement {
-    const { label, variant, icon } = props;
+    const { label, variant, icon, tooltip } = props;
     const resolvedVariant = resolveVariant(variant);
 
     const badge = document.createElement(BADGE_ROOT_TAG);
@@ -47,6 +48,10 @@ export function createBadge(props: BadgeProps): HTMLElement {
     labelElement.classList.add(BADGE_LABEL_CLASS);
     labelElement.textContent = label;
     badge.append(labelElement);
+
+    if (tooltip?.trim()) {
+        attachTooltip({ target: badge, content: tooltip });
+    }
 
     return badge;
 }

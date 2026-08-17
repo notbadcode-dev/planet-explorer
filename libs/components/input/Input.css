@@ -31,6 +31,18 @@
     box-shadow: var(--shadow-control), var(--shadow-focus-ring);
 }
 
+.input__field:disabled {
+    background: var(--color-surface-disabled);
+    color: var(--color-text-disabled);
+    border-color: var(--color-primary-disabled);
+    box-shadow: var(--shadow-none);
+    cursor: not-allowed;
+}
+
+.input__field:disabled::placeholder {
+    color: var(--color-text-disabled);
+}
+
 .input__hint {
     color: var(--color-text-muted);
     font-size: var(--font-size-sm);
@@ -40,4 +52,22 @@
     color: var(--color-validation-error);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-semibold);
+}
+
+.input--small .input__field {
+    min-height: var(--size-control-sm);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--font-size-sm);
+}
+
+.input--medium .input__field {
+    min-height: var(--size-input);
+    padding: var(--space-control-block) var(--space-control-inline);
+    font-size: var(--font-size-md);
+}
+
+.input--large .input__field {
+    min-height: var(--size-control-lg);
+    padding: var(--space-4) var(--space-8);
+    font-size: var(--font-size-lg);
 }

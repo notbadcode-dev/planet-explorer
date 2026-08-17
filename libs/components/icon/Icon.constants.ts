@@ -1,12 +1,13 @@
+import caretDownDuotoneSvg from '@phosphor-icons/core/duotone/caret-down-duotone.svg?raw';
+import checkCircleDuotoneSvg from '@phosphor-icons/core/duotone/check-circle-duotone.svg?raw';
+import infoDuotoneSvg from '@phosphor-icons/core/duotone/info-duotone.svg?raw';
 import planetDuotoneSvg from '@phosphor-icons/core/duotone/planet-duotone.svg?raw';
 import rocketLaunchDuotoneSvg from '@phosphor-icons/core/duotone/rocket-launch-duotone.svg?raw';
 import sparkleDuotoneSvg from '@phosphor-icons/core/duotone/sparkle-duotone.svg?raw';
 import starDuotoneSvg from '@phosphor-icons/core/duotone/star-duotone.svg?raw';
 import trashDuotoneSvg from '@phosphor-icons/core/duotone/trash-duotone.svg?raw';
-import checkCircleDuotoneSvg from '@phosphor-icons/core/duotone/check-circle-duotone.svg?raw';
 import warningCircleDuotoneSvg from '@phosphor-icons/core/duotone/warning-circle-duotone.svg?raw';
 import xCircleDuotoneSvg from '@phosphor-icons/core/duotone/x-circle-duotone.svg?raw';
-import infoDuotoneSvg from '@phosphor-icons/core/duotone/info-duotone.svg?raw';
 
 export const APP_ICON_NAMES = [
     'orbit',
@@ -18,6 +19,7 @@ export const APP_ICON_NAMES = [
     'warning-circle',
     'x-circle',
     'info-circle',
+    'caret-down',
 ] as const;
 
 export const APP_ICON_SVGS = {
@@ -30,6 +32,7 @@ export const APP_ICON_SVGS = {
     'warning-circle': warningCircleDuotoneSvg,
     'x-circle': xCircleDuotoneSvg,
     'info-circle': infoDuotoneSvg,
+    'caret-down': caretDownDuotoneSvg,
 } as const;
 
 export const ICON_BASE_CLASS = 'icon';

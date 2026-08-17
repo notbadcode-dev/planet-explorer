@@ -1,0 +1,100 @@
+- generic [ref=f29e4]:
+  - heading "Icon" [level=1] [ref=f29e5]
+  - generic [ref=f29e6]:
+    - toolbar [ref=f29e8]:
+      - generic [ref=f29e9]:
+        - generic [ref=f29e10]:
+          - button "Reload story" [ref=f29e11] [cursor=pointer]
+          - button "Zoom in" [ref=f29e14] [cursor=pointer]
+          - button "Zoom out" [ref=f29e18] [cursor=pointer]
+          - button "Reset zoom" [ref=f29e22] [cursor=pointer]
+        - link "Open canvas in new tab" [ref=f29e26] [cursor=pointer]:
+          - /url: iframe.html?id=componentes-icon--decorative
+    - generic [ref=f29e41]:
+      - switch "Show code" [ref=f29e42] [cursor=pointer]
+      - button "Copy code" [ref=f29e45] [cursor=pointer]
+  - generic [ref=f29e49]:
+    - button "Reset controls" [ref=f29e51] [cursor=pointer]
+    - table [ref=f29e54]:
+      - rowgroup [ref=f29e55]:
+        - row [ref=f29e56]:
+          - columnheader "Name" [ref=f29e57]
+          - columnheader "Description" [ref=f29e58]
+          - columnheader "Default" [ref=f29e59]
+          - columnheader "Control" [ref=f29e60]
+      - rowgroup [ref=f29e61]:
+        - row [ref=f29e62]:
+          - cell "name" [ref=f29e63]
+          - cell "string" [ref=f29e64]
+          - cell "-" [ref=f29e68]
+          - cell [ref=f29e69]:
+            - generic [ref=f29e70]:
+              - generic [ref=f29e71]: name
+              - combobox "name" [ref=f29e72]:
+                - option "Choose option..."
+                - option "orbit"
+                - option "rocket" [selected]
+                - option "sparkles"
+                - option "star"
+                - option "trash"
+                - option "check-circle"
+                - option "warning-circle"
+                - option "x-circle"
+                - option "info-circle"
+                - option "caret-down"
+        - row [ref=f29e73]:
+          - cell "size" [ref=f29e74]
+          - cell "number" [ref=f29e75]
+          - cell "-" [ref=f29e79]
+          - cell [ref=f29e80]:
+            - spinbutton [ref=f29e83]: "48"
+        - row [ref=f29e84]:
+          - cell "fill" [ref=f29e85]
+          - cell "string" [ref=f29e86]
+          - cell "-" [ref=f29e90]
+          - cell [ref=f29e91]
+        - row [ref=f29e92]:
+          - cell "className" [ref=f29e93]
+          - cell "-" [ref=f29e94]
+          - cell "-" [ref=f29e96]
+          - cell [ref=f29e97]:
+            - button "Set string" [ref=f29e98] [cursor=pointer]
+        - row [ref=f29e99]:
+          - cell "ariaLabel" [ref=f29e100]
+          - cell "-" [ref=f29e101]
+          - cell "-" [ref=f29e103]
+          - cell [ref=f29e104]:
+            - button "Set string" [ref=f29e105] [cursor=pointer]
+  - heading [level=2] [ref=f29e106]:
+    - generic [ref=f29e107]:
+      - link "Copy heading URL to address bar" [ref=f29e109] [cursor=pointer]:
+        - /url: "#stories"
+      - text: Stories
+  - generic [ref=f29e110]:
+    - heading [level=3] [ref=f29e111]:
+      - generic [ref=f29e112]:
+        - link "Copy heading URL to address bar" [ref=f29e114] [cursor=pointer]:
+          - /url: "#decorative"
+        - text: Decorative
+    - generic [ref=f29e127]:
+      - switch "Show code" [ref=f29e128] [cursor=pointer]
+      - button "Copy code" [ref=f29e131] [cursor=pointer]
+  - generic [ref=f29e134]:
+    - heading [level=3] [ref=f29e135]:
+      - generic [ref=f29e136]:
+        - link "Copy heading URL to address bar" [ref=f29e138] [cursor=pointer]:
+          - /url: "#accessible"
+        - text: Accessible
+    - img "Planeta" [ref=f29e147]
+    - generic [ref=f29e151]:
+      - switch "Show code" [ref=f29e152] [cursor=pointer]
+      - button "Copy code" [ref=f29e155] [cursor=pointer]
+  - generic [ref=f29e158]:
+    - heading [level=3] [ref=f29e159]:
+      - generic [ref=f29e160]:
+        - link "Copy heading URL to address bar" [ref=f29e162] [cursor=pointer]:
+          - /url: "#danger"
+        - text: Danger
+    - generic [ref=f29e175]:
+      - switch "Show code" [ref=f29e176] [cursor=pointer]
+      - button "Copy code" [ref=f29e179] [cursor=pointer]

@@ -1,0 +1,215 @@
+- generic [ref=f19e4]:
+  - heading "Slider" [level=1] [ref=f19e5]
+  - generic [ref=f19e6]:
+    - generic [ref=f19e7]:
+      - toolbar [ref=f19e8]:
+        - generic [ref=f19e9]:
+          - generic [ref=f19e10]:
+            - button "Reload story" [ref=f19e11] [cursor=pointer]
+            - button "Zoom in" [ref=f19e14] [cursor=pointer]
+            - button "Zoom out" [ref=f19e18] [cursor=pointer]
+            - button "Reset zoom" [ref=f19e22] [cursor=pointer]
+          - link "Open canvas in new tab" [ref=f19e26] [cursor=pointer]:
+            - /url: iframe.html?id=componentes-slider--default
+      - generic [ref=f19e37]:
+        - generic [ref=f19e38]: Volumen
+        - slider "Volumen" [ref=f19e39]: "40"
+        - paragraph [ref=f19e40]: "40"
+    - generic [ref=f19e42]:
+      - switch "Show code" [ref=f19e43] [cursor=pointer]
+      - button "Copy code" [ref=f19e46] [cursor=pointer]
+  - generic [ref=f19e50]:
+    - button "Reset controls" [ref=f19e52] [cursor=pointer]
+    - table [ref=f19e55]:
+      - rowgroup [ref=f19e56]:
+        - row [ref=f19e57]:
+          - columnheader "Name" [ref=f19e58]
+          - columnheader "Description" [ref=f19e59]
+          - columnheader "Default" [ref=f19e60]
+          - columnheader "Control" [ref=f19e61]
+      - rowgroup [ref=f19e62]:
+        - row [ref=f19e63]:
+          - cell "label" [ref=f19e64]
+          - cell "string" [ref=f19e65]
+          - cell "-" [ref=f19e69]
+          - cell [ref=f19e70]:
+            - textbox [ref=f19e72]:
+              - /placeholder: Edit string...
+              - text: Volumen
+        - row [ref=f19e73]:
+          - cell "min" [ref=f19e74]
+          - cell "number" [ref=f19e75]
+          - cell "-" [ref=f19e79]
+          - cell [ref=f19e80]:
+            - spinbutton [ref=f19e83]: "0"
+        - row [ref=f19e84]:
+          - cell "max" [ref=f19e85]
+          - cell "number" [ref=f19e86]
+          - cell "-" [ref=f19e90]
+          - cell [ref=f19e91]:
+            - spinbutton [ref=f19e94]: "100"
+        - row [ref=f19e95]:
+          - cell "step" [ref=f19e96]
+          - cell "number" [ref=f19e97]
+          - cell "-" [ref=f19e101]
+          - cell [ref=f19e102]:
+            - spinbutton [ref=f19e105]: "5"
+        - row [ref=f19e106]:
+          - cell "value" [ref=f19e107]
+          - cell "number" [ref=f19e108]
+          - cell "-" [ref=f19e112]
+          - cell [ref=f19e113]:
+            - spinbutton [ref=f19e116]: "40"
+        - row [ref=f19e117]:
+          - cell "showValue" [ref=f19e118]
+          - cell "boolean" [ref=f19e119]
+          - cell "-" [ref=f19e123]
+          - cell [ref=f19e124]:
+            - generic "showValue" [ref=f19e125]:
+              - switch "showValue" [checked] [ref=f19e126] [cursor=pointer]
+              - generic [ref=f19e127] [cursor=pointer]: "False"
+              - generic [ref=f19e128] [cursor=pointer]: "True"
+        - row [ref=f19e129]:
+          - cell "ariaLabel" [ref=f19e130]
+          - cell "-" [ref=f19e131]
+          - cell "-" [ref=f19e133]
+          - cell [ref=f19e134]:
+            - button "Set string" [ref=f19e135] [cursor=pointer]
+        - row [ref=f19e136]:
+          - cell "disabled" [ref=f19e137]
+          - cell "-" [ref=f19e138]
+          - cell "-" [ref=f19e140]
+          - cell [ref=f19e141]:
+            - button "Set boolean" [ref=f19e142] [cursor=pointer]
+        - row [ref=f19e143]:
+          - cell "size" [ref=f19e144]
+          - cell "-" [ref=f19e145]
+          - cell "-" [ref=f19e147]
+          - cell [ref=f19e148]:
+            - generic [ref=f19e149]:
+              - generic [ref=f19e150]: size
+              - combobox "size" [ref=f19e151]:
+                - option "Choose option..." [disabled] [selected]
+                - option "small"
+                - option "medium"
+                - option "large"
+        - row [ref=f19e152]:
+          - cell "onChange" [ref=f19e153]
+          - cell "-" [ref=f19e154]
+          - cell "-" [ref=f19e156]
+          - cell "-" [ref=f19e157]
+  - heading [level=2] [ref=f19e158]:
+    - generic [ref=f19e159]:
+      - link "Copy heading URL to address bar" [ref=f19e161] [cursor=pointer]:
+        - /url: "#stories"
+      - text: Stories
+  - generic [ref=f19e162]:
+    - heading [level=3] [ref=f19e163]:
+      - generic [ref=f19e164]:
+        - link "Copy heading URL to address bar" [ref=f19e166] [cursor=pointer]:
+          - /url: "#default"
+        - text: Default
+    - generic [ref=f19e175]:
+      - generic [ref=f19e176]: Volumen
+      - slider "Volumen" [ref=f19e177]: "40"
+      - paragraph [ref=f19e178]: "40"
+    - generic [ref=f19e180]:
+      - switch "Show code" [ref=f19e181] [cursor=pointer]
+      - button "Copy code" [ref=f19e184] [cursor=pointer]
+  - generic [ref=f19e187]:
+    - heading [level=3] [ref=f19e188]:
+      - generic [ref=f19e189]:
+        - link "Copy heading URL to address bar" [ref=f19e191] [cursor=pointer]:
+          - /url: "#small"
+        - text: Small
+    - generic [ref=f19e200]:
+      - generic [ref=f19e201]: Volumen
+      - slider "Volumen" [ref=f19e202]: "40"
+      - paragraph [ref=f19e203]: "40"
+    - generic [ref=f19e205]:
+      - switch "Show code" [ref=f19e206] [cursor=pointer]
+      - button "Copy code" [ref=f19e209] [cursor=pointer]
+  - generic [ref=f19e212]:
+    - heading [level=3] [ref=f19e213]:
+      - generic [ref=f19e214]:
+        - link "Copy heading URL to address bar" [ref=f19e216] [cursor=pointer]:
+          - /url: "#medium"
+        - text: Medium
+    - generic [ref=f19e225]:
+      - generic [ref=f19e226]: Volumen
+      - slider "Volumen" [ref=f19e227]: "40"
+      - paragraph [ref=f19e228]: "40"
+    - generic [ref=f19e230]:
+      - switch "Show code" [ref=f19e231] [cursor=pointer]
+      - button "Copy code" [ref=f19e234] [cursor=pointer]
+  - generic [ref=f19e237]:
+    - heading [level=3] [ref=f19e238]:
+      - generic [ref=f19e239]:
+        - link "Copy heading URL to address bar" [ref=f19e241] [cursor=pointer]:
+          - /url: "#large"
+        - text: Large
+    - generic [ref=f19e250]:
+      - generic [ref=f19e251]: Volumen
+      - slider "Volumen" [ref=f19e252]: "40"
+      - paragraph [ref=f19e253]: "40"
+    - generic [ref=f19e255]:
+      - switch "Show code" [ref=f19e256] [cursor=pointer]
+      - button "Copy code" [ref=f19e259] [cursor=pointer]
+  - generic [ref=f19e262]:
+    - heading [level=3] [ref=f19e263]:
+      - generic [ref=f19e264]:
+        - link "Copy heading URL to address bar" [ref=f19e266] [cursor=pointer]:
+          - /url: "#sin-valor-visible"
+        - text: Sin Valor Visible
+    - generic [ref=f19e275]:
+      - generic [ref=f19e276]: Volumen
+      - slider "Volumen" [ref=f19e277]: "40"
+    - generic [ref=f19e279]:
+      - switch "Show code" [ref=f19e280] [cursor=pointer]
+      - button "Copy code" [ref=f19e283] [cursor=pointer]
+  - generic [ref=f19e286]:
+    - heading [level=3] [ref=f19e287]:
+      - generic [ref=f19e288]:
+        - link "Copy heading URL to address bar" [ref=f19e290] [cursor=pointer]:
+          - /url: "#deshabilitado"
+        - text: Deshabilitado
+    - generic [ref=f19e299]:
+      - generic [ref=f19e300]: Volumen
+      - slider "Volumen" [disabled] [ref=f19e301]: "40"
+      - paragraph [ref=f19e302]: "40"
+    - generic [ref=f19e304]:
+      - switch "Show code" [ref=f19e305] [cursor=pointer]
+      - button "Copy code" [ref=f19e308] [cursor=pointer]
+  - generic [ref=f19e311]:
+    - heading [level=3] [ref=f19e312]:
+      - generic [ref=f19e313]:
+        - link "Copy heading URL to address bar" [ref=f19e315] [cursor=pointer]:
+          - /url: "#fuera-de-rango"
+        - text: Fuera De Rango
+    - paragraph [ref=f19e316]:
+      - text: El valor recibido (999) supera
+      - code [ref=f19e317]: max
+      - text: (100); se normaliza de forma determinista al límite superior.
+    - generic [ref=f19e326]:
+      - generic [ref=f19e327]: Volumen
+      - slider "Volumen" [ref=f19e328]: "100"
+      - paragraph [ref=f19e329]: "100"
+    - generic [ref=f19e331]:
+      - switch "Show code" [ref=f19e332] [cursor=pointer]
+      - button "Copy code" [ref=f19e335] [cursor=pointer]
+  - generic [ref=f19e338]:
+    - heading [level=3] [ref=f19e339]:
+      - generic [ref=f19e340]:
+        - link "Copy heading URL to address bar" [ref=f19e342] [cursor=pointer]:
+          - /url: "#sin-etiqueta-visible"
+        - text: Sin Etiqueta Visible
+    - paragraph [ref=f19e343]:
+      - text: "Sin etiqueta visible: el nombre accesible se expone mediante"
+      - code [ref=f19e344]: ariaLabel
+      - text: para tecnologías de asistencia.
+    - generic [ref=f19e353]:
+      - slider "Volumen" [ref=f19e354]: "40"
+      - paragraph [ref=f19e355]: "40"
+    - generic [ref=f19e357]:
+      - switch "Show code" [ref=f19e358] [cursor=pointer]
+      - button "Copy code" [ref=f19e361] [cursor=pointer]

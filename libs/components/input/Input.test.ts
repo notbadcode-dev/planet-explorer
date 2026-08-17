@@ -106,4 +106,52 @@ describe('createInput', () => {
         expect(onInput).toHaveBeenCalledTimes(1);
         expect(onInput).toHaveBeenCalledWith('Marte');
     });
+
+    it('aplica el tamaño medium por defecto', () => {
+        const component = createInput({
+            label: 'Nombre',
+            onInput: () => {},
+        });
+
+        expect(component.classList.contains('input--medium')).toBe(true);
+    });
+
+    it('aplica la clase modificadora para cada tamaño soportado', () => {
+        const small = createInput({ label: 'Nombre', size: 'small', onInput: () => {} });
+        const large = createInput({ label: 'Nombre', size: 'large', onInput: () => {} });
+
+        expect(small.classList.contains('input--small')).toBe(true);
+        expect(large.classList.contains('input--large')).toBe(true);
+    });
+
+    it('usa medium como fallback ante un tamaño no soportado', () => {
+        const component = createInput({
+            label: 'Nombre',
+            // @ts-expect-error valor inválido a propósito para probar el fallback en runtime
+            size: 'huge',
+            onInput: () => {},
+        });
+
+        expect(component.classList.contains('input--medium')).toBe(true);
+    });
+
+    it('soporta required=true en el campo nativo', () => {
+        const input = createInput({ label: 'Correo', required: true, onInput: () => {} });
+        const field = input.querySelector('input') as HTMLInputElement;
+
+        expect(field.required).toBe(true);
+    });
+
+    it('combina error y disabled sin conflictos visuales', () => {
+        const input = createInput({
+            label: 'Campo',
+            disabled: true,
+            error: 'Error presente',
+            onInput: () => {},
+        });
+        const field = input.querySelector('input') as HTMLInputElement;
+
+        expect(field.disabled).toBe(true);
+        expect(field.getAttribute('aria-invalid')).toBe('true');
+    });
 });

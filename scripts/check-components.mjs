@@ -8,7 +8,7 @@
  *   (c) tipos declarados fuera de `*.type.ts`, o
  *   (d) literales mágicos de string/número en código productivo fuera de `*.constants.ts`.
  *
- * Contrato: specs/001-component-library-architecture/contracts/component-library-convention.md
+ * Contrato: docs/conventions/components/structure.md
  */
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';

@@ -1,0 +1,13 @@
+- group "Selecciona todos los planetas rocosos" [ref=f32e4]:
+  - generic [ref=f32e7] [cursor=pointer]:
+    - checkbox "Mercurio" [ref=f32e8]
+    - generic [ref=f32e9]: Mercurio
+  - generic [ref=f32e11] [cursor=pointer]:
+    - checkbox "Venus" [ref=f32e12]
+    - generic [ref=f32e13]: Venus
+  - generic [ref=f32e15] [cursor=pointer]:
+    - checkbox "Tierra" [ref=f32e16]
+    - generic [ref=f32e17]: Tierra
+  - generic [ref=f32e19] [cursor=pointer]:
+    - checkbox "Marte" [ref=f32e20]
+    - generic [ref=f32e21]: Marte

@@ -1,0 +1,7 @@
+- generic [ref=f30e4]:
+  - generic [ref=f30e5]: Nombre de planeta
+  - textbox "Nombre de planeta" [invalid] [ref=f30e6]:
+    - /placeholder: Escribe aqui
+    - text: Kepler-9
+  - paragraph [ref=f30e7]: Se mostrara en la tarjeta de exploracion
+  - paragraph [ref=f30e8]: Ya existe un planeta con ese nombre

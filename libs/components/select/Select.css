@@ -1,0 +1,53 @@
+.select {
+    display: grid;
+    gap: var(--space-helper-text-gap);
+    font-family: var(--font-family-input);
+}
+
+.select__label {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-control);
+}
+
+.select__control {
+    position: relative;
+    display: flex;
+}
+
+.select__field {
+    width: 100%;
+    min-height: var(--size-input);
+    padding: var(--space-control-block) var(--space-6) var(--space-control-block)
+        var(--space-control-inline);
+    border: var(--size-border-control) solid var(--color-input-border);
+    border-radius: var(--radius-input);
+    background: var(--color-input-background);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-md);
+    box-shadow: var(--shadow-control);
+    appearance: none;
+}
+
+.select__icon {
+    position: absolute;
+    top: 50%;
+    right: var(--space-control-inline);
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--color-text-secondary);
+}
+
+.select__field:focus-visible {
+    outline: 0;
+    border-color: var(--color-input-border-focus);
+    box-shadow: var(--shadow-control), var(--shadow-focus-ring);
+}
+
+.select__field:disabled {
+    background: var(--color-surface-disabled);
+    color: var(--color-text-disabled);
+    border-color: var(--color-primary-disabled);
+    box-shadow: var(--shadow-none);
+    cursor: not-allowed;
+}

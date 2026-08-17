@@ -1,13 +1,11 @@
 import './Dialog.css';
 
 import {
+    DEFAULT_DIALOG_SIZE,
     DIALOG_ACTIONS_CLASS,
-    DIALOG_CLICK_EVENT,
-    DIALOG_CLOSE_CLASS,
-    DIALOG_CLOSE_TAG,
+    DIALOG_CANCEL_BUTTON_VARIANT,
     DIALOG_CLOSE_TEXT_DEFAULT,
-    DIALOG_CLOSE_TYPE_ATTRIBUTE,
-    DIALOG_CLOSE_TYPE_BUTTON,
+    DIALOG_CONFIRM_ACTIONS_CLASS,
     DIALOG_CONTAINER_CLASS,
     DIALOG_CONTAINER_TAG,
     DIALOG_CONTENT_CLASS,
@@ -17,6 +15,7 @@ import {
     DIALOG_ESCAPE_KEY,
     DIALOG_FIRST_FOCUSABLE_INDEX,
     DIALOG_FOCUSABLE_SELECTOR,
+    DIALOG_INITIAL_SCROLL_TOP,
     DIALOG_KEYDOWN_EVENT,
     DIALOG_LABEL_ATTRIBUTE,
     DIALOG_LAST_FOCUSABLE_OFFSET,
@@ -26,14 +25,17 @@ import {
     DIALOG_ROLE_ATTRIBUTE,
     DIALOG_ROLE_VALUE,
     DIALOG_SECTION_TAG,
+    DIALOG_SIZES,
+    DIALOG_SIZE_CLASS_PREFIX,
     DIALOG_TAB_KEY,
     DIALOG_TITLE_CLASS,
     DIALOG_TITLE_TAG,
     DIALOG_TRUE_VALUE,
 } from './Dialog.constants';
-import type { DialogProps } from './Dialog.type';
+import type { DialogProps, DialogSize } from './Dialog.type';
+import { createButton } from '../button';
 
-export type { DialogProps } from './Dialog.type';
+export type { DialogProps, DialogSize } from './Dialog.type';
 
 function toNodes(content: HTMLElement | HTMLElement[] | undefined): HTMLElement[] {
     if (!content) {
@@ -43,15 +45,24 @@ function toNodes(content: HTMLElement | HTMLElement[] | undefined): HTMLElement[
     return Array.isArray(content) ? content : [content];
 }
 
+function isDialogSize(size: unknown): size is DialogSize {
+    return DIALOG_SIZES.includes(size as DialogSize);
+}
+
+function resolveSize(size: unknown): DialogSize {
+    return isDialogSize(size) ? size : DEFAULT_DIALOG_SIZE;
+}
+
 export function createDialog(props: DialogProps): HTMLElement {
-    const { title, description, content, actions, onClose, closeLabel = DIALOG_CLOSE_TEXT_DEFAULT } = props;
+    const { title, description, content, actions, onClose, closeLabel = DIALOG_CLOSE_TEXT_DEFAULT, size } = props;
     const invokerElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const resolvedSize = resolveSize(size);
 
     const overlay = document.createElement(DIALOG_OVERLAY_TAG);
     overlay.classList.add(DIALOG_OVERLAY_CLASS);
 
     const dialog = document.createElement(DIALOG_CONTAINER_TAG);
-    dialog.classList.add(DIALOG_CONTAINER_CLASS);
+    dialog.classList.add(DIALOG_CONTAINER_CLASS, `${DIALOG_SIZE_CLASS_PREFIX}${resolvedSize}`);
     dialog.setAttribute(DIALOG_ROLE_ATTRIBUTE, DIALOG_ROLE_VALUE);
     dialog.setAttribute(DIALOG_MODAL_ATTRIBUTE, DIALOG_TRUE_VALUE);
     dialog.setAttribute(DIALOG_LABEL_ATTRIBUTE, title);
@@ -90,16 +101,19 @@ export function createDialog(props: DialogProps): HTMLElement {
         restoreFocusToInvoker();
     }
 
-    const closeButton = document.createElement(DIALOG_CLOSE_TAG);
-    closeButton.classList.add(DIALOG_CLOSE_CLASS);
-    closeButton.setAttribute(DIALOG_CLOSE_TYPE_ATTRIBUTE, DIALOG_CLOSE_TYPE_BUTTON);
-    closeButton.textContent = closeLabel;
-    closeButton.addEventListener(DIALOG_CLICK_EVENT, handleClose);
+    const closeButton = createButton({
+        label: closeLabel,
+        variant: DIALOG_CANCEL_BUTTON_VARIANT,
+        onClick: handleClose,
+    });
     actionsContainer.append(closeButton);
 
     const actionElements = toNodes(actions);
     if (actionElements.length > DIALOG_EMPTY_COLLECTION_LENGTH) {
-        actionsContainer.append(...actionElements);
+        const confirmActionsContainer = document.createElement(DIALOG_SECTION_TAG);
+        confirmActionsContainer.classList.add(DIALOG_CONFIRM_ACTIONS_CLASS);
+        confirmActionsContainer.append(...actionElements);
+        actionsContainer.append(confirmActionsContainer);
     }
 
     dialog.append(actionsContainer);
@@ -142,7 +156,13 @@ export function createDialog(props: DialogProps): HTMLElement {
     queueMicrotask(() => {
         if (dialog.isConnected) {
             const focusableElements = getFocusableElements();
-            (focusableElements[DIALOG_FIRST_FOCUSABLE_INDEX] ?? closeButton).focus();
+            // `preventScroll` evita que el foco inicial (a menudo el botón de
+            // cierre, al final del contenido) arrastre el scroll interno del
+            // diálogo hacia abajo, ocultando el título cuando el contenido no
+            // cabe entero. El diálogo debe abrirse siempre mostrando su parte
+            // superior.
+            (focusableElements[DIALOG_FIRST_FOCUSABLE_INDEX] ?? closeButton).focus({ preventScroll: true });
+            dialog.scrollTop = DIALOG_INITIAL_SCROLL_TOP;
         }
     });
 

@@ -1,0 +1,56 @@
+- generic [ref=f14e4]:
+  - heading "Tooltip" [level=1] [ref=f14e5]
+  - generic [ref=f14e6]:
+    - generic [ref=f14e7]:
+      - toolbar [ref=f14e8]:
+        - generic [ref=f14e9]:
+          - generic [ref=f14e10]:
+            - button "Reload story" [ref=f14e11] [cursor=pointer]
+            - button "Zoom in" [ref=f14e14] [cursor=pointer]
+            - button "Zoom out" [ref=f14e18] [cursor=pointer]
+            - button "Reset zoom" [ref=f14e22] [cursor=pointer]
+          - link "Open canvas in new tab" [ref=f14e26] [cursor=pointer]:
+            - /url: iframe.html?id=componentes-tooltip--default
+      - button "Pasa el ratón o enfoca" [ref=f14e38] [cursor=pointer]
+    - generic [ref=f14e41]:
+      - switch "Show code" [ref=f14e42] [cursor=pointer]
+      - button "Copy code" [ref=f14e45] [cursor=pointer]
+  - heading [level=2] [ref=f14e48]:
+    - generic [ref=f14e49]:
+      - link "Copy heading URL to address bar" [ref=f14e51] [cursor=pointer]:
+        - /url: "#stories"
+      - text: Stories
+  - generic [ref=f14e52]:
+    - heading [level=3] [ref=f14e53]:
+      - generic [ref=f14e54]:
+        - link "Copy heading URL to address bar" [ref=f14e56] [cursor=pointer]:
+          - /url: "#default"
+        - text: Default
+    - button "Pasa el ratón o enfoca" [ref=f14e66] [cursor=pointer]
+    - generic [ref=f14e69]:
+      - switch "Show code" [ref=f14e70] [cursor=pointer]
+      - button "Copy code" [ref=f14e73] [cursor=pointer]
+  - generic [ref=f14e76]:
+    - heading [level=3] [ref=f14e77]:
+      - generic [ref=f14e78]:
+        - link "Copy heading URL to address bar" [ref=f14e80] [cursor=pointer]:
+          - /url: "#placements"
+        - text: Placements
+    - generic [ref=f14e89]:
+      - button "top" [ref=f14e90] [cursor=pointer]
+      - button "bottom" [ref=f14e92] [cursor=pointer]
+      - button "left" [ref=f14e94] [cursor=pointer]
+      - button "right" [ref=f14e96] [cursor=pointer]
+    - generic [ref=f14e99]:
+      - switch "Show code" [ref=f14e100] [cursor=pointer]
+      - button "Copy code" [ref=f14e103] [cursor=pointer]
+  - generic [ref=f14e106]:
+    - heading [level=3] [ref=f14e107]:
+      - generic [ref=f14e108]:
+        - link "Copy heading URL to address bar" [ref=f14e110] [cursor=pointer]:
+          - /url: "#sobre-elemento-deshabilitado"
+        - text: Sobre Elemento Deshabilitado
+    - button "Función bloqueada" [disabled] [ref=f14e120]
+    - generic [ref=f14e123]:
+      - switch "Show code" [ref=f14e124] [cursor=pointer]
+      - button "Copy code" [ref=f14e127] [cursor=pointer]

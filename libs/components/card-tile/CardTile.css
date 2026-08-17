@@ -1,0 +1,69 @@
+/*
+ * CardTile — estilos del componente `libs/components/card-tile/`.
+ *
+ * Todas las clases están prefijadas con `card-tile` para evitar colisiones
+ * con estilos de otros componentes.
+ */
+
+.card-tile {
+    box-sizing: border-box;
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: var(--size-border-control) solid var(--color-border-subtle);
+    border-radius: var(--radius-card);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-panel);
+    cursor: pointer;
+    text-align: center;
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        transform 120ms ease;
+    user-select: none;
+}
+
+.card-tile:hover {
+    border-color: var(--color-border-indigo);
+    box-shadow: var(--shadow-panel), var(--shadow-primary-glow);
+}
+
+.card-tile:active {
+    transform: translateY(var(--space-press-offset));
+}
+
+.card-tile:focus-visible {
+    outline: 0;
+    box-shadow: var(--shadow-panel), var(--shadow-focus-ring);
+}
+
+.card-tile__media {
+    width: var(--size-icon-xl);
+    height: var(--size-icon-xl);
+    pointer-events: none;
+}
+
+.card-tile__title {
+    margin: 0;
+    color: var(--color-text-primary);
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+}
+
+.card-tile--locked {
+    background: var(--color-surface-disabled);
+    border-color: var(--color-border-subtle);
+    box-shadow: var(--shadow-none);
+    cursor: not-allowed;
+}
+
+.card-tile--locked:hover {
+    border-color: var(--color-border-subtle);
+    box-shadow: var(--shadow-none);
+}
+
+.card-tile--locked .card-tile__title {
+    color: var(--color-text-disabled);
+}

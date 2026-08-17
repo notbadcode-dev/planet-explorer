@@ -168,4 +168,34 @@ describe('createDialog', () => {
 
         invoker.remove();
     });
+
+    it('aplica el tamaño medium por defecto', () => {
+        const dialog = createDialog({
+            title: 'Modal por defecto',
+            onClose: () => {},
+        });
+
+        const container = dialog.querySelector('.dialog__container');
+
+        expect(container?.classList.contains('dialog--medium')).toBe(true);
+    });
+
+    it('aplica la clase modificadora para cada tamaño soportado', () => {
+        const small = createDialog({ title: 'Modal pequeño', size: 'small', onClose: () => {} });
+        const large = createDialog({ title: 'Modal grande', size: 'large', onClose: () => {} });
+
+        expect(small.querySelector('.dialog__container')?.classList.contains('dialog--small')).toBe(true);
+        expect(large.querySelector('.dialog__container')?.classList.contains('dialog--large')).toBe(true);
+    });
+
+    it('usa medium como fallback ante un tamaño no soportado', () => {
+        const dialog = createDialog({
+            title: 'Modal con tamaño inválido',
+            // @ts-expect-error valor inválido a propósito para probar el fallback en runtime
+            size: 'huge',
+            onClose: () => {},
+        });
+
+        expect(dialog.querySelector('.dialog__container')?.classList.contains('dialog--medium')).toBe(true);
+    });
 });

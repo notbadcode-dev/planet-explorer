@@ -1,4 +1,4 @@
-# Specification Quality Checklist: Base mínima de componentes compartidos reutilizables
+# Specification Quality Checklist: Base ampliada de componentes compartidos reutilizables
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-08-16

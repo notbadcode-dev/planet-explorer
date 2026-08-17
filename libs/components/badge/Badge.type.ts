@@ -7,4 +7,7 @@ export interface BadgeProps {
     label: string;
     variant?: BadgeVariant;
     icon?: IconName;
+
+    /** Texto de ayuda contextual opcional. Si se informa, se adjunta como tooltip (hover/foco). */
+    tooltip?: string;
 }

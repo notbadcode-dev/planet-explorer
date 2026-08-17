@@ -1,0 +1,181 @@
+- generic [ref=f7e4]:
+  - heading "Progress" [level=1] [ref=f7e5]
+  - generic [ref=f7e6]:
+    - generic [ref=f7e7]:
+      - toolbar [ref=f7e8]:
+        - generic [ref=f7e9]:
+          - generic [ref=f7e10]:
+            - button "Reload story" [ref=f7e11] [cursor=pointer]
+            - button "Zoom in" [ref=f7e14] [cursor=pointer]
+            - button "Zoom out" [ref=f7e18] [cursor=pointer]
+            - button "Reset zoom" [ref=f7e22] [cursor=pointer]
+          - link "Open canvas in new tab" [ref=f7e26] [cursor=pointer]:
+            - /url: iframe.html?id=componentes-progress--playground
+      - generic [ref=f7e34]:
+        - status "Content is loading..." [ref=f7e35]
+        - generic [ref=f7e38]:
+          - paragraph [ref=f7e39]: Carga de mision
+          - progressbar "Carga de mision" [ref=f7e40]
+          - paragraph [ref=f7e41]: 35%
+    - generic [ref=f7e43]:
+      - switch "Show code" [ref=f7e44] [cursor=pointer]
+      - button "Copy code" [ref=f7e47] [cursor=pointer]
+  - generic [ref=f7e51]:
+    - button "Reset controls" [ref=f7e53] [cursor=pointer]
+    - table [ref=f7e56]:
+      - rowgroup [ref=f7e57]:
+        - row [ref=f7e58]:
+          - columnheader "Name" [ref=f7e59]
+          - columnheader "Description" [ref=f7e60]
+          - columnheader "Default" [ref=f7e61]
+          - columnheader "Control" [ref=f7e62]
+      - rowgroup [ref=f7e63]:
+        - row [ref=f7e64]:
+          - cell "value" [ref=f7e65]
+          - cell "number" [ref=f7e66]
+          - cell "-" [ref=f7e70]
+          - cell [ref=f7e71]:
+            - spinbutton [ref=f7e74]: "35"
+        - row [ref=f7e75]:
+          - cell "max" [ref=f7e76]
+          - cell "number" [ref=f7e77]
+          - cell "-" [ref=f7e81]
+          - cell [ref=f7e82]:
+            - spinbutton [ref=f7e85]: "100"
+        - row [ref=f7e86]:
+          - cell "label" [ref=f7e87]
+          - cell "string" [ref=f7e88]
+          - cell "-" [ref=f7e92]
+          - cell [ref=f7e93]:
+            - textbox [ref=f7e95]:
+              - /placeholder: Edit string...
+              - text: Carga de mision
+        - row [ref=f7e96]:
+          - cell "showValue" [ref=f7e97]
+          - cell "boolean" [ref=f7e98]
+          - cell "-" [ref=f7e102]
+          - cell [ref=f7e103]:
+            - generic "showValue" [ref=f7e104]:
+              - switch "showValue" [checked] [ref=f7e105] [cursor=pointer]
+              - generic [ref=f7e106] [cursor=pointer]: "False"
+              - generic [ref=f7e107] [cursor=pointer]: "True"
+        - row [ref=f7e108]:
+          - cell "ariaLabel" [ref=f7e109]
+          - cell "-" [ref=f7e110]
+          - cell "-" [ref=f7e112]
+          - cell [ref=f7e113]:
+            - button "Set string" [ref=f7e114] [cursor=pointer]
+  - heading [level=2] [ref=f7e115]:
+    - generic [ref=f7e116]:
+      - link "Copy heading URL to address bar" [ref=f7e118] [cursor=pointer]:
+        - /url: "#stories"
+      - text: Stories
+  - generic [ref=f7e119]:
+    - heading [level=3] [ref=f7e120]:
+      - generic [ref=f7e121]:
+        - link "Copy heading URL to address bar" [ref=f7e123] [cursor=pointer]:
+          - /url: "#playground"
+        - text: Playground
+    - generic [ref=f7e129]:
+      - status "Content is loading..." [ref=f7e130]
+      - generic [ref=f7e133]:
+        - paragraph [ref=f7e134]: Carga de mision
+        - progressbar "Carga de mision" [ref=f7e135]
+        - paragraph [ref=f7e136]: 35%
+    - generic [ref=f7e138]:
+      - switch "Show code" [ref=f7e139] [cursor=pointer]
+      - button "Copy code" [ref=f7e142] [cursor=pointer]
+  - generic [ref=f7e145]:
+    - heading [level=3] [ref=f7e146]:
+      - generic [ref=f7e147]:
+        - link "Copy heading URL to address bar" [ref=f7e149] [cursor=pointer]:
+          - /url: "#vacio"
+        - text: Vacio
+    - generic [ref=f7e155]:
+      - status "Content is loading..." [ref=f7e156]
+      - generic [ref=f7e159]:
+        - paragraph [ref=f7e160]: Carga de mision
+        - progressbar "Carga de mision" [ref=f7e161]
+        - paragraph [ref=f7e162]: 0%
+    - generic [ref=f7e164]:
+      - switch "Show code" [ref=f7e165] [cursor=pointer]
+      - button "Copy code" [ref=f7e168] [cursor=pointer]
+  - generic [ref=f7e171]:
+    - heading [level=3] [ref=f7e172]:
+      - generic [ref=f7e173]:
+        - link "Copy heading URL to address bar" [ref=f7e175] [cursor=pointer]:
+          - /url: "#parcial"
+        - text: Parcial
+    - generic [ref=f7e181]:
+      - status "Content is loading..." [ref=f7e182]
+      - generic [ref=f7e185]:
+        - paragraph [ref=f7e186]: Carga de mision
+        - progressbar "Carga de mision" [ref=f7e187]
+        - paragraph [ref=f7e188]: 35%
+    - generic [ref=f7e190]:
+      - switch "Show code" [ref=f7e191] [cursor=pointer]
+      - button "Copy code" [ref=f7e194] [cursor=pointer]
+  - generic [ref=f7e197]:
+    - heading [level=3] [ref=f7e198]:
+      - generic [ref=f7e199]:
+        - link "Copy heading URL to address bar" [ref=f7e201] [cursor=pointer]:
+          - /url: "#completo"
+        - text: Completo
+    - generic [ref=f7e207]:
+      - status "Content is loading..." [ref=f7e208]
+      - generic [ref=f7e211]:
+        - paragraph [ref=f7e212]: Carga de mision
+        - progressbar "Carga de mision" [ref=f7e213]
+        - paragraph [ref=f7e214]: 100%
+    - generic [ref=f7e216]:
+      - switch "Show code" [ref=f7e217] [cursor=pointer]
+      - button "Copy code" [ref=f7e220] [cursor=pointer]
+  - generic [ref=f7e223]:
+    - heading [level=3] [ref=f7e224]:
+      - generic [ref=f7e225]:
+        - link "Copy heading URL to address bar" [ref=f7e227] [cursor=pointer]:
+          - /url: "#fuera-de-rango"
+        - text: Fuera De Rango
+    - paragraph [ref=f7e228]:
+      - text: El valor recibido (150) supera
+      - code [ref=f7e229]: max
+      - text: (100); se normaliza de forma determinista al limite superior.
+    - generic [ref=f7e235]:
+      - status "Content is loading..." [ref=f7e236]
+      - generic [ref=f7e239]:
+        - paragraph [ref=f7e240]: Carga de mision
+        - progressbar "Carga de mision" [ref=f7e241]
+        - paragraph [ref=f7e242]: 100%
+    - generic [ref=f7e244]:
+      - switch "Show code" [ref=f7e245] [cursor=pointer]
+      - button "Copy code" [ref=f7e248] [cursor=pointer]
+  - generic [ref=f7e251]:
+    - heading [level=3] [ref=f7e252]:
+      - generic [ref=f7e253]:
+        - link "Copy heading URL to address bar" [ref=f7e255] [cursor=pointer]:
+          - /url: "#sin-valor-visible"
+        - text: Sin Valor Visible
+    - generic [ref=f7e261]:
+      - status "Content is loading..." [ref=f7e262]
+      - generic [ref=f7e265]:
+        - paragraph [ref=f7e266]: Carga de mision
+        - progressbar "Carga de mision" [ref=f7e267]
+    - generic [ref=f7e269]:
+      - switch "Show code" [ref=f7e270] [cursor=pointer]
+      - button "Copy code" [ref=f7e273] [cursor=pointer]
+  - generic [ref=f7e276]:
+    - heading [level=3] [ref=f7e277]:
+      - generic [ref=f7e278]:
+        - link "Copy heading URL to address bar" [ref=f7e280] [cursor=pointer]:
+          - /url: "#valor-negativo"
+        - text: Valor Negativo
+    - paragraph [ref=f7e281]: El valor recibido (-20) es negativo; se normaliza de forma determinista al minimo (0).
+    - generic [ref=f7e287]:
+      - status "Content is loading..." [ref=f7e288]
+      - generic [ref=f7e291]:
+        - paragraph [ref=f7e292]: Carga de mision
+        - progressbar "Carga de mision" [ref=f7e293]
+        - paragraph [ref=f7e294]: 0%
+    - generic [ref=f7e296]:
+      - switch "Show code" [ref=f7e297] [cursor=pointer]
+      - button "Copy code" [ref=f7e300] [cursor=pointer]

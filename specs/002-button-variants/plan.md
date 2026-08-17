@@ -146,7 +146,7 @@ Ver [data-model.md](./data-model.md). Resumen: se amplía `ButtonProps` (DM-001,
 ## Contratos e interfaces
 
 * **Interfaz pública ampliada del componente `Button`**: Ver [contracts/button-component.md](./contracts/button-component.md) (v1.1, sustituye a efectos prácticos a la v1.0 de `001-component-library-architecture` sin invalidarla como registro histórico).
-* **Convención estructural de la librería de componentes (CSS opcional)**: Ver [contracts/component-library-convention-css.md](./contracts/component-library-convention-css.md).
+* **Convención estructural de la librería de componentes (CSS opcional)**: Ver [docs/conventions/components/css.md](../../docs/conventions/components/css.md).
 
 ## Riesgos y compromisos
 

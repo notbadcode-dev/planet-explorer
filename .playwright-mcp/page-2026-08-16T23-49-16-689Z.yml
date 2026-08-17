@@ -1,0 +1,6 @@
+- generic [ref=f16e1]:
+  - button "Mostrar 3 toasts apilados" [active] [ref=f16e5] [cursor=pointer]
+  - status:
+    - paragraph [ref=f16e14]: Primero
+    - paragraph [ref=f16e16]: Segundo
+    - paragraph [ref=f16e18]: Tercero

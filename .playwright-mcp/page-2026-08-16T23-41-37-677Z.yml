@@ -1,0 +1,74 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - banner [ref=e6]:
+      - heading "Storybook" [level=1] [ref=e7]
+      - generic [ref=e11]:
+        - generic [ref=e13]:
+          - link "Skip to content" [ref=e14] [cursor=pointer]:
+            - /url: "#storybook-preview-wrapper"
+          - link "Storybook" [ref=e16] [cursor=pointer]:
+            - /url: ./
+            - img "Storybook" [ref=e17]
+          - switch "Settings" [ref=e22] [cursor=pointer]
+        - generic [ref=e26]: Search for components
+        - search [ref=e27]:
+          - combobox [ref=e28]:
+            - searchbox "Search for components" [ref=e29]
+            - code:
+              - generic: ⌘
+              - text: K
+            - button "Tag filters" [ref=e31] [cursor=pointer]
+        - navigation [ref=e35]:
+          - heading "Stories" [level=2] [ref=e36]
+          - generic [ref=e38]:
+            - generic [ref=e39]:
+              - button "Collapse" [expanded] [ref=e40] [cursor=pointer]: Componentes
+              - button "Expand all" [ref=e44] [cursor=pointer]
+            - generic [ref=e47]:
+              - button [ref=e48] [cursor=pointer]
+              - 'button "Change status: New" [ref=e55] [cursor=pointer]'
+            - button [ref=e59] [cursor=pointer]
+            - button [ref=e67] [cursor=pointer]
+            - generic [ref=e74]:
+              - button [ref=e75] [cursor=pointer]
+              - 'button "Change status: New" [ref=e82] [cursor=pointer]'
+            - generic [ref=e85]:
+              - button [ref=e86] [cursor=pointer]
+              - 'button "Change status: New" [ref=e93] [cursor=pointer]'
+            - button [ref=e97] [cursor=pointer]
+            - button [ref=e105] [cursor=pointer]
+            - button [ref=e113] [cursor=pointer]
+            - button [ref=e121] [cursor=pointer]
+            - button [ref=e129] [cursor=pointer]
+            - generic [ref=e136]:
+              - button [ref=e137] [cursor=pointer]
+              - 'button "Change status: New" [ref=e144] [cursor=pointer]'
+            - generic [ref=e147]:
+              - button [ref=e148] [cursor=pointer]
+              - 'button "Change status: New" [ref=e155] [cursor=pointer]'
+            - generic [ref=e158]:
+              - button [ref=e159] [cursor=pointer]
+              - 'button "Change status: New" [ref=e166] [cursor=pointer]'
+            - generic [ref=e169]:
+              - button [ref=e170] [cursor=pointer]
+              - 'button "Change status: New" [ref=e177] [cursor=pointer]'
+            - generic [ref=e180]:
+              - button [ref=e181] [cursor=pointer]
+              - 'button "Change status: New" [ref=e188] [cursor=pointer]'
+            - generic [ref=e191]:
+              - button [ref=e192] [cursor=pointer]
+              - 'button "Change status: New" [ref=e199] [cursor=pointer]'
+            - generic [ref=e202]:
+              - button [ref=e203] [cursor=pointer]
+              - 'button "Change status: New" [ref=e210] [cursor=pointer]'
+    - separator "Sidebar resize handle" [ref=e213]
+  - generic [ref=e215]:
+    - region [ref=e216]:
+      - heading "Toolbar" [level=2] [ref=e217]
+      - toolbar [ref=e218]
+    - main [ref=e219]:
+      - heading "Main preview area" [level=2] [ref=e220]
+      - generic [ref=e221]:
+        - progressbar "Content is loading..." [ref=e223]
+        - iframe [ref=e228]:
+          
