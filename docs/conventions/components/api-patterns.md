@@ -1,9 +1,9 @@
 ---
 title: "Convención: Patrones de API de componente (factory, validación, callbacks)"
 type: "convention"
-version: "1.1"
+version: "1.4"
 created: "2026-08-16"
-updated: "2026-08-16"
+updated: "2026-08-17"
 status: "Approved"
 source: "libs/components/ (patrón implícito en los 16 componentes existentes)"
 tags: [convention, frontend, api-design]
@@ -45,10 +45,11 @@ redescubrir el patrón leyendo código ajeno.
   declararse como array `as const` en `{Component}.constants.ts` y su tipo MUST
   derivarse con `type X = (typeof X_VALUES)[number]` en `{Component}.type.ts`, en
   lugar de declarar el tipo unión a mano por separado.
-* **P4**: `Input` y `Dialog` (y cualquier componente nuevo con prop `size`) MUST
-  reutilizar el catálogo cerrado `'small' | 'medium' | 'large'` (por defecto
-  `'medium'`) ya definido por `Button` en lugar de definir una escala propia (ver
-  A2 en [`visual-rules.md`](./visual-rules.md)).
+* **P4**: `Input`, `Dialog`, `Slider`, `Spinner`, `RadioGroup`, `CheckboxGroup` y
+  `Select` (y cualquier componente nuevo con prop `size`) MUST reutilizar el
+  catálogo cerrado `'small' | 'medium' | 'large'` (por defecto `'medium'`) ya
+  definido por `Button` en lugar de definir una escala propia (ver A2 en
+  [`visual-rules.md`](./visual-rules.md)).
 
 ## Validación en runtime y fallback silencioso
 
@@ -134,3 +135,59 @@ redescubrir el patrón leyendo código ajeno.
 * La API pública específica de un componente concreto (qué props tiene, qué
   hace cada una) — vive en su contrato individual dentro de
   `specs/NNN-feature/contracts/`.
+
+## Lógica no visual compartida entre componentes (`libs/shared/`)
+
+* **P14**: Si dos o más componentes duplican la misma lógica de implementación
+  sin identidad visual propia (p. ej. construir y vincular un párrafo de
+  hint/error vía `aria-describedby`/`aria-invalid`), esa lógica MUST extraerse
+  a una función pura en `libs/shared/<nombre-en-kebab-case>/`, en lugar de
+  mantener copias casi idénticas en cada `{Component}.ts` o de introducir
+  herencia/clases (contradiría P2). El umbral YAGNI de la constitución
+  aplica: extraer solo cuando existan ya 2+ consumidores reales, no de forma
+  anticipada.
+  * `libs/shared/` es un directorio hermano de `libs/components/`, NO una
+    carpeta de componente: `scripts/check-components.mjs` solo recorre
+    `libs/components/` y exige `*.stories.ts` a cualquier carpeta que
+    encuentre ahí, lo cual no tiene sentido para lógica sin UI propia.
+  * Cada módulo en `libs/shared/<nombre>/` MUST seguir la misma disciplina que
+    un componente salvo la Storybook story: `<Nombre>.ts` (implementación,
+    función(es) exportada(s)), `<Nombre>.constants.ts` (catálogos/atributos/
+    clases literales, mismo criterio que P12), `<Nombre>.test.ts` (Vitest) e
+    `index.ts` (reexporta la API pública). `vite.config.ts` ya incluye
+    `libs/**/*.test.ts`, por lo que estos tests se ejecutan sin cambios de
+    configuración adicionales.
+  * Los componentes consumidores MUST importar la función compartida en lugar
+    de mantener su propia copia; los datos específicos de cada componente
+    (clases BEM, ids, elemento que recibe `aria-invalid`/`aria-describedby`)
+    se pasan como parámetros, nunca se hardcodean dentro del módulo
+    compartido. **Precedente**: `libs/shared/field-helper-text/` (función
+    `appendFieldHelperText`), extraída de `Input`, `Select`, `RadioGroup` y
+    `CheckboxGroup`.
+
+## Prohibición explícita de duplicar helpers genéricos de validación
+
+* **P15**: El cuerpo de `is{Type}` MUST NOT reimplementar la comparación
+  contra el catálogo (`CATALOG.includes(value as Type)`): MUST delegar en
+  `isInCatalog` de `libs/shared/catalog-value/`, pasándole el catálogo
+  concreto del componente. `resolve{Type}` sigue siendo
+  `isType(value) ? value : DEFAULT` (P5/P6 no cambian de nombre ni de forma),
+  pero su predicado ya no repite la comparación de catálogo, sino que la
+  hereda de `is{Type}`. **Motivo**: antes de esta regla, 12 componentes
+  (`Button` ×3 catálogos, `Dialog`, `Spinner`, `Badge`, `Panel`, `Toast`,
+  `Tooltip`, `CheckboxGroup`, `RadioGroup`, `Select`, `Input`) repetían byte a
+  byte la misma comparación de catálogo para `size`, `variant` o `placement`.
+  `libs/shared/catalog-value/` también expone `resolveCatalogValue` (atajo
+  `isInCatalog` + fallback en una sola llamada) para casos que no necesiten
+  mantener un `is{Type}` nombrado propio.
+* **P16 (nombre accesible)**: La resolución de nombre accesible a partir de
+  `label`/`ariaLabel` (recorte de espacios, prioridad de `label` sobre
+  `ariaLabel`) MUST reutilizar `resolveAccessibleName` de
+  `libs/shared/accessible-name/` en lugar de redefinir la función en cada
+  componente. **Precedente**: estaba duplicada idéntica en `Input`, `Select` y
+  `Slider` antes de esta regla.
+* Antes de escribir una función `is{Type}`/`resolve{Type}` o una resolución de
+  nombre accesible nueva, MUST comprobarse primero si `libs/shared/` ya cubre
+  ese caso; si no existe un helper compartido pero la lógica no visual se
+  repetirá en 2+ componentes, se sigue el proceso de extracción de P14 antes
+  de duplicarla.

@@ -1,5 +1,6 @@
 import './Toast.css';
 
+import { isInCatalog } from '../../shared/catalog-value';
 import { createIcon } from '../icon';
 import {
     DEFAULT_TOAST_DURATION_MS,
@@ -30,7 +31,7 @@ export type { ToastProps, ToastVariant } from './Toast.type';
 let containerElement: HTMLDivElement | null = null;
 
 function isToastVariant(value: unknown): value is ToastVariant {
-    return TOAST_VARIANTS.includes(value as ToastVariant);
+    return isInCatalog(value, TOAST_VARIANTS);
 }
 
 function resolveVariant(value: unknown): ToastVariant {

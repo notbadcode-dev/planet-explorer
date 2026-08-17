@@ -1,5 +1,7 @@
 import './Slider.css';
 
+import { resolveAccessibleName } from '../../shared/accessible-name';
+import { isInCatalog } from '../../shared/catalog-value';
 import {
     DEFAULT_SLIDER_SIZE,
     SLIDER_ARIA_LABEL_ATTRIBUTE,
@@ -25,25 +27,11 @@ import type { SliderProps, SliderSize } from './Slider.type';
 export type { SliderProps } from './Slider.type';
 
 function isSliderSize(size: unknown): size is SliderSize {
-    return SLIDER_SIZES.includes(size as SliderSize);
+    return isInCatalog(size, SLIDER_SIZES);
 }
 
 function resolveSize(size: unknown): SliderSize {
     return isSliderSize(size) ? size : DEFAULT_SLIDER_SIZE;
-}
-
-function resolveAccessibleName(label: string | undefined, ariaLabel: string | undefined): string | undefined {
-    const trimmedLabel = label?.trim();
-    if (trimmedLabel) {
-        return trimmedLabel;
-    }
-
-    const trimmedAriaLabel = ariaLabel?.trim();
-    if (trimmedAriaLabel) {
-        return trimmedAriaLabel;
-    }
-
-    return undefined;
 }
 
 function clampValue(value: number, min: number, max: number): number {

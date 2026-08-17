@@ -1,12 +1,12 @@
 import './Input.css';
 
+import { resolveAccessibleName } from '../../shared/accessible-name';
+import { isInCatalog } from '../../shared/catalog-value';
+import { appendFieldHelperText } from '../../shared/field-helper-text';
 import {
     DEFAULT_INPUT_SIZE,
-    INPUT_ARIA_DESCRIBEDBY_ATTRIBUTE,
-    INPUT_ARIA_INVALID_ATTRIBUTE,
     INPUT_ARIA_LABEL_ATTRIBUTE,
     INPUT_BASE_CLASS,
-    INPUT_EMPTY_COLLECTION_LENGTH,
     INPUT_EMPTY_VALUE,
     INPUT_ERROR_CLASS,
     INPUT_ERROR_ID,
@@ -14,7 +14,6 @@ import {
     INPUT_FIELD_CLASS,
     INPUT_FIELD_ID,
     INPUT_FIELD_TAG,
-    INPUT_HELPER_TAG,
     INPUT_HINT_CLASS,
     INPUT_HINT_ID,
     INPUT_LABEL_CLASS,
@@ -22,8 +21,6 @@ import {
     INPUT_ROOT_TAG,
     INPUT_SIZES,
     INPUT_SIZE_CLASS_PREFIX,
-    INPUT_SPACE_SEPARATOR,
-    INPUT_TRUE_VALUE,
     INPUT_TYPE_ATTRIBUTE,
     INPUT_TYPE_TEXT,
 } from './Input.constants';
@@ -31,22 +28,8 @@ import type { InputProps, InputSize } from './Input.type';
 
 export type { InputProps, InputSize } from './Input.type';
 
-function resolveAccessibleName(label: string | undefined, ariaLabel: string | undefined): string | undefined {
-    const trimmedLabel = label?.trim();
-    if (trimmedLabel) {
-        return trimmedLabel;
-    }
-
-    const trimmedAriaLabel = ariaLabel?.trim();
-    if (trimmedAriaLabel) {
-        return trimmedAriaLabel;
-    }
-
-    return undefined;
-}
-
 function isInputSize(size: unknown): size is InputSize {
-    return INPUT_SIZES.includes(size as InputSize);
+    return isInCatalog(size, INPUT_SIZES);
 }
 
 function resolveSize(size: unknown): InputSize {
@@ -96,30 +79,16 @@ export function createInput(props: InputProps): HTMLDivElement {
 
     root.append(inputElement);
 
-    const describedByIds: string[] = [];
-
-    if (hint?.trim()) {
-        const hintElement = document.createElement(INPUT_HELPER_TAG);
-        hintElement.classList.add(INPUT_HINT_CLASS);
-        hintElement.id = INPUT_HINT_ID;
-        hintElement.textContent = hint;
-        describedByIds.push(INPUT_HINT_ID);
-        root.append(hintElement);
-    }
-
-    if (error?.trim()) {
-        const errorElement = document.createElement(INPUT_HELPER_TAG);
-        errorElement.classList.add(INPUT_ERROR_CLASS);
-        errorElement.id = INPUT_ERROR_ID;
-        errorElement.textContent = error;
-        inputElement.setAttribute(INPUT_ARIA_INVALID_ATTRIBUTE, INPUT_TRUE_VALUE);
-        describedByIds.push(INPUT_ERROR_ID);
-        root.append(errorElement);
-    }
-
-    if (describedByIds.length > INPUT_EMPTY_COLLECTION_LENGTH) {
-        inputElement.setAttribute(INPUT_ARIA_DESCRIBEDBY_ATTRIBUTE, describedByIds.join(INPUT_SPACE_SEPARATOR));
-    }
+    appendFieldHelperText({
+        container: root,
+        describedElement: inputElement,
+        hintClass: INPUT_HINT_CLASS,
+        errorClass: INPUT_ERROR_CLASS,
+        hintId: INPUT_HINT_ID,
+        errorId: INPUT_ERROR_ID,
+        hint,
+        error,
+    });
 
     inputElement.addEventListener(INPUT_EVENT, (event) => {
         const target = event.currentTarget as HTMLInputElement;

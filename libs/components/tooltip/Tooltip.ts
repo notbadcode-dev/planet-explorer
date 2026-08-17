@@ -1,5 +1,6 @@
 import './Tooltip.css';
 
+import { isInCatalog } from '../../shared/catalog-value';
 import {
     DEFAULT_TOOLTIP_PLACEMENT,
     TOOLTIP_BASE_CLASS,
@@ -38,7 +39,7 @@ export type { TooltipPlacement, TooltipProps } from './Tooltip.type';
 let tooltipCounter = TOOLTIP_COUNTER_START;
 
 function isTooltipPlacement(value: unknown): value is TooltipPlacement {
-    return TOOLTIP_PLACEMENTS.includes(value as TooltipPlacement);
+    return isInCatalog(value, TOOLTIP_PLACEMENTS);
 }
 
 function resolvePlacement(value: unknown): TooltipPlacement {

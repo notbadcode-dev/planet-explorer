@@ -1,5 +1,6 @@
 import './Badge.css';
 
+import { isInCatalog } from '../../shared/catalog-value';
 import { createIcon } from '../icon';
 import { attachTooltip } from '../tooltip';
 import {
@@ -19,7 +20,7 @@ import type { BadgeProps, BadgeVariant } from './Badge.type';
 export type { BadgeProps, BadgeVariant } from './Badge.type';
 
 function isBadgeVariant(value: unknown): value is BadgeVariant {
-    return BADGE_VARIANTS.includes(value as BadgeVariant);
+    return isInCatalog(value, BADGE_VARIANTS);
 }
 
 function resolveVariant(value: unknown): BadgeVariant {

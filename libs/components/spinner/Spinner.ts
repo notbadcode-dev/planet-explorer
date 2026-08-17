@@ -1,5 +1,6 @@
 import './Spinner.css';
 
+import { isInCatalog } from '../../shared/catalog-value';
 import {
     DEFAULT_SPINNER_SIZE,
     SPINNER_ARIA_BUSY_ATTRIBUTE,
@@ -22,7 +23,7 @@ import type { SpinnerProps, SpinnerSize } from './Spinner.type';
 export type { SpinnerProps, SpinnerSize } from './Spinner.type';
 
 function isSpinnerSize(size: unknown): size is SpinnerSize {
-    return SPINNER_SIZES.includes(size as SpinnerSize);
+    return isInCatalog(size, SPINNER_SIZES);
 }
 
 function resolveSize(size: unknown): SpinnerSize {

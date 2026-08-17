@@ -1,5 +1,6 @@
 import './Panel.css';
 
+import { isInCatalog } from '../../shared/catalog-value';
 import { createIcon } from '../icon';
 import {
     DEFAULT_PANEL_VARIANT,
@@ -23,7 +24,7 @@ import type { PanelProps, PanelVariant } from './Panel.type';
 export type { PanelProps, PanelVariant } from './Panel.type';
 
 function isPanelVariant(value: unknown): value is PanelVariant {
-    return PANEL_VARIANTS.includes(value as PanelVariant);
+    return isInCatalog(value, PANEL_VARIANTS);
 }
 
 function resolveVariant(value: unknown): PanelVariant {

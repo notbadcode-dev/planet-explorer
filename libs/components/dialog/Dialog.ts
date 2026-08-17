@@ -1,5 +1,6 @@
 import './Dialog.css';
 
+import { isInCatalog } from '../../shared/catalog-value';
 import {
     DEFAULT_DIALOG_SIZE,
     DIALOG_ACTIONS_CLASS,
@@ -46,7 +47,7 @@ function toNodes(content: HTMLElement | HTMLElement[] | undefined): HTMLElement[
 }
 
 function isDialogSize(size: unknown): size is DialogSize {
-    return DIALOG_SIZES.includes(size as DialogSize);
+    return isInCatalog(size, DIALOG_SIZES);
 }
 
 function resolveSize(size: unknown): DialogSize {

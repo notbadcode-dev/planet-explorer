@@ -82,7 +82,9 @@ docs/
 * [`api-patterns.md`](./conventions/components/api-patterns.md) — patrones de API
   de componente: función factory, validación en runtime con fallback silencioso,
   nomenclatura de callbacks, tipos derivados de catálogos cerrados, composición
-  de contenido y normalización numérica.
+  de contenido, normalización numérica y extracción de lógica no visual
+  compartida a `libs/shared/` (incl. prohibición de duplicar helpers genéricos
+  de validación de catálogo y de nombre accesible).
 * [`testing.md`](./conventions/components/testing.md) — entorno de test
   (`happy-dom`) y estrategia de selectores (clases BEM + atributos ARIA, sin
   `data-testid`).
