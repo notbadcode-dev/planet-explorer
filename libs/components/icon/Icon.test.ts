@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { createIcon } from './Icon';
 import {
     ICON_ARIA_HIDDEN_ATTRIBUTE,
     ICON_ARIA_LABEL_ATTRIBUTE,
@@ -10,7 +11,6 @@ import {
     ICON_ROLE_ATTRIBUTE,
     ICON_ROLE_IMAGE_VALUE,
 } from './Icon.constants';
-import { createIcon } from './Icon';
 
 describe('createIcon', () => {
     it('renderiza un SVG de Phosphor del catálogo local', () => {
@@ -78,6 +78,11 @@ describe('createIcon', () => {
 
     it('renderiza iconos del catálogo no usados en stories: caret-down', () => {
         const icon = createIcon({ name: 'caret-down' });
+        expect(icon.querySelector('path')).not.toBeNull();
+    });
+
+    it('renderiza iconos del catálogo no usados en stories: arrow-down-flat', () => {
+        const icon = createIcon({ name: 'arrow-down-flat' });
         expect(icon.querySelector('path')).not.toBeNull();
     });
 

@@ -90,6 +90,12 @@ export const CaretDown: Story = {
     },
 };
 
+export const ArrowDownFlat: Story = {
+    args: {
+        name: 'arrow-down-flat',
+    },
+};
+
 export const WithAccessibleLabelAndCustomSize: Story = {
     args: {
         name: 'rocket',
