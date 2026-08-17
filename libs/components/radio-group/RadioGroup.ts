@@ -1,13 +1,20 @@
 import './RadioGroup.css';
 
+import { isInCatalog } from '../../shared/catalog-value';
+import { appendFieldHelperText } from '../../shared/field-helper-text';
 import { attachTooltip } from '../tooltip';
 import {
+    DEFAULT_RADIO_GROUP_SIZE,
     RADIO_GROUP_ARIA_LABEL_ATTRIBUTE,
     RADIO_GROUP_BASE_CLASS,
     RADIO_GROUP_CHANGE_EVENT,
     RADIO_GROUP_CONTROL_CLASS,
     RADIO_GROUP_CONTROL_TAG,
+    RADIO_GROUP_ERROR_CLASS,
+    RADIO_GROUP_ERROR_ID,
     RADIO_GROUP_FIELDSET_TAG,
+    RADIO_GROUP_HINT_CLASS,
+    RADIO_GROUP_HINT_ID,
     RADIO_GROUP_ID_SEPARATOR,
     RADIO_GROUP_INPUT_CLASS,
     RADIO_GROUP_INPUT_TAG,
@@ -17,18 +24,31 @@ import {
     RADIO_GROUP_LEGEND_TAG,
     RADIO_GROUP_OPTION_CLASS,
     RADIO_GROUP_OPTION_TAG,
+    RADIO_GROUP_SIZES,
+    RADIO_GROUP_SIZE_CLASS_PREFIX,
     RADIO_GROUP_TYPE_ATTRIBUTE,
     RADIO_GROUP_TYPE_RADIO,
 } from './RadioGroup.constants';
-import type { RadioGroupProps } from './RadioGroup.type';
+import type { RadioGroupProps, RadioGroupSize } from './RadioGroup.type';
 
 export type { RadioGroupOption, RadioGroupProps } from './RadioGroup.type';
 
+function isRadioGroupSize(size: unknown): size is RadioGroupSize {
+    return isInCatalog(size, RADIO_GROUP_SIZES);
+}
+
+function resolveSize(size: unknown): RadioGroupSize {
+    return isRadioGroupSize(size) ? size : DEFAULT_RADIO_GROUP_SIZE;
+}
+
 export function createRadioGroup(props: RadioGroupProps): HTMLFieldSetElement {
-    const { name, options, value, legend, ariaLabel, onChange } = props;
+    const { name, options, value, legend, ariaLabel, disabled = false, hint, error, size, onChange } = props;
+
+    const resolvedSize = resolveSize(size);
 
     const fieldset = document.createElement(RADIO_GROUP_FIELDSET_TAG) as HTMLFieldSetElement;
-    fieldset.classList.add(RADIO_GROUP_BASE_CLASS);
+    fieldset.classList.add(RADIO_GROUP_BASE_CLASS, `${RADIO_GROUP_SIZE_CLASS_PREFIX}${resolvedSize}`);
+    fieldset.disabled = disabled;
 
     if (legend?.trim()) {
         const legendElement = document.createElement(RADIO_GROUP_LEGEND_TAG);
@@ -55,6 +75,7 @@ export function createRadioGroup(props: RadioGroupProps): HTMLFieldSetElement {
         inputElement.id = optionId;
         inputElement.value = option.value;
         inputElement.checked = option.value === value;
+        inputElement.disabled = disabled;
 
         inputElement.addEventListener(RADIO_GROUP_CHANGE_EVENT, (event) => {
             const target = event.currentTarget as HTMLInputElement;
@@ -73,6 +94,17 @@ export function createRadioGroup(props: RadioGroupProps): HTMLFieldSetElement {
             attachTooltip({ target: controlElement, content: option.tooltip });
         }
     }
+
+    appendFieldHelperText({
+        container: fieldset,
+        describedElement: fieldset,
+        hintClass: RADIO_GROUP_HINT_CLASS,
+        errorClass: RADIO_GROUP_ERROR_CLASS,
+        hintId: RADIO_GROUP_HINT_ID,
+        errorId: RADIO_GROUP_ERROR_ID,
+        hint,
+        error,
+    });
 
     return fieldset;
 }

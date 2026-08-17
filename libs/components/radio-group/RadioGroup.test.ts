@@ -90,4 +90,105 @@ describe('createRadioGroup', () => {
         expect(inputAfter).toBe(inputBefore);
         expect(inputAfter.classList.contains('radio-group__input')).toBe(true);
     });
+
+    it('aplica el tamaño medium por defecto', () => {
+        const group = createRadioGroup({ name: 'quiz-1', options: OPTIONS, legend: 'Pregunta', onChange: () => {} });
+
+        expect(group.classList.contains('radio-group--medium')).toBe(true);
+    });
+
+    it('aplica la clase modificadora para cada tamaño soportado', () => {
+        const small = createRadioGroup({
+            name: 'quiz-1',
+            options: OPTIONS,
+            legend: 'Pregunta',
+            size: 'small',
+            onChange: () => {},
+        });
+        const large = createRadioGroup({
+            name: 'quiz-1',
+            options: OPTIONS,
+            legend: 'Pregunta',
+            size: 'large',
+            onChange: () => {},
+        });
+
+        expect(small.classList.contains('radio-group--small')).toBe(true);
+        expect(large.classList.contains('radio-group--large')).toBe(true);
+    });
+
+    it('usa medium como fallback ante un tamaño no soportado', () => {
+        const group = createRadioGroup({
+            name: 'quiz-1',
+            options: OPTIONS,
+            legend: 'Pregunta',
+            // @ts-expect-error valor inválido a propósito para probar el fallback en runtime
+            size: 'huge',
+            onChange: () => {},
+        });
+
+        expect(group.classList.contains('radio-group--medium')).toBe(true);
+    });
+
+    it('activa aria-invalid en el fieldset cuando existe error', () => {
+        const group = createRadioGroup({
+            name: 'quiz-1',
+            options: OPTIONS,
+            legend: 'Pregunta',
+            error: 'Debes seleccionar una opción',
+            onChange: () => {},
+        });
+
+        expect(group.getAttribute('aria-invalid')).toBe('true');
+    });
+
+    it('no activa aria-invalid cuando no hay error', () => {
+        const group = createRadioGroup({ name: 'quiz-1', options: OPTIONS, legend: 'Pregunta', onChange: () => {} });
+
+        expect(group.getAttribute('aria-invalid')).toBeNull();
+    });
+
+    it('vincula hint y error mediante aria-describedby', () => {
+        const group = createRadioGroup({
+            name: 'quiz-1',
+            options: OPTIONS,
+            legend: 'Pregunta',
+            hint: 'Solo se admite una respuesta',
+            error: 'Debes seleccionar una opción',
+            onChange: () => {},
+        });
+
+        const hintElement = group.querySelector('.radio-group__hint');
+        const errorElement = group.querySelector('.radio-group__error');
+
+        expect(group.getAttribute('aria-describedby')).toBe(`${hintElement?.id} ${errorElement?.id}`);
+        expect(hintElement?.textContent).toBe('Solo se admite una respuesta');
+        expect(errorElement?.textContent).toBe('Debes seleccionar una opción');
+    });
+
+    it('no expone aria-describedby cuando no hay hint ni error', () => {
+        const group = createRadioGroup({ name: 'quiz-1', options: OPTIONS, legend: 'Pregunta', onChange: () => {} });
+
+        expect(group.getAttribute('aria-describedby')).toBeNull();
+    });
+
+    it('deshabilita el fieldset y todas las opciones cuando "disabled" es true', () => {
+        const group = createRadioGroup({
+            name: 'quiz-1',
+            options: OPTIONS,
+            legend: 'Pregunta',
+            disabled: true,
+            onChange: () => {},
+        });
+
+        const inputs = Array.from(group.querySelectorAll('input[type="radio"]')) as HTMLInputElement[];
+        expect(group.disabled).toBe(true);
+        expect(inputs.every((input) => input.disabled)).toBe(true);
+    });
+
+    it('no deshabilita el fieldset cuando "disabled" está ausente', () => {
+        const group = createRadioGroup({ name: 'quiz-1', options: OPTIONS, legend: 'Pregunta', onChange: () => {} });
+
+        expect(group.disabled).toBe(false);
+    });
 });

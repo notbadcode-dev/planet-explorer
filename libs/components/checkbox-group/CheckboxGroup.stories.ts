@@ -17,6 +17,10 @@ const meta: Meta<CheckboxGroupProps> = {
         values: { control: false },
         legend: { control: 'text' },
         ariaLabel: { control: 'text' },
+        disabled: { control: 'boolean' },
+        hint: { control: 'text' },
+        error: { control: 'text' },
+        size: { control: 'select', options: ['small', 'medium', 'large'] },
         onChange: { action: 'change', control: false },
     },
     args: {
@@ -61,5 +65,42 @@ export const WithTooltipOnOption: Story = {
                 story: '`tooltip` es opcional por opción: si se informa, se adjunta mediante `attachTooltip` sobre el área completa (etiqueta + control) de esa opción.',
             },
         },
+    },
+};
+
+export const WithHint: Story = {
+    args: {
+        hint: 'Puedes seleccionar más de una opción',
+    },
+};
+
+export const WithError: Story = {
+    args: {
+        error: 'Selecciona al menos una opción',
+    },
+};
+
+export const Disabled: Story = {
+    args: {
+        values: ['mercury', 'venus'],
+        disabled: true,
+    },
+};
+
+export const Small: Story = {
+    args: {
+        size: 'small',
+    },
+};
+
+export const Medium: Story = {
+    args: {
+        size: 'medium',
+    },
+};
+
+export const Large: Story = {
+    args: {
+        size: 'large',
     },
 };

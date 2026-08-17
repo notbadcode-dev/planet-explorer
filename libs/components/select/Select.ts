@@ -1,7 +1,11 @@
 import './Select.css';
 
+import { resolveAccessibleName } from '../../shared/accessible-name';
+import { isInCatalog } from '../../shared/catalog-value';
+import { appendFieldHelperText } from '../../shared/field-helper-text';
 import { createIcon } from '../icon';
 import {
+    DEFAULT_SELECT_SIZE,
     SELECT_ARIA_LABEL_ATTRIBUTE,
     SELECT_BASE_CLASS,
     SELECT_CHANGE_EVENT,
@@ -9,9 +13,13 @@ import {
     SELECT_CONTROL_TAG,
     SELECT_EMPTY_OPTIONS_LENGTH,
     SELECT_EMPTY_VALUE,
+    SELECT_ERROR_CLASS,
+    SELECT_ERROR_ID,
     SELECT_FIELD_CLASS,
     SELECT_FIELD_ID,
     SELECT_FIELD_TAG,
+    SELECT_HINT_CLASS,
+    SELECT_HINT_ID,
     SELECT_ICON_CLASS,
     SELECT_ICON_NAME,
     SELECT_LABEL_CLASS,
@@ -19,32 +27,30 @@ import {
     SELECT_OPTION_TAG,
     SELECT_PLACEHOLDER_TEXT,
     SELECT_ROOT_TAG,
+    SELECT_SIZES,
+    SELECT_SIZE_CLASS_PREFIX,
 } from './Select.constants';
-import type { SelectProps } from './Select.type';
+import type { SelectProps, SelectSize } from './Select.type';
 
 export type { SelectOption, SelectProps } from './Select.type';
 
-function resolveAccessibleName(label: string | undefined, ariaLabel: string | undefined): string | undefined {
-    const trimmedLabel = label?.trim();
-    if (trimmedLabel) {
-        return trimmedLabel;
-    }
+function isSelectSize(size: unknown): size is SelectSize {
+    return isInCatalog(size, SELECT_SIZES);
+}
 
-    const trimmedAriaLabel = ariaLabel?.trim();
-    if (trimmedAriaLabel) {
-        return trimmedAriaLabel;
-    }
-
-    return undefined;
+function resolveSize(size: unknown): SelectSize {
+    return isSelectSize(size) ? size : DEFAULT_SELECT_SIZE;
 }
 
 export function createSelect(props: SelectProps): HTMLDivElement {
-    const { options, value = SELECT_EMPTY_VALUE, label, ariaLabel, disabled = false, onChange } = props;
+    const { options, value = SELECT_EMPTY_VALUE, label, ariaLabel, disabled = false, hint, error, size, onChange } =
+        props;
 
     const hasOptions = options.length > SELECT_EMPTY_OPTIONS_LENGTH;
+    const resolvedSize = resolveSize(size);
 
     const root = document.createElement(SELECT_ROOT_TAG);
-    root.classList.add(SELECT_BASE_CLASS);
+    root.classList.add(SELECT_BASE_CLASS, `${SELECT_SIZE_CLASS_PREFIX}${resolvedSize}`);
 
     if (label?.trim()) {
         const labelElement = document.createElement(SELECT_LABEL_TAG);
@@ -75,6 +81,16 @@ export function createSelect(props: SelectProps): HTMLDivElement {
         selectElement.disabled = true;
         control.append(selectElement, icon);
         root.append(control);
+        appendFieldHelperText({
+            container: root,
+            describedElement: selectElement,
+            hintClass: SELECT_HINT_CLASS,
+            errorClass: SELECT_ERROR_CLASS,
+            hintId: SELECT_HINT_ID,
+            errorId: SELECT_ERROR_ID,
+            hint,
+            error,
+        });
         return root;
     }
 
@@ -95,6 +111,16 @@ export function createSelect(props: SelectProps): HTMLDivElement {
 
     control.append(selectElement, icon);
     root.append(control);
+    appendFieldHelperText({
+        container: root,
+        describedElement: selectElement,
+        hintClass: SELECT_HINT_CLASS,
+        errorClass: SELECT_ERROR_CLASS,
+        hintId: SELECT_HINT_ID,
+        errorId: SELECT_ERROR_ID,
+        hint,
+        error,
+    });
 
     return root;
 }

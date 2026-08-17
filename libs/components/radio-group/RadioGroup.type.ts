@@ -1,3 +1,7 @@
+import type { RADIO_GROUP_SIZES } from './RadioGroup.constants';
+
+export type RadioGroupSize = (typeof RADIO_GROUP_SIZES)[number];
+
 export interface RadioGroupOption {
     value: string;
     label: string;
@@ -21,6 +25,21 @@ export interface RadioGroupProps {
 
     /** Nombre accesible alternativo cuando no hay `legend` visible. */
     ariaLabel?: string;
+
+    /** Deshabilita todas las opciones del grupo explícitamente. */
+    disabled?: boolean;
+
+    /** Texto de ayuda contextual bajo las opciones. */
+    hint?: string;
+
+    /** Mensaje de error. Si se informa, marca el grupo como inválido (`aria-invalid`). */
+    error?: string;
+
+    /**
+     * Tamaño relativo de cada opción (control + etiqueta). Catálogo cerrado, compartido con `ButtonSize`.
+     * Por defecto `'medium'` si se omite o si se recibe un valor no soportado en runtime.
+     */
+    size?: RadioGroupSize;
 
     /** Callback invocado con el valor seleccionado al cambiar. */
     onChange: (value: string) => void;

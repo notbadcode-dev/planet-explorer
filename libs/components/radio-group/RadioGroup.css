@@ -27,6 +27,18 @@
     cursor: pointer;
 }
 
+.radio-group__control:has(.radio-group__input:disabled) {
+    cursor: not-allowed;
+}
+
+.radio-group__input:disabled {
+    accent-color: var(--color-primary-disabled);
+}
+
+.radio-group__control:has(.radio-group__input:disabled) .radio-group__label {
+    color: var(--color-text-disabled);
+}
+
 .radio-group__input {
     width: var(--size-icon-md);
     height: var(--size-icon-md);
@@ -41,4 +53,42 @@
 .radio-group__label {
     color: var(--color-text-primary);
     font-size: var(--font-size-md);
+}
+
+.radio-group__hint {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+}
+
+.radio-group__error {
+    color: var(--color-validation-error);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+}
+
+.radio-group--small .radio-group__input {
+    width: var(--size-icon-sm);
+    height: var(--size-icon-sm);
+}
+
+.radio-group--small .radio-group__label {
+    font-size: var(--font-size-sm);
+}
+
+.radio-group--medium .radio-group__input {
+    width: var(--size-icon-md);
+    height: var(--size-icon-md);
+}
+
+.radio-group--medium .radio-group__label {
+    font-size: var(--font-size-md);
+}
+
+.radio-group--large .radio-group__input {
+    width: var(--size-icon-lg);
+    height: var(--size-icon-lg);
+}
+
+.radio-group--large .radio-group__label {
+    font-size: var(--font-size-lg);
 }

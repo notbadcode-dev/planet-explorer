@@ -1,9 +1,9 @@
 ---
 title: "Convención: Reglas visuales e iconografía compartida"
 type: "convention"
-version: "1.5"
+version: "1.6"
 created: "2026-08-16"
-updated: "2026-08-16"
+updated: "2026-08-17"
 status: "Approved"
 source: "specs/003-shared-components-base/"
 tags: [convention, design-system, accessibility]
@@ -28,7 +28,7 @@ La interfaz pública específica de cada componente (props, reglas de comportami
 ## Reglas de API transversales
 
 - A1: La API pública de cada componente MUST permanecer pequeña y estable; cambios mayores requieren nueva feature spec.
-- A2: `Input` y `Dialog` MUST exponer `size` con el mismo catálogo cerrado `'small' | 'medium' | 'large'` (por defecto `'medium'`) ya definido por `ButtonSize`, sin escalas divergentes. Ver [`api-patterns.md`](./api-patterns.md) (P1-P13) para el resto de patrones de forma de API (factory, validación, callbacks, composición). Ver también [`css.md`](./css.md) R10 sobre cómo el `size` es un ancho objetivo, no una cota estricta, cuando el contenido no cabe.
+- A2: `Input`, `Dialog`, `Slider`, `Spinner`, `RadioGroup`, `CheckboxGroup` y `Select` MUST exponer `size` con el mismo catálogo cerrado `'small' | 'medium' | 'large'` (por defecto `'medium'`) ya definido por `ButtonSize`, sin escalas divergentes. Cualquier componente nuevo que introduzca una prop `size` MUST reutilizar el mismo catálogo (ver P4 en [`api-patterns.md`](./api-patterns.md)). Ver [`api-patterns.md`](./api-patterns.md) (P1-P13) para el resto de patrones de forma de API (factory, validación, callbacks, composición). Ver también [`css.md`](./css.md) R10 sobre cómo el `size` es un ancho objetivo, no una cota estricta, cuando el contenido no cabe.
 
 ## Reglas visuales
 

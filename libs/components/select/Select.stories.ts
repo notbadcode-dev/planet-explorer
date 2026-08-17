@@ -17,6 +17,9 @@ const meta: Meta<SelectProps> = {
         label: { control: 'text' },
         ariaLabel: { control: 'text' },
         disabled: { control: 'boolean' },
+        hint: { control: 'text' },
+        error: { control: 'text' },
+        size: { control: 'select', options: ['small', 'medium', 'large'] },
         onChange: { action: 'change', control: false },
     },
     args: {
@@ -85,5 +88,49 @@ export const WithSingleOption: Story = {
 export const WithNonMatchingValue: Story = {
     args: {
         value: 'no-existe',
+    },
+};
+
+export const WithHint: Story = {
+    args: {
+        hint: 'Podrás cambiarlo más adelante',
+    },
+};
+
+export const WithError: Story = {
+    args: {
+        error: 'Selecciona un planeta para continuar',
+    },
+};
+
+export const WithHintAndError: Story = {
+    args: {
+        hint: 'Podrás cambiarlo más adelante',
+        error: 'Selecciona un planeta para continuar',
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'Combina `hint` y `error` simultáneamente; ambos se vinculan a `aria-describedby` en el mismo orden.',
+            },
+        },
+    },
+};
+
+export const Small: Story = {
+    args: {
+        size: 'small',
+    },
+};
+
+export const Medium: Story = {
+    args: {
+        size: 'medium',
+    },
+};
+
+export const Large: Story = {
+    args: {
+        size: 'large',
     },
 };

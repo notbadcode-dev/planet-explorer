@@ -74,4 +74,99 @@ describe('createCheckboxGroup', () => {
         expect(inputAfter).toBe(inputBefore);
         expect(inputAfter.classList.contains('checkbox-group__input')).toBe(true);
     });
+
+    it('aplica el tamaño medium por defecto', () => {
+        const group = createCheckboxGroup({ options: OPTIONS, legend: 'Planetas rocosos', onChange: () => {} });
+
+        expect(group.classList.contains('checkbox-group--medium')).toBe(true);
+    });
+
+    it('aplica la clase modificadora para cada tamaño soportado', () => {
+        const small = createCheckboxGroup({
+            options: OPTIONS,
+            legend: 'Planetas rocosos',
+            size: 'small',
+            onChange: () => {},
+        });
+        const large = createCheckboxGroup({
+            options: OPTIONS,
+            legend: 'Planetas rocosos',
+            size: 'large',
+            onChange: () => {},
+        });
+
+        expect(small.classList.contains('checkbox-group--small')).toBe(true);
+        expect(large.classList.contains('checkbox-group--large')).toBe(true);
+    });
+
+    it('usa medium como fallback ante un tamaño no soportado', () => {
+        const group = createCheckboxGroup({
+            options: OPTIONS,
+            legend: 'Planetas rocosos',
+            // @ts-expect-error valor inválido a propósito para probar el fallback en runtime
+            size: 'huge',
+            onChange: () => {},
+        });
+
+        expect(group.classList.contains('checkbox-group--medium')).toBe(true);
+    });
+
+    it('activa aria-invalid en el fieldset cuando existe error', () => {
+        const group = createCheckboxGroup({
+            options: OPTIONS,
+            legend: 'Planetas rocosos',
+            error: 'Selecciona al menos una opción',
+            onChange: () => {},
+        });
+
+        expect(group.getAttribute('aria-invalid')).toBe('true');
+    });
+
+    it('no activa aria-invalid cuando no hay error', () => {
+        const group = createCheckboxGroup({ options: OPTIONS, legend: 'Planetas rocosos', onChange: () => {} });
+
+        expect(group.getAttribute('aria-invalid')).toBeNull();
+    });
+
+    it('vincula hint y error mediante aria-describedby', () => {
+        const group = createCheckboxGroup({
+            options: OPTIONS,
+            legend: 'Planetas rocosos',
+            hint: 'Puedes seleccionar más de una opción',
+            error: 'Selecciona al menos una opción',
+            onChange: () => {},
+        });
+
+        const hintElement = group.querySelector('.checkbox-group__hint');
+        const errorElement = group.querySelector('.checkbox-group__error');
+
+        expect(group.getAttribute('aria-describedby')).toBe(`${hintElement?.id} ${errorElement?.id}`);
+        expect(hintElement?.textContent).toBe('Puedes seleccionar más de una opción');
+        expect(errorElement?.textContent).toBe('Selecciona al menos una opción');
+    });
+
+    it('no expone aria-describedby cuando no hay hint ni error', () => {
+        const group = createCheckboxGroup({ options: OPTIONS, legend: 'Planetas rocosos', onChange: () => {} });
+
+        expect(group.getAttribute('aria-describedby')).toBeNull();
+    });
+
+    it('deshabilita el fieldset y todas las opciones cuando "disabled" es true', () => {
+        const group = createCheckboxGroup({
+            options: OPTIONS,
+            legend: 'Planetas rocosos',
+            disabled: true,
+            onChange: () => {},
+        });
+
+        const inputs = Array.from(group.querySelectorAll('input[type="checkbox"]')) as HTMLInputElement[];
+        expect(group.disabled).toBe(true);
+        expect(inputs.every((input) => input.disabled)).toBe(true);
+    });
+
+    it('no deshabilita el fieldset cuando "disabled" está ausente', () => {
+        const group = createCheckboxGroup({ options: OPTIONS, legend: 'Planetas rocosos', onChange: () => {} });
+
+        expect(group.disabled).toBe(false);
+    });
 });

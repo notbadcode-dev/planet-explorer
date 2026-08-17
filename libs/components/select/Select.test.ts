@@ -93,4 +93,69 @@ describe('createSelect', () => {
         // El select nativo ignora valores no válidos y usa el primero (mars)
         expect(field.value).toBe('mars');
     });
+
+    it('aplica el tamaño medium por defecto', () => {
+        const select = createSelect({ options: OPTIONS, label: 'Planeta', onChange: () => {} });
+
+        expect(select.classList.contains('select--medium')).toBe(true);
+    });
+
+    it('aplica la clase modificadora para cada tamaño soportado', () => {
+        const small = createSelect({ options: OPTIONS, label: 'Planeta', size: 'small', onChange: () => {} });
+        const large = createSelect({ options: OPTIONS, label: 'Planeta', size: 'large', onChange: () => {} });
+
+        expect(small.classList.contains('select--small')).toBe(true);
+        expect(large.classList.contains('select--large')).toBe(true);
+    });
+
+    it('usa medium como fallback ante un tamaño no soportado', () => {
+        const select = createSelect({
+            options: OPTIONS,
+            label: 'Planeta',
+            // @ts-expect-error valor inválido a propósito para probar el fallback en runtime
+            size: 'huge',
+            onChange: () => {},
+        });
+
+        expect(select.classList.contains('select--medium')).toBe(true);
+    });
+
+    it('activa aria-invalid cuando existe error', () => {
+        const select = createSelect({ options: OPTIONS, label: 'Planeta', error: 'Selecciona un planeta', onChange: () => {} });
+        const field = select.querySelector('select') as HTMLSelectElement;
+
+        expect(field.getAttribute('aria-invalid')).toBe('true');
+    });
+
+    it('no activa aria-invalid cuando no hay error', () => {
+        const select = createSelect({ options: OPTIONS, label: 'Planeta', onChange: () => {} });
+        const field = select.querySelector('select') as HTMLSelectElement;
+
+        expect(field.getAttribute('aria-invalid')).toBeNull();
+    });
+
+    it('vincula hint y error mediante aria-describedby', () => {
+        const select = createSelect({
+            options: OPTIONS,
+            label: 'Planeta',
+            hint: 'Podrás cambiarlo después',
+            error: 'Selecciona un planeta',
+            onChange: () => {},
+        });
+
+        const field = select.querySelector('select') as HTMLSelectElement;
+        const hintElement = select.querySelector('.select__hint');
+        const errorElement = select.querySelector('.select__error');
+
+        expect(field.getAttribute('aria-describedby')).toBe(`${hintElement?.id} ${errorElement?.id}`);
+        expect(hintElement?.textContent).toBe('Podrás cambiarlo después');
+        expect(errorElement?.textContent).toBe('Selecciona un planeta');
+    });
+
+    it('no expone aria-describedby cuando no hay hint ni error', () => {
+        const select = createSelect({ options: OPTIONS, label: 'Planeta', onChange: () => {} });
+        const field = select.querySelector('select') as HTMLSelectElement;
+
+        expect(field.getAttribute('aria-describedby')).toBeNull();
+    });
 });
