@@ -1,6 +1,6 @@
 {
     "name": "planet-explorer",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "description": "Explorador Espacial: juego educativo de astronomía para niños.",
     "type": "module",
     "private": true,

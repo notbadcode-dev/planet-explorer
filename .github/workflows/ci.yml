@@ -39,6 +39,14 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Build Storybook
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: npm run build-storybook
+
+      - name: Incluir Storybook en /storybook
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: mkdir -p dist/storybook && cp -r storybook-static/. dist/storybook/
+
       - name: Configurar GitHub Pages
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         uses: actions/configure-pages@v5
