@@ -1,0 +1,92 @@
+- generic [ref=f17e4]:
+  - heading "Spinner" [level=1] [ref=f17e5]
+  - generic [ref=f17e6]:
+    - generic [ref=f17e7]:
+      - toolbar [ref=f17e8]:
+        - generic [ref=f17e9]:
+          - generic [ref=f17e10]:
+            - button "Reload story" [ref=f17e11] [cursor=pointer]
+            - button "Zoom in" [ref=f17e14] [cursor=pointer]
+            - button "Zoom out" [ref=f17e18] [cursor=pointer]
+            - button "Reset zoom" [ref=f17e22] [cursor=pointer]
+          - link "Open canvas in new tab" [ref=f17e26] [cursor=pointer]:
+            - /url: iframe.html?id=componentes-spinner--small
+      - status "Cargando misión…" [ref=f17e37]
+    - generic [ref=f17e41]:
+      - switch "Show code" [ref=f17e42] [cursor=pointer]
+      - button "Copy code" [ref=f17e45] [cursor=pointer]
+  - generic [ref=f17e49]:
+    - button "Reset controls" [ref=f17e51] [cursor=pointer]
+    - table [ref=f17e54]:
+      - rowgroup [ref=f17e55]:
+        - row [ref=f17e56]:
+          - columnheader "Name" [ref=f17e57]
+          - columnheader "Description" [ref=f17e58]
+          - columnheader "Default" [ref=f17e59]
+          - columnheader "Control" [ref=f17e60]
+      - rowgroup [ref=f17e61]:
+        - row [ref=f17e62]:
+          - cell "label" [ref=f17e63]
+          - cell "string" [ref=f17e64]
+          - cell "-" [ref=f17e68]
+          - cell [ref=f17e69]:
+            - textbox [ref=f17e71]:
+              - /placeholder: Edit string...
+              - text: Cargando misión…
+        - row [ref=f17e72]:
+          - cell "size" [ref=f17e73]
+          - cell "string" [ref=f17e74]
+          - cell "-" [ref=f17e78]
+          - cell [ref=f17e79]:
+            - generic [ref=f17e80]:
+              - generic [ref=f17e81]: size
+              - combobox "size" [ref=f17e82]:
+                - option "Choose option..."
+                - option "small" [selected]
+                - option "medium"
+                - option "large"
+  - heading [level=2] [ref=f17e83]:
+    - generic [ref=f17e84]:
+      - link "Copy heading URL to address bar" [ref=f17e86] [cursor=pointer]:
+        - /url: "#stories"
+      - text: Stories
+  - generic [ref=f17e87]:
+    - heading [level=3] [ref=f17e88]:
+      - generic [ref=f17e89]:
+        - link "Copy heading URL to address bar" [ref=f17e91] [cursor=pointer]:
+          - /url: "#small"
+        - text: Small
+    - status "Cargando misión…" [ref=f17e100]
+    - generic [ref=f17e104]:
+      - switch "Show code" [ref=f17e105] [cursor=pointer]
+      - button "Copy code" [ref=f17e108] [cursor=pointer]
+  - generic [ref=f17e111]:
+    - heading [level=3] [ref=f17e112]:
+      - generic [ref=f17e113]:
+        - link "Copy heading URL to address bar" [ref=f17e115] [cursor=pointer]:
+          - /url: "#medium"
+        - text: Medium
+    - status "Cargando misión…" [ref=f17e124]
+    - generic [ref=f17e128]:
+      - switch "Show code" [ref=f17e129] [cursor=pointer]
+      - button "Copy code" [ref=f17e132] [cursor=pointer]
+  - generic [ref=f17e135]:
+    - heading [level=3] [ref=f17e136]:
+      - generic [ref=f17e137]:
+        - link "Copy heading URL to address bar" [ref=f17e139] [cursor=pointer]:
+          - /url: "#large"
+        - text: Large
+    - status "Cargando misión…" [ref=f17e148]
+    - generic [ref=f17e152]:
+      - switch "Show code" [ref=f17e153] [cursor=pointer]
+      - button "Copy code" [ref=f17e156] [cursor=pointer]
+  - generic [ref=f17e159]:
+    - heading [level=3] [ref=f17e160]:
+      - generic [ref=f17e161]:
+        - link "Copy heading URL to address bar" [ref=f17e163] [cursor=pointer]:
+          - /url: "#con-etiqueta"
+        - text: Con Etiqueta
+    - status "Cargando misión…" [ref=f17e172]
+    - generic [ref=f17e176]:
+      - switch "Show code" [ref=f17e177] [cursor=pointer]
+      - button "Copy code" [ref=f17e180] [cursor=pointer]

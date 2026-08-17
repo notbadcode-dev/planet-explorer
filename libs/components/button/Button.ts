@@ -7,6 +7,7 @@
 
 import './Button.css';
 
+import { isInCatalog } from '../../shared/catalog-value';
 import {
     BUTTON_ACCESSIBLE_NAME_ERROR,
     BUTTON_ARIA_LABEL_ATTRIBUTE,
@@ -26,20 +27,21 @@ import {
     DEFAULT_BUTTON_VARIANT,
 } from './Button.constants';
 import { createIcon } from '../icon';
+import { attachTooltip } from '../tooltip';
 import type { ButtonIconPosition, ButtonProps, ButtonSize, ButtonVariant } from './Button.type';
 
 export type { ButtonIconPosition, ButtonProps, ButtonSize, ButtonVariant } from './Button.type';
 
 function isButtonVariant(variant: unknown): variant is ButtonVariant {
-    return BUTTON_VARIANTS.includes(variant as ButtonVariant);
+    return isInCatalog(variant, BUTTON_VARIANTS);
 }
 
 function isButtonSize(size: unknown): size is ButtonSize {
-    return BUTTON_SIZES.includes(size as ButtonSize);
+    return isInCatalog(size, BUTTON_SIZES);
 }
 
 function isButtonIconPosition(iconPosition: unknown): iconPosition is ButtonIconPosition {
-    return BUTTON_ICON_POSITIONS.includes(iconPosition as ButtonIconPosition);
+    return isInCatalog(iconPosition, BUTTON_ICON_POSITIONS);
 }
 
 function resolveVariant(variant: unknown): ButtonVariant {
@@ -69,6 +71,7 @@ export function createButton(props: ButtonProps): HTMLButtonElement {
         size,
         icon,
         iconPosition,
+        tooltip,
     } = props;
 
     const hasLabel = Boolean(label?.trim());
@@ -123,6 +126,10 @@ export function createButton(props: ButtonProps): HTMLButtonElement {
         }
         onClick();
     });
+
+    if (tooltip?.trim()) {
+        attachTooltip({ target: button, content: tooltip });
+    }
 
     return button;
 }

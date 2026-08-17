@@ -53,4 +53,5 @@ Nombra la story de forma descriptiva del estado real (p. ej. `SoloEtiquetaAccesi
 
 - Configuración global: `.storybook/preview.ts`, `.storybook/main.ts`.
 - Ejemplo de referencia completo: `libs/components/button/Button.stories.ts`.
-- Convención estructural de componentes: `libs/components/README.md` y `specs/001-component-library-architecture/contracts/component-library-convention.md`.
+- Convención estructural de componentes: `libs/components/README.md` y `docs/conventions/components/structure.md`.
+- Nomenclatura (`title`, `autodocs`) y cobertura de historias por estado/variante: `docs/conventions/components/storybook.md`.

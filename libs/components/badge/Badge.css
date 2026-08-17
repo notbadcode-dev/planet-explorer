@@ -1,0 +1,48 @@
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    border: var(--size-border-control) solid var(--color-border-subtle);
+    border-radius: var(--radius-badge);
+    font-family: var(--font-family-control);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-control);
+    background: var(--color-surface-raised);
+    color: var(--color-text-primary);
+}
+
+.badge__icon {
+    width: var(--size-icon-sm);
+    height: var(--size-icon-sm);
+}
+
+.badge__status-icon {
+    width: var(--size-icon-xs);
+    height: var(--size-icon-xs);
+    flex-shrink: 0;
+}
+
+.badge__label {
+    white-space: nowrap;
+}
+
+.badge--success {
+    border-color: var(--color-border-cyan);
+    box-shadow: var(--shadow-cyan-glow);
+}
+
+.badge--warning {
+    border-color: var(--color-accent-star);
+    color: var(--color-accent-star);
+}
+
+.badge--danger {
+    border-color: var(--color-validation-error);
+    color: var(--color-validation-error);
+}
+
+.badge--info {
+    border-color: var(--color-border-indigo);
+    color: var(--color-accent-rocket);
+}

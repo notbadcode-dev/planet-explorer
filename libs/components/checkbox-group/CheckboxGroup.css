@@ -1,0 +1,94 @@
+.checkbox-group {
+    display: grid;
+    gap: var(--space-3);
+    padding: 0;
+    border: 0;
+    font-family: var(--font-family-input);
+}
+
+.checkbox-group__legend {
+    padding: 0;
+    margin-block-end: var(--space-2);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-control);
+}
+
+.checkbox-group__option {
+    display: flex;
+}
+
+.checkbox-group__control {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--size-touch-target-min);
+    padding-block: var(--space-2);
+    cursor: pointer;
+}
+
+.checkbox-group__control:has(.checkbox-group__input:disabled) {
+    cursor: not-allowed;
+}
+
+.checkbox-group__input:disabled {
+    accent-color: var(--color-primary-disabled);
+}
+
+.checkbox-group__control:has(.checkbox-group__input:disabled) .checkbox-group__label {
+    color: var(--color-text-disabled);
+}
+
+.checkbox-group__input {
+    width: var(--size-icon-md);
+    height: var(--size-icon-md);
+    accent-color: var(--color-primary);
+    transition: transform var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.checkbox-group__input:checked {
+    transform: scale(1.15);
+}
+
+.checkbox-group__label {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-md);
+}
+
+.checkbox-group__hint {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+}
+
+.checkbox-group__error {
+    color: var(--color-validation-error);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+}
+
+.checkbox-group--small .checkbox-group__input {
+    width: var(--size-icon-sm);
+    height: var(--size-icon-sm);
+}
+
+.checkbox-group--small .checkbox-group__label {
+    font-size: var(--font-size-sm);
+}
+
+.checkbox-group--medium .checkbox-group__input {
+    width: var(--size-icon-md);
+    height: var(--size-icon-md);
+}
+
+.checkbox-group--medium .checkbox-group__label {
+    font-size: var(--font-size-md);
+}
+
+.checkbox-group--large .checkbox-group__input {
+    width: var(--size-icon-lg);
+    height: var(--size-icon-lg);
+}
+
+.checkbox-group--large .checkbox-group__label {
+    font-size: var(--font-size-lg);
+}

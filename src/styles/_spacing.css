@@ -34,11 +34,11 @@
 
     /* Component sizing */
     --size-touch-target-min: 44px;
-    --size-button-min-width: 11rem;
+    --size-button-min-width: 8rem;
     --size-control-sm: 2.75rem;
-    --size-control-md: 3.25rem;
-    --size-control-lg: 4rem;
-    --size-input: 3.5rem;
+    --size-control-md: 3rem;
+    --size-control-lg: 3.5rem;
+    --size-input: 3rem;
 
     /* Border sizing */
     --size-border-control: 1px;

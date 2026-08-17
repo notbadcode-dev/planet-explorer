@@ -65,11 +65,11 @@ npm run lint
 npm run build
 ```
 
-**Resultado esperado**: La build de Vite completa sin errores, incluyendo el nuevo `Button.css` como asset procesado (confirma R6 de `contracts/component-library-convention-css.md`).
+**Resultado esperado**: La build de Vite completa sin errores, incluyendo el nuevo `Button.css` como asset procesado (confirma R6 de `docs/conventions/components/css.md`).
 
 ## Referencias
 
 * Especificación: [spec.md](./spec.md)
 * Plan: [plan.md](./plan.md)
 * Contrato de la API pública: [contracts/button-component.md](./contracts/button-component.md)
-* Contrato de convención estructural (CSS opcional): [contracts/component-library-convention-css.md](./contracts/component-library-convention-css.md)
+* Convención estructural (CSS opcional): [docs/conventions/components/css.md](../../docs/conventions/components/css.md)

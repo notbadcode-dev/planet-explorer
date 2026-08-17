@@ -1,0 +1,205 @@
+- generic [ref=f3e4]:
+  - heading "Button" [level=1] [ref=f3e5]
+  - generic [ref=f3e6]:
+    - generic [ref=f3e7]:
+      - toolbar [ref=f3e8]:
+        - generic [ref=f3e9]:
+          - generic [ref=f3e10]:
+            - button "Reload story" [ref=f3e11] [cursor=pointer]
+            - button "Zoom in" [ref=f3e14] [cursor=pointer]
+            - button "Zoom out" [ref=f3e18] [cursor=pointer]
+            - button "Reset zoom" [ref=f3e22] [cursor=pointer]
+          - link "Open canvas in new tab" [ref=f3e26] [cursor=pointer]:
+            - /url: iframe.html?id=componentes-button--enabled
+      - button "Explorar planeta" [ref=f3e37] [cursor=pointer]
+    - generic [ref=f3e40]:
+      - switch "Show code" [ref=f3e41] [cursor=pointer]
+      - button "Copy code" [ref=f3e44] [cursor=pointer]
+  - generic [ref=f3e48]:
+    - button "Reset controls" [ref=f3e50] [cursor=pointer]
+    - table [ref=f3e53]:
+      - rowgroup [ref=f3e54]:
+        - row [ref=f3e55]:
+          - columnheader "Name" [ref=f3e56]
+          - columnheader "Description" [ref=f3e57]
+          - columnheader "Default" [ref=f3e58]
+          - columnheader "Control" [ref=f3e59]
+      - rowgroup [ref=f3e60]:
+        - row [ref=f3e61]:
+          - cell "label" [ref=f3e62]
+          - cell "string" [ref=f3e63]
+          - cell "-" [ref=f3e67]
+          - cell [ref=f3e68]:
+            - textbox [ref=f3e70]:
+              - /placeholder: Edit string...
+              - text: Explorar planeta
+        - row [ref=f3e71]:
+          - cell "disabled" [ref=f3e72]
+          - cell "boolean" [ref=f3e73]
+          - cell "-" [ref=f3e77]
+          - cell [ref=f3e78]:
+            - generic "disabled" [ref=f3e79]:
+              - switch "disabled" [ref=f3e80] [cursor=pointer]
+              - generic [ref=f3e81] [cursor=pointer]: "False"
+              - generic [ref=f3e82] [cursor=pointer]: "True"
+        - row [ref=f3e83]:
+          - cell "icon" [ref=f3e84]
+          - cell "string" [ref=f3e85]
+          - cell "-" [ref=f3e89]
+          - cell [ref=f3e90]:
+            - generic [ref=f3e91]:
+              - generic [ref=f3e92]: icon
+              - combobox "icon" [ref=f3e93]:
+                - option "Choose option..."
+                - option "orbit"
+                - option "rocket" [selected]
+                - option "sparkles"
+                - option "star"
+                - option "trash"
+                - option "check-circle"
+                - option "warning-circle"
+                - option "x-circle"
+                - option "info-circle"
+                - option "caret-down"
+        - row [ref=f3e94]:
+          - cell "ariaLabel" [ref=f3e95]
+          - cell "-" [ref=f3e96]
+          - cell "-" [ref=f3e98]
+          - cell [ref=f3e99]:
+            - button "Set string" [ref=f3e100] [cursor=pointer]
+        - row [ref=f3e101]:
+          - cell "variant" [ref=f3e102]
+          - cell "-" [ref=f3e103]
+          - cell "-" [ref=f3e105]
+          - cell [ref=f3e106]:
+            - generic [ref=f3e107]:
+              - generic [ref=f3e108]: variant
+              - combobox "variant" [ref=f3e109]:
+                - option "Choose option..." [disabled] [selected]
+                - option "primary"
+                - option "secondary"
+                - option "danger"
+        - row [ref=f3e110]:
+          - cell "size" [ref=f3e111]
+          - cell "-" [ref=f3e112]
+          - cell "-" [ref=f3e114]
+          - cell [ref=f3e115]:
+            - generic [ref=f3e116]:
+              - generic [ref=f3e117]: size
+              - combobox "size" [ref=f3e118]:
+                - option "Choose option..." [disabled] [selected]
+                - option "small"
+                - option "medium"
+                - option "large"
+        - row [ref=f3e119]:
+          - cell "iconPosition" [ref=f3e120]
+          - cell "-" [ref=f3e121]
+          - cell "-" [ref=f3e123]
+          - cell [ref=f3e124]:
+            - group "iconPosition" [ref=f3e125]:
+              - generic [ref=f3e127] [cursor=pointer]:
+                - radio "start" [ref=f3e128]
+                - generic [ref=f3e129]: start
+              - generic [ref=f3e130] [cursor=pointer]:
+                - radio "end" [ref=f3e131]
+                - generic [ref=f3e132]: end
+        - row [ref=f3e133]:
+          - cell "onClick" [ref=f3e134]
+          - cell "-" [ref=f3e135]
+          - cell "-" [ref=f3e137]
+          - cell "-" [ref=f3e138]
+  - heading [level=2] [ref=f3e139]:
+    - generic [ref=f3e140]:
+      - link "Copy heading URL to address bar" [ref=f3e142] [cursor=pointer]:
+        - /url: "#stories"
+      - text: Stories
+  - generic [ref=f3e143]:
+    - heading [level=3] [ref=f3e144]:
+      - generic [ref=f3e145]:
+        - link "Copy heading URL to address bar" [ref=f3e147] [cursor=pointer]:
+          - /url: "#enabled"
+        - text: Enabled
+    - button "Explorar planeta" [ref=f3e156] [cursor=pointer]
+    - generic [ref=f3e159]:
+      - switch "Show code" [ref=f3e160] [cursor=pointer]
+      - button "Copy code" [ref=f3e163] [cursor=pointer]
+  - generic [ref=f3e166]:
+    - heading [level=3] [ref=f3e167]:
+      - generic [ref=f3e168]:
+        - link "Copy heading URL to address bar" [ref=f3e170] [cursor=pointer]:
+          - /url: "#disabled"
+        - text: Disabled
+    - button "Explorar planeta" [disabled] [ref=f3e179]
+    - generic [ref=f3e182]:
+      - switch "Show code" [ref=f3e183] [cursor=pointer]
+      - button "Copy code" [ref=f3e186] [cursor=pointer]
+  - generic [ref=f3e189]:
+    - heading [level=3] [ref=f3e190]:
+      - generic [ref=f3e191]:
+        - link "Copy heading URL to address bar" [ref=f3e193] [cursor=pointer]:
+          - /url: "#solo-etiqueta-accesible"
+        - text: Solo Etiqueta Accesible
+    - paragraph [ref=f3e194]:
+      - text: Renderiza un botón sin etiqueta visible y con icono decorativo. Sigue siendo accesible gracias a
+      - code [ref=f3e195]: ariaLabel
+      - text: .
+    - button "Cerrar" [ref=f3e204] [cursor=pointer]
+    - generic [ref=f3e206]:
+      - switch "Show code" [ref=f3e207] [cursor=pointer]
+      - button "Copy code" [ref=f3e210] [cursor=pointer]
+  - generic [ref=f3e213]:
+    - heading [level=3] [ref=f3e214]:
+      - generic [ref=f3e215]:
+        - link "Copy heading URL to address bar" [ref=f3e217] [cursor=pointer]:
+          - /url: "#secondary"
+        - text: Secondary
+    - button "Cancelar" [ref=f3e226] [cursor=pointer]
+    - generic [ref=f3e229]:
+      - switch "Show code" [ref=f3e230] [cursor=pointer]
+      - button "Copy code" [ref=f3e233] [cursor=pointer]
+  - generic [ref=f3e236]:
+    - heading [level=3] [ref=f3e237]:
+      - generic [ref=f3e238]:
+        - link "Copy heading URL to address bar" [ref=f3e240] [cursor=pointer]:
+          - /url: "#danger"
+        - text: Danger
+    - button "Eliminar" [ref=f3e249] [cursor=pointer]
+    - generic [ref=f3e252]:
+      - switch "Show code" [ref=f3e253] [cursor=pointer]
+      - button "Copy code" [ref=f3e256] [cursor=pointer]
+  - generic [ref=f3e259]:
+    - heading [level=3] [ref=f3e260]:
+      - generic [ref=f3e261]:
+        - link "Copy heading URL to address bar" [ref=f3e263] [cursor=pointer]:
+          - /url: "#small"
+        - text: Small
+    - button "Explorar planeta" [ref=f3e272] [cursor=pointer]
+    - generic [ref=f3e275]:
+      - switch "Show code" [ref=f3e276] [cursor=pointer]
+      - button "Copy code" [ref=f3e279] [cursor=pointer]
+  - generic [ref=f3e282]:
+    - heading [level=3] [ref=f3e283]:
+      - generic [ref=f3e284]:
+        - link "Copy heading URL to address bar" [ref=f3e286] [cursor=pointer]:
+          - /url: "#large"
+        - text: Large
+    - button "Explorar planeta" [ref=f3e295] [cursor=pointer]
+    - generic [ref=f3e298]:
+      - switch "Show code" [ref=f3e299] [cursor=pointer]
+      - button "Copy code" [ref=f3e302] [cursor=pointer]
+  - generic [ref=f3e305]:
+    - heading [level=3] [ref=f3e306]:
+      - generic [ref=f3e307]:
+        - link "Copy heading URL to address bar" [ref=f3e309] [cursor=pointer]:
+          - /url: "#deshabilitado-con-variante"
+        - text: Deshabilitado Con Variante
+    - paragraph [ref=f3e310]:
+      - text: Verifica que el tratamiento visual de deshabilitado se aplica de forma consistente incluso en combinaciones de
+      - code [ref=f3e311]: variant
+      - text: /
+      - code [ref=f3e312]: size
+      - text: distintas de las por defecto (FR-006).
+    - button "Eliminar" [disabled] [ref=f3e321]
+    - generic [ref=f3e324]:
+      - switch "Show code" [ref=f3e325] [cursor=pointer]
+      - button "Copy code" [ref=f3e328] [cursor=pointer]

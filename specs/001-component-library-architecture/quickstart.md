@@ -41,7 +41,7 @@ Permitir que cualquier desarrollador del proyecto pueda, en local: (1) instalar 
 * `./plan.md`
 * `./data-model.md`
 * `./contracts/button-component.md`
-* `./contracts/component-library-convention.md`
+* `../../docs/conventions/components/structure.md`
 
 ## Prerrequisitos
 
@@ -108,7 +108,7 @@ No se requieren datos de prueba externos. Los propios argumentos de Storybook (c
 2. Comprobar que existen `Button.ts`, `Button.test.ts`, `Button.stories.ts` e `index.ts`.
 3. Importar el componente desde otra ubicación del proyecto usando `import { createButton } from 'libs/components/button'`.
 
-**Resultado esperado**: El componente se importa sin duplicar código (FR-008); la estructura coincide con `contracts/component-library-convention.md`.
+**Resultado esperado**: El componente se importa sin duplicar código (FR-008); la estructura coincide con `docs/conventions/components/structure.md`.
 
 ### QS-002 — Pruebas unitarias con Vitest (US2)
 

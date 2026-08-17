@@ -1,22 +1,21 @@
 ---
-title: "Contrato: Convención estructural de la librería de componentes"
-feature: "001-component-library-architecture"
-type: "contract"
-version: "1.0"
+title: "Convención: Estructura de la librería de componentes"
+type: "convention"
+version: "1.1"
 created: "2026-08-15"
-updated: "2026-08-15"
+updated: "2026-08-16"
 status: "Approved"
-spec: "../spec.md"
-plan: "../plan.md"
-data_model: "../data-model.md"
-tags: [frontend, architecture, contract]
-dependencies: []
-related_specs: []
+source: "specs/001-component-library-architecture/"
+tags: [frontend, architecture, convention]
 ---
 
-# Contrato: Convención estructural de la librería de componentes (`libs/components/`)
+# Convención: Estructura de la librería de componentes (`libs/components/`)
 
-**Trazabilidad**: FR-001, FR-002, FR-003, FR-004, FR-008, FR-009, FR-010, DM-002 (`ComponentEntry`)
+**Fuente**: FR-001, FR-002, FR-003, FR-004, FR-008, FR-009, FR-010, DM-002 (`ComponentEntry`) de `specs/001-component-library-architecture/`.
+
+> Migrado desde `specs/001-component-library-architecture/contracts/component-library-convention.md`
+> (2026-08-16) a `docs/` por ser una convención transversal consumida por múltiples features
+> (`001`, `002`, `003`), no un contrato específico de una única feature.
 
 ## Propósito
 
@@ -54,7 +53,11 @@ Un componente se considera **completo** (`ComponentEntry.status = "complete"`) s
 - [ ] Existe `index.ts` que reexporta la API pública del componente.
 - [ ] El nombre de la carpeta no colisiona con ningún otro componente existente.
 
-## Fuera de alcance de este contrato
+## Fuera de alcance de esta convención
 
-* El proceso de aprobación previo para decidir si un componente nuevo debe ser compartido (ver constitución, sección "Componentes compartidos"): ese proceso es organizativo, no estructural, y no se automatiza en esta funcionalidad.
-* Herramientas concretas de lint/CI que implementan R1: su implementación técnica se detalla en `tasks.md` (fase `/speckit-tasks`), no en este contrato.
+* El proceso de aprobación previo para decidir si un componente nuevo debe ser compartido (ver constitución, sección "Componentes compartidos"): ese proceso es organizativo, no estructural.
+* Herramientas concretas de lint/CI que implementan R1: su implementación técnica vive en `scripts/check-components.mjs`.
+* La forma de la API pública (función factory, validación en runtime, callbacks, tipos derivados de catálogos cerrados): vive en [`api-patterns.md`](./api-patterns.md).
+* El contenido opcional de `<ComponentName>.css`: vive en [`css.md`](./css.md).
+* El entorno y los selectores usados en `<ComponentName>.test.ts`: viven en [`testing.md`](./testing.md).
+* La nomenclatura y cobertura de `<ComponentName>.stories.ts`: viven en [`storybook.md`](./storybook.md).

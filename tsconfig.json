@@ -13,5 +13,5 @@
     "resolveJsonModule": true,
     "noEmit": true
   },
-  "include": ["libs", "scripts", "vite.config.ts", ".storybook"]
+  "include": ["libs", "src", "scripts", "vite.config.ts", ".storybook"]
 }

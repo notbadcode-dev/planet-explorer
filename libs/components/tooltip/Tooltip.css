@@ -1,0 +1,18 @@
+.tooltip {
+    position: fixed;
+    z-index: 1000;
+    max-width: 16rem;
+    padding: var(--space-2) var(--space-3);
+    border: var(--size-border-control) solid var(--color-border-subtle);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-raised);
+    color: var(--color-text-primary);
+    font-family: var(--font-family-control);
+    font-size: var(--font-size-xs);
+    box-shadow: var(--shadow-panel);
+    pointer-events: none;
+}
+
+.tooltip[hidden] {
+    display: none;
+}

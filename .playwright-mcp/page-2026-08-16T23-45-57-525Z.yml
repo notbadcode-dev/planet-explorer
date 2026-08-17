@@ -1,0 +1,136 @@
+- generic [ref=f10e4]:
+  - heading "RadioGroup" [level=1] [ref=f10e5]
+  - generic [ref=f10e6]:
+    - generic [ref=f10e7]:
+      - toolbar [ref=f10e8]:
+        - generic [ref=f10e9]:
+          - generic [ref=f10e10]:
+            - button "Reload story" [ref=f10e11] [cursor=pointer]
+            - button "Zoom in" [ref=f10e14] [cursor=pointer]
+            - button "Zoom out" [ref=f10e18] [cursor=pointer]
+            - button "Reset zoom" [ref=f10e22] [cursor=pointer]
+          - link "Open canvas in new tab" [ref=f10e26] [cursor=pointer]:
+            - /url: iframe.html?id=componentes-radiogroup--playground
+      - group "¿Cuál es el planeta más grande del sistema solar?" [ref=f10e37]:
+        - generic [ref=f10e39]:
+          - radio "Júpiter Júpiter Júpiter Júpiter" [ref=f10e40]
+          - generic [ref=f10e41]: Júpiter
+        - generic [ref=f10e42]:
+          - radio "Saturno Saturno Saturno Saturno" [ref=f10e43]
+          - generic [ref=f10e44]: Saturno
+        - generic [ref=f10e45]:
+          - radio "Marte Marte Marte Marte" [ref=f10e46]
+          - generic [ref=f10e47]: Marte
+    - generic [ref=f10e49]:
+      - switch "Show code" [ref=f10e50] [cursor=pointer]
+      - button "Copy code" [ref=f10e53] [cursor=pointer]
+  - generic [ref=f10e57]:
+    - button "Reset controls" [ref=f10e59] [cursor=pointer]
+    - table [ref=f10e62]:
+      - rowgroup [ref=f10e63]:
+        - row [ref=f10e64]:
+          - columnheader "Name" [ref=f10e65]
+          - columnheader "Description" [ref=f10e66]
+          - columnheader "Default" [ref=f10e67]
+          - columnheader "Control" [ref=f10e68]
+      - rowgroup [ref=f10e69]:
+        - row [ref=f10e70]:
+          - cell "name" [ref=f10e71]
+          - cell "string" [ref=f10e72]
+          - cell "-" [ref=f10e76]
+          - cell [ref=f10e77]:
+            - textbox [ref=f10e79]:
+              - /placeholder: Edit string...
+              - text: quiz-planeta-mas-grande
+        - row [ref=f10e80]:
+          - cell "options" [ref=f10e81]
+          - cell "array" [ref=f10e82]
+          - cell "-" [ref=f10e86]
+          - cell "-" [ref=f10e87]
+        - row [ref=f10e88]:
+          - cell "legend" [ref=f10e89]
+          - cell "string" [ref=f10e90]
+          - cell "-" [ref=f10e94]
+          - cell [ref=f10e95]:
+            - textbox [ref=f10e97]:
+              - /placeholder: Edit string...
+              - text: ¿Cuál es el planeta más grande del sistema solar?
+        - row [ref=f10e98]:
+          - cell "value" [ref=f10e99]
+          - cell "-" [ref=f10e100]
+          - cell "-" [ref=f10e102]
+          - cell [ref=f10e103]:
+            - button "Set string" [ref=f10e104] [cursor=pointer]
+        - row [ref=f10e105]:
+          - cell "ariaLabel" [ref=f10e106]
+          - cell "-" [ref=f10e107]
+          - cell "-" [ref=f10e109]
+          - cell [ref=f10e110]:
+            - button "Set string" [ref=f10e111] [cursor=pointer]
+        - row [ref=f10e112]:
+          - cell "onChange" [ref=f10e113]
+          - cell "-" [ref=f10e114]
+          - cell "-" [ref=f10e116]
+          - cell "-" [ref=f10e117]
+  - heading [level=2] [ref=f10e118]:
+    - generic [ref=f10e119]:
+      - link "Copy heading URL to address bar" [ref=f10e121] [cursor=pointer]:
+        - /url: "#stories"
+      - text: Stories
+  - generic [ref=f10e122]:
+    - heading [level=3] [ref=f10e123]:
+      - generic [ref=f10e124]:
+        - link "Copy heading URL to address bar" [ref=f10e126] [cursor=pointer]:
+          - /url: "#playground"
+        - text: Playground
+    - group "¿Cuál es el planeta más grande del sistema solar?" [ref=f10e135]:
+      - generic [ref=f10e137]:
+        - radio [ref=f10e138]
+        - generic [ref=f10e139]: Júpiter
+      - generic [ref=f10e140]:
+        - radio [ref=f10e141]
+        - generic [ref=f10e142]: Saturno
+      - generic [ref=f10e143]:
+        - radio [ref=f10e144]
+        - generic [ref=f10e145]: Marte
+    - generic [ref=f10e147]:
+      - switch "Show code" [ref=f10e148] [cursor=pointer]
+      - button "Copy code" [ref=f10e151] [cursor=pointer]
+  - generic [ref=f10e154]:
+    - heading [level=3] [ref=f10e155]:
+      - generic [ref=f10e156]:
+        - link "Copy heading URL to address bar" [ref=f10e158] [cursor=pointer]:
+          - /url: "#default"
+        - text: Default
+    - group "¿Cuál es el planeta más grande del sistema solar?" [ref=f10e167]:
+      - generic [ref=f10e169]:
+        - radio [ref=f10e170]
+        - generic [ref=f10e171]: Júpiter
+      - generic [ref=f10e172]:
+        - radio [ref=f10e173]
+        - generic [ref=f10e174]: Saturno
+      - generic [ref=f10e175]:
+        - radio [ref=f10e176]
+        - generic [ref=f10e177]: Marte
+    - generic [ref=f10e179]:
+      - switch "Show code" [ref=f10e180] [cursor=pointer]
+      - button "Copy code" [ref=f10e183] [cursor=pointer]
+  - generic [ref=f10e186]:
+    - heading [level=3] [ref=f10e187]:
+      - generic [ref=f10e188]:
+        - link "Copy heading URL to address bar" [ref=f10e190] [cursor=pointer]:
+          - /url: "#con-seleccion-previa"
+        - text: Con Seleccion Previa
+    - group "¿Cuál es el planeta más grande del sistema solar?" [ref=f10e199]:
+      - generic [ref=f10e201]:
+        - radio [checked] [ref=f10e202]
+        - generic [ref=f10e203]: Júpiter
+      - generic [ref=f10e204]:
+        - radio [ref=f10e205]
+        - generic [ref=f10e206]: Saturno
+      - generic [ref=f10e207]:
+        - radio [ref=f10e208]
+        - generic [ref=f10e209]: Marte
+    - generic [ref=f10e211]:
+      - switch "Show code" [ref=f10e212] [cursor=pointer]
+      - button "Copy code" [ref=f10e215] [cursor=pointer]

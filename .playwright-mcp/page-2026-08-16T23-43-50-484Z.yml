@@ -1,0 +1,177 @@
+- generic [ref=f4e4]:
+  - heading "CardTile" [level=1] [ref=f4e5]
+  - generic [ref=f4e6]:
+    - generic [ref=f4e7]:
+      - toolbar [ref=f4e8]:
+        - generic [ref=f4e9]:
+          - generic [ref=f4e10]:
+            - button "Reload story" [ref=f4e11] [cursor=pointer]
+            - button "Zoom in" [ref=f4e14] [cursor=pointer]
+            - button "Zoom out" [ref=f4e18] [cursor=pointer]
+            - button "Reset zoom" [ref=f4e22] [cursor=pointer]
+          - link "Open canvas in new tab" [ref=f4e26] [cursor=pointer]:
+            - /url: iframe.html?id=componentes-cardtile--playground
+      - button "Marte Descubierto" [ref=f4e37] [cursor=pointer]:
+        - paragraph [ref=f4e38]: Marte
+        - generic [ref=f4e39]: Descubierto
+    - generic [ref=f4e45]:
+      - switch "Show code" [ref=f4e46] [cursor=pointer]
+      - button "Copy code" [ref=f4e49] [cursor=pointer]
+  - generic [ref=f4e53]:
+    - button "Reset controls" [ref=f4e55] [cursor=pointer]
+    - table [ref=f4e58]:
+      - rowgroup [ref=f4e59]:
+        - row [ref=f4e60]:
+          - columnheader "Name" [ref=f4e61]
+          - columnheader "Description" [ref=f4e62]
+          - columnheader "Default" [ref=f4e63]
+          - columnheader "Control" [ref=f4e64]
+      - rowgroup [ref=f4e65]:
+        - row [ref=f4e66]:
+          - cell "title" [ref=f4e67]
+          - cell "string" [ref=f4e68]
+          - cell "-" [ref=f4e72]
+          - cell [ref=f4e73]:
+            - textbox [ref=f4e75]:
+              - /placeholder: Edit string...
+              - text: Marte
+        - row [ref=f4e76]:
+          - cell "icon" [ref=f4e77]
+          - cell "string" [ref=f4e78]
+          - cell "-" [ref=f4e82]
+          - cell [ref=f4e83]:
+            - generic [ref=f4e84]:
+              - generic [ref=f4e85]: icon
+              - combobox "icon" [ref=f4e86]:
+                - option "Choose option..."
+                - option "orbit" [selected]
+                - option "rocket"
+                - option "sparkles"
+                - option "star"
+                - option "trash"
+                - option "check-circle"
+                - option "warning-circle"
+                - option "x-circle"
+                - option "info-circle"
+                - option "caret-down"
+        - row [ref=f4e87]:
+          - cell "statusLabel" [ref=f4e88]
+          - cell "string" [ref=f4e89]
+          - cell "-" [ref=f4e93]
+          - cell [ref=f4e94]:
+            - textbox [ref=f4e96]:
+              - /placeholder: Edit string...
+              - text: Descubierto
+        - row [ref=f4e97]:
+          - cell "statusVariant" [ref=f4e98]
+          - cell "string" [ref=f4e99]
+          - cell "-" [ref=f4e103]
+          - cell [ref=f4e104]:
+            - generic [ref=f4e105]:
+              - generic [ref=f4e106]: statusVariant
+              - combobox "statusVariant" [ref=f4e107]:
+                - option "Choose option..."
+                - option "default"
+                - option "success" [selected]
+                - option "warning"
+                - option "danger"
+                - option "info"
+        - row [ref=f4e108]:
+          - cell "imageSrc" [ref=f4e109]
+          - cell "-" [ref=f4e110]
+          - cell "-" [ref=f4e112]
+          - cell [ref=f4e113]:
+            - button "Set string" [ref=f4e114] [cursor=pointer]
+        - row [ref=f4e115]:
+          - cell "imageAlt" [ref=f4e116]
+          - cell "-" [ref=f4e117]
+          - cell "-" [ref=f4e119]
+          - cell [ref=f4e120]:
+            - button "Set string" [ref=f4e121] [cursor=pointer]
+        - row [ref=f4e122]:
+          - cell "locked" [ref=f4e123]
+          - cell "-" [ref=f4e124]
+          - cell "-" [ref=f4e126]
+          - cell [ref=f4e127]:
+            - button "Set boolean" [ref=f4e128] [cursor=pointer]
+        - row [ref=f4e129]:
+          - cell "onSelect" [ref=f4e130]
+          - cell "-" [ref=f4e131]
+          - cell "-" [ref=f4e133]
+          - cell "-" [ref=f4e134]
+  - heading [level=2] [ref=f4e135]:
+    - generic [ref=f4e136]:
+      - link "Copy heading URL to address bar" [ref=f4e138] [cursor=pointer]:
+        - /url: "#stories"
+      - text: Stories
+  - generic [ref=f4e139]:
+    - heading [level=3] [ref=f4e140]:
+      - generic [ref=f4e141]:
+        - link "Copy heading URL to address bar" [ref=f4e143] [cursor=pointer]:
+          - /url: "#playground"
+        - text: Playground
+    - button "Marte Descubierto" [ref=f4e152] [cursor=pointer]:
+      - paragraph [ref=f4e153]: Marte
+      - generic [ref=f4e154]: Descubierto
+    - generic [ref=f4e160]:
+      - switch "Show code" [ref=f4e161] [cursor=pointer]
+      - button "Copy code" [ref=f4e164] [cursor=pointer]
+  - generic [ref=f4e167]:
+    - heading [level=3] [ref=f4e168]:
+      - generic [ref=f4e169]:
+        - link "Copy heading URL to address bar" [ref=f4e171] [cursor=pointer]:
+          - /url: "#default"
+        - text: Default
+    - button "Marte Descubierto" [ref=f4e180] [cursor=pointer]:
+      - paragraph [ref=f4e181]: Marte
+      - generic [ref=f4e182]: Descubierto
+    - generic [ref=f4e188]:
+      - switch "Show code" [ref=f4e189] [cursor=pointer]
+      - button "Copy code" [ref=f4e192] [cursor=pointer]
+  - generic [ref=f4e195]:
+    - heading [level=3] [ref=f4e196]:
+      - generic [ref=f4e197]:
+        - link "Copy heading URL to address bar" [ref=f4e199] [cursor=pointer]:
+          - /url: "#bloqueada"
+        - text: Bloqueada
+    - paragraph [ref=f4e200]:
+      - text: "Estado bloqueado:"
+      - code [ref=f4e201]: onSelect
+      - text: no se dispara y
+      - code [ref=f4e202]: aria-disabled="true"
+      - text: comunica el estado a tecnologías de asistencia.
+    - button "??? Bloqueado" [disabled] [ref=f4e211]:
+      - paragraph [ref=f4e212]: "???"
+      - generic [ref=f4e213]: Bloqueado
+    - generic [ref=f4e216]:
+      - switch "Show code" [ref=f4e217] [cursor=pointer]
+      - button "Copy code" [ref=f4e220] [cursor=pointer]
+  - generic [ref=f4e223]:
+    - heading [level=3] [ref=f4e224]:
+      - generic [ref=f4e225]:
+        - link "Copy heading URL to address bar" [ref=f4e227] [cursor=pointer]:
+          - /url: "#con-imagen"
+        - text: Con Imagen
+    - button "Ilustración de la Tierra Tierra Descubierto" [ref=f4e236] [cursor=pointer]:
+      - img "Ilustración de la Tierra"
+      - paragraph [ref=f4e237]: Tierra
+      - generic [ref=f4e238]: Descubierto
+    - generic [ref=f4e244]:
+      - switch "Show code" [ref=f4e245] [cursor=pointer]
+      - button "Copy code" [ref=f4e248] [cursor=pointer]
+  - generic [ref=f4e251]:
+    - heading [level=3] [ref=f4e252]:
+      - generic [ref=f4e253]:
+        - link "Copy heading URL to address bar" [ref=f4e255] [cursor=pointer]:
+          - /url: "#sin-estado"
+        - text: Sin Estado
+    - paragraph [ref=f4e256]:
+      - code [ref=f4e257]: statusLabel
+      - text: es opcional; sin él, la tarjeta no renderiza
+      - code [ref=f4e258]: Badge
+      - text: .
+    - button [ref=f4e267] [cursor=pointer]:
+      - paragraph [ref=f4e268]: Venus
+    - generic [ref=f4e270]:
+      - switch "Show code" [ref=f4e271] [cursor=pointer]
+      - button "Copy code" [ref=f4e274] [cursor=pointer]
