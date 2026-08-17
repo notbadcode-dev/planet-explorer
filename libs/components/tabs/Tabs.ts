@@ -3,7 +3,6 @@ import './Tabs.css';
 import { createIcon } from '../icon';
 import { attachTooltip } from '../tooltip';
 import {
-    TABS_ACTIVE_TABINDEX,
     TABS_ARIA_CONTROLS_ATTRIBUTE,
     TABS_ARIA_DISABLED_ATTRIBUTE,
     TABS_ARIA_LABELLEDBY_ATTRIBUTE,
@@ -13,11 +12,12 @@ import {
     TABS_BASE_CLASS,
     TABS_BUTTON_TYPE_ATTRIBUTE_VALUE,
     TABS_CLICK_EVENT,
+    TABS_DISABLED_TABINDEX,
     TABS_EMPTY_INDEX,
+    TABS_ENABLED_TABINDEX,
     TABS_FALSE_VALUE,
     TABS_ICON_CLASS,
     TABS_ICON_NONE_COUNT,
-    TABS_INACTIVE_TABINDEX,
     TABS_INDICATOR_CLASS,
     TABS_INDICATOR_INSTANT_CLASS,
     TABS_INDICATOR_TAG,
@@ -96,7 +96,7 @@ export function createTabs(props: TabsProps): HTMLDivElement {
         tabButton.setAttribute(TABS_ROLE_ATTRIBUTE, TABS_ROLE_TAB);
         tabButton.setAttribute(TABS_ARIA_CONTROLS_ATTRIBUTE, panelId);
         tabButton.setAttribute(TABS_ARIA_SELECTED_ATTRIBUTE, isActive ? TABS_TRUE_VALUE : TABS_FALSE_VALUE);
-        tabButton.tabIndex = isActive ? TABS_ACTIVE_TABINDEX : TABS_INACTIVE_TABINDEX;
+        tabButton.tabIndex = tab.disabled ? TABS_DISABLED_TABINDEX : TABS_ENABLED_TABINDEX;
         tabButton.setAttribute(TABS_ARIA_DISABLED_ATTRIBUTE, tab.disabled ? TABS_TRUE_VALUE : TABS_FALSE_VALUE);
 
         if (tab.icon) {
@@ -142,7 +142,6 @@ export function createTabs(props: TabsProps): HTMLDivElement {
         tabs.forEach((tab, index) => {
             const isActive = tab.id === id;
             tabButtons[index].setAttribute(TABS_ARIA_SELECTED_ATTRIBUTE, isActive ? TABS_TRUE_VALUE : TABS_FALSE_VALUE);
-            tabButtons[index].tabIndex = isActive ? TABS_ACTIVE_TABINDEX : TABS_INACTIVE_TABINDEX;
             panelElements[index].hidden = !isActive;
         });
 

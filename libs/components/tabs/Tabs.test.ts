@@ -113,6 +113,33 @@ describe('createTabs', () => {
         tabs.remove();
     });
 
+    it('permite navegar con Tab entre pestañas habilitadas y excluye las deshabilitadas del orden de tabulación', () => {
+        const tabsData = [
+            { id: 'facts', label: 'Datos', panel: createPanel('Contenido de datos') },
+            { id: 'trivia', label: 'Curiosidades', panel: createPanel('Contenido de curiosidades'), disabled: true },
+            { id: 'quiz', label: 'Quiz', panel: createPanel('Contenido de quiz') },
+        ];
+
+        const tabs = createTabs({ tabs: tabsData });
+        const tabButtons = Array.from(tabs.querySelectorAll('[role="tab"]')) as HTMLButtonElement[];
+
+        expect(tabButtons[0].tabIndex).toBe(0);
+        expect(tabButtons[1].tabIndex).toBe(-1);
+        expect(tabButtons[2].tabIndex).toBe(0);
+    });
+
+    it('mantiene el tabIndex de cada pestaña habilitada al cambiar la pestaña activa (no usa roving tabindex)', () => {
+        const onChange = vi.fn();
+        const tabs = createTabs({ tabs: buildTabs(), onChange });
+        const tabButtons = Array.from(tabs.querySelectorAll('[role="tab"]')) as HTMLButtonElement[];
+
+        tabButtons[2].click();
+
+        expect(tabButtons[0].tabIndex).toBe(0);
+        expect(tabButtons[1].tabIndex).toBe(0);
+        expect(tabButtons[2].tabIndex).toBe(0);
+    });
+
     it('renderiza un icono decorativo por pestaña cuando todas lo definen (FR-042)', () => {
         const tabsData = [
             { id: 'facts', label: 'Datos', panel: createPanel('Contenido'), icon: 'star' as const },

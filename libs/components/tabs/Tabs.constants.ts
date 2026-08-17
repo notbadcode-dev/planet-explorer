@@ -33,8 +33,8 @@ export const TABS_ARIA_DISABLED_ATTRIBUTE = 'aria-disabled';
 export const TABS_BUTTON_TYPE_ATTRIBUTE_VALUE = 'button';
 export const TABS_TRUE_VALUE = 'true';
 export const TABS_FALSE_VALUE = 'false';
-export const TABS_ACTIVE_TABINDEX = 0;
-export const TABS_INACTIVE_TABINDEX = -1;
+export const TABS_ENABLED_TABINDEX = 0;
+export const TABS_DISABLED_TABINDEX = -1;
 
 export const TABS_CLICK_EVENT = 'click';
 export const TABS_KEYDOWN_EVENT = 'keydown';
