@@ -28,24 +28,37 @@ regla de principio de la constitución.
 
 ## Familias tipográficas base
 
-* `Fredoka` para identidad visual, títulos y textos expresivos.
+* `Fredoka` para identidad visual y textos expresivos de marca (logo, nombres de
+  planetas o destinos, recompensas).
+* `Quicksand` para títulos estructurales H1/H2 (diálogos, paneles, tarjetas):
+  convive mejor junto a `Nunito`/`Atkinson Hyperlegible Next` que `Fredoka`, cuyo
+  trazo grueso resalta en exceso fuera de los usos de marca (ver nota 2026-08-17
+  más abajo).
 * `Nunito` para controles e interfaz operativa.
 * `Atkinson Hyperlegible Next` para texto de lectura dirigido al niño (`Atkinson
   Hyperlegible` MAY mantenerse como fallback por compatibilidad).
 
 ## Mapa de uso semántico
 
-* `Fredoka`: logo, H1/H2, nombres de planetas o destinos, recompensas.
+* `Fredoka`: logo, nombres de planetas o destinos, recompensas (momentos de marca).
+* `Quicksand`: H1/H2 estructurales (títulos de `Dialog`, `Panel`, `CardTile`).
 * `Nunito`: botones, tabs, inputs, labels, navegación y controles.
 * `Atkinson Hyperlegible Next`: instrucciones, preguntas, datos astronómicos y
   cualquier texto que el niño deba leer o comprender.
+
+> **Nota (2026-08-17)**: `--font-family-heading` se desacopló de
+> `--font-family-display` porque `Fredoka` en peso 600/700 resultaba
+> visualmente "pesado" junto a `Nunito`/`Atkinson Hyperlegible Next` en
+> componentes de interfaz (Dialog, Panel, CardTile). `Fredoka` se mantiene para
+> `--font-family-logo`/`--font-family-planet-name`/`--font-family-reward`,
+> donde ese carácter expresivo sí es deseable.
 
 ## Tokens semánticos definidos (`src/styles/_typography.css`)
 
 | Token | Familia resuelta |
 |---|---|
 | `--font-family-logo` | `--font-family-display` (Fredoka) |
-| `--font-family-title` | `--font-family-heading` (Fredoka) |
+| `--font-family-title` | `--font-family-heading` (Quicksand) |
 | `--font-family-planet-name` | `--font-family-display` (Fredoka) |
 | `--font-family-reward` | `--font-family-display` (Fredoka) |
 | `--font-family-button` | `--font-family-control` (Nunito) |

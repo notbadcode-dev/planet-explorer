@@ -26,6 +26,7 @@
     color: var(--color-text-primary);
     font-family: var(--font-family-heading);
     font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-heading);
 }
 
 .dialog__description {
