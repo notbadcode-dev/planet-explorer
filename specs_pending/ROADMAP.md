@@ -28,7 +28,7 @@ Estas specs viven en `specs/` (no en `specs_pending/`) porque ya pasaron por el 
 Bucle de juego mínimo jugable de principio a fin, con un único destino real (la Luna) y persistencia.
 
 - [ ] [004-core-game-loop.md](004-core-game-loop.md) — Bucle de juego base
-- [ ] [005-bot6-narrative-shell.md](005-bot6-narrative-shell.md) — Cascarón narrativo de BOT-6
+- [ ] [005-bot6-narrative-shell.md](005-bot6-narrative-shell.md) — Cascarón narrativo de BOT-6 ([spec.md](../specs/005-bot6-narrative-shell/spec.md)) — 🔄 En progreso (rama `005-quiero-adir-bot`, tasks.md generado (18 tareas, US1+US2), pendiente `/speckit-implement`)
 - [ ] [006-skill-progress-model.md](006-skill-progress-model.md) — Modelo de progreso por habilidades
 - [ ] [007-challenge-engine-core.md](007-challenge-engine-core.md) — Motor genérico de retos
 - [ ] [008-moon-destination-counting.md](008-moon-destination-counting.md) — Destino: la Luna con retos de conteo

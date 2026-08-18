@@ -3,9 +3,12 @@ id: "005-bot6-narrative-shell"
 name: "Cascarón narrativo de BOT-6"
 phase: "Fase 1 — Motor de juego base y primer destino jugable"
 depends_on: ["004-core-game-loop"]
+status: "Implemented"
 ---
 
 # 005 — Cascarón narrativo de BOT-6 (bot6-narrative-shell)
+
+**Implementado en**: [specs/005-bot6-narrative-shell/](specs/005-bot6-narrative-shell/)
 
 ## Objetivo
 Introducir a BOT-6 como robot acompañante y guía narrativo dentro del bucle de juego existente, con diálogos básicos y un sistema simple de presentación de texto/imagen, sin lógica educativa todavía.

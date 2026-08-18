@@ -9,9 +9,11 @@
 
 import Phaser from 'phaser';
 
+import { DESTINATION_TRANSITION_MESSAGE } from '../core/content/bot6-messages.constants';
 import { beginTransitionToMap, completeTransition } from '../core/navigation/navigation-state';
 import { SCENE_ID_DESTINATION, SCENE_ID_MAP } from '../core/navigation/navigation-state.constants';
 import type { NavigationState, SceneInitData } from '../core/navigation/navigation-state.type';
+import { createBot6Dialogue } from '../overlay/bot6-dialogue';
 import { createHud } from '../overlay/hud';
 
 export class DestinationScene extends Phaser.Scene {
@@ -19,6 +21,7 @@ export class DestinationScene extends Phaser.Scene {
     navigationState!: NavigationState;
 
     private hudElement: HTMLElement | null = null;
+    private bot6DialogueElement?: HTMLElement;
 
     constructor() {
         super(SCENE_ID_DESTINATION);
@@ -36,6 +39,13 @@ export class DestinationScene extends Phaser.Scene {
         });
         this.game.canvas.parentElement?.append(this.hudElement);
 
+        // T011 [FR-002]: Mount BOT-6 dialogue overlay on destination entry (repeated each visit)
+        this.bot6DialogueElement = createBot6Dialogue({
+            message: DESTINATION_TRANSITION_MESSAGE,
+            onClose: () => this.handleBot6DialogueClose(),
+        });
+        this.game.canvas.parentElement?.append(this.bot6DialogueElement);
+
         this.events.on(Phaser.Scenes.Events.SHUTDOWN, this.handleShutdown, this);
     }
 
@@ -50,8 +60,17 @@ export class DestinationScene extends Phaser.Scene {
         this.scene.start(SCENE_ID_MAP, { navigationState: completedState } satisfies SceneInitData);
     }
 
+    // T012 [FR-004]: Close BOT-6 dialogue and restore normal destination HUD interaction
+    private handleBot6DialogueClose(): void {
+        this.bot6DialogueElement?.remove();
+        this.bot6DialogueElement = undefined;
+    }
+
     private handleShutdown(): void {
         this.hudElement?.remove();
         this.hudElement = null;
+        // T013: Clean up BOT-6 dialogue if still mounted when scene shuts down
+        this.bot6DialogueElement?.remove();
+        this.bot6DialogueElement = undefined;
     }
 }
