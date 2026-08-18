@@ -1,9 +1,9 @@
 ---
 title: "Convención: Arquitectura del proyecto (visión general)"
 type: "convention"
-version: "1.1"
+version: "1.2"
 created: "2026-08-16"
-updated: "2026-08-16"
+updated: "2026-08-18"
 status: "Approved"
 source: "package.json, vite.config.ts, tsconfig.json, .github/workflows/ci.yml, constitution.md (sección Arquitectura y tecnología)"
 tags: [convention, architecture]
@@ -44,12 +44,10 @@ incorporarse sin spec explícita; Three.js MUST NOT incorporarse salvo necesidad
 concreta de renderizado 3D (ver constitución para el detalle completo — este
 documento no repite esas reglas de principio, solo referencia dónde viven).
 
-**Estado real (2026-08-16)**: `package.json` todavía **no** declara `phaser` como
-dependencia; el repositorio contiene únicamente la librería de componentes UI
-(`libs/components/`) y los tokens de diseño (`src/styles/`). El motor de juego y
-las escenas de Phaser son trabajo futuro (ver `specs_pending/004-core-game-loop.md`
-en adelante). Este documento MUST actualizarse en cuanto exista una feature que
-introduzca la primera escena Phaser.
+**Estado real (2026-08-17)**: `package.json` ya declara `phaser` como dependencia
+de producción (`specs/004-core-game-loop/`); el motor de juego vive en
+`src/game/` siguiendo el layout fijado por
+[`game-engine-scenes.md`](./game-engine-scenes.md).
 
 ## Layout del repositorio
 
@@ -63,11 +61,12 @@ planet-explorer/
 ├── libs/components/<name>/           # Librería de componentes UI reutilizables ("dummy", sin lógica de negocio)
 ├── src/
 │   ├── assets/fonts/                 # Assets estáticos empaquetados por Vite (fuentes locales, sin CDN)
+│   ├── game/                         # Motor de juego (Phaser) — ver game-engine-scenes.md
 │   └── styles/                       # Tokens de diseño globales (_colors, _spacing, _radii, _shadows, _typography, _motion) + index.css
 ├── scripts/check-components.mjs      # Verificación de convención estructural de libs/components/ (parte de `npm run lint`)
 ├── .storybook/                       # Configuración de Storybook (@storybook/html-vite, sin adaptador de framework)
 ├── vite.config.ts                    # Build (dist/) + entorno de test Vitest (happy-dom)
-├── tsconfig.json                     # Compila libs/, scripts/, vite.config.ts, .storybook/ — NO compila src/ (aún sin .ts)
+├── tsconfig.json                     # Compila libs/, scripts/, src/, vite.config.ts, .storybook/
 └── .github/workflows/ci.yml          # lint → test → build → deploy a GitHub Pages (solo rama master)
 ```
 
@@ -76,8 +75,8 @@ planet-explorer/
   constitución, "Componentes compartidos": `libs/components/` es exclusivamente
   presentacional).
 * **G4**: Cuando exista código de juego en `src/`, `tsconfig.json` MUST ampliar su
-  `include` para compilarlo; hasta entonces, `src/` solo contiene CSS/assets y no
-  participa en la compilación TypeScript.
+  `include` para compilarlo (ya cumplido: `include` contiene `"src"` desde antes
+  de esta feature).
 * **G5**: Una feature nueva MUST documentarse primero en `specs/NNN-feature-name/`
   (vía `/speckit-specify` → `/speckit-plan`) antes de escribir código; no MUST
   añadirse código directamente a `libs/` o `src/` sin spec asociada (salvo fixes

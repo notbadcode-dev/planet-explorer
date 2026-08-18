@@ -3,9 +3,12 @@ id: "004-core-game-loop"
 name: "Bucle de juego base"
 phase: "Fase 1 — Motor de juego base y primer destino jugable"
 depends_on: ["001-component-library-architecture", "002-button-variants", "003-shared-components-base"]
+status: "done"
 ---
 
 # 004 — Bucle de juego base (core-game-loop)
+
+**Implementado en**: specs/004-core-game-loop/
 
 ## Objetivo
 Implementar el primer vertical slice jugable de extremo a extremo: mapa del sistema solar navegable, selección de un destino, transición a una escena de destino (placeholder) y vuelta al mapa, con un HUD mínimo.
