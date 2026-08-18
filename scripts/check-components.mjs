@@ -2,23 +2,50 @@
 /**
  * check-components.mjs
  *
- * Recorre `libs/components/` y falla (exit code != 0) si detecta:
+ * (a)-(c) recorren SOLO `libs/components/` (estructura propia de la librería de
+ * componentes, docs/conventions/components/structure.md) y fallan si detectan:
  *   (a) nombres de componente duplicados (comparación insensible a mayúsculas), o
  *   (b) un componente incompleto: sin `*.test.ts` o sin `*.stories.ts` (FR-009).
- *   (c) tipos declarados fuera de `*.type.ts`, o
- *   (d) literales mágicos de string/número en código productivo fuera de `*.constants.ts`.
+ *   (c) tipos declarados fuera de `*.type.ts`.
  *
- * Contrato: docs/conventions/components/structure.md
+ * (d) recorre TODO el código productivo del proyecto (`src/` y `libs/`, incluyendo
+ * `libs/shared/`), no solo `libs/components/`, y falla si detecta:
+ *   (d) literales mágicos de string/número fuera de `*.constants.ts`.
+ *
+ * Contrato: docs/conventions/components/structure.md (a-c) y
+ * docs/conventions/components/visual-rules.md V4 (d, regla general del proyecto).
  */
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { basename, dirname, join, relative } from 'node:path';
 import ts from 'typescript';
 
 const COMPONENTS_DIR = join(process.cwd(), 'libs', 'components');
+const MAGIC_LITERAL_CHECK_ROOTS = ['src', 'libs'].map((dir) => join(process.cwd(), dir));
 
 function listComponentDirs(dir) {
     return readdirSync(dir).filter((entry) => statSync(join(dir, entry)).isDirectory());
+}
+
+function listTsFilesRecursively(dir) {
+    let entries;
+    try {
+        entries = readdirSync(dir, { withFileTypes: true });
+    } catch {
+        return [];
+    }
+
+    const files = [];
+    for (const entry of entries) {
+        const fullPath = join(dir, entry.name);
+        if (entry.isDirectory()) {
+            files.push(...listTsFilesRecursively(fullPath));
+        } else if (entry.isFile() && entry.name.endsWith('.ts')) {
+            files.push(fullPath);
+        }
+    }
+
+    return files;
 }
 
 function isTypeFile(fileName) {
@@ -85,9 +112,8 @@ function isMagicLiteral(node) {
     return ts.isNumericLiteral(node);
 }
 
-function validateComponentCode(componentName, componentDir, files) {
+function validateComponentTypeDeclarations(componentName, componentDir, files) {
     const errors = [];
-    const hasConstants = files.some(isConstantsFile);
     const hasTypeFile = files.some(isTypeFile);
 
     for (const fileName of files.filter(isProductionComponentFile)) {
@@ -108,20 +134,46 @@ function validateComponentCode(componentName, componentDir, files) {
                 );
             }
 
-            if (isCheckedImplementationFile(fileName) && isMagicLiteral(node)) {
-                const constantsFileHint = hasConstants
-                    ? '*.constants.ts'
-                    : fileName.replace(/\.ts$/, '.constants.ts');
-
-                errors.push(
-                    `Componente "${componentName}": literal mágico fuera de ${constantsFileHint} en ${formatLocation(sourceFile, node)}.`,
-                );
-            }
-
             ts.forEachChild(node, visit);
         }
 
         visit(sourceFile);
+    }
+
+    return errors;
+}
+
+function collectMagicLiteralErrors(rootDirs) {
+    const errors = [];
+
+    for (const rootDir of rootDirs) {
+        for (const filePath of listTsFilesRecursively(rootDir)) {
+            const fileName = basename(filePath);
+            if (!isCheckedImplementationFile(fileName)) {
+                continue;
+            }
+
+            const siblings = readdirSync(dirname(filePath));
+            const constantsFileHint = siblings.some(isConstantsFile)
+                ? '*.constants.ts'
+                : fileName.replace(/\.ts$/, '.constants.ts');
+
+            const relativePath = relative(process.cwd(), filePath);
+            const source = readFileSync(filePath, 'utf8');
+            const sourceFile = ts.createSourceFile(relativePath, source, ts.ScriptTarget.Latest, true);
+
+            function visit(node) {
+                if (isMagicLiteral(node)) {
+                    errors.push(
+                        `Literal mágico fuera de ${constantsFileHint} en ${formatLocation(sourceFile, node)}.`,
+                    );
+                }
+
+                ts.forEachChild(node, visit);
+            }
+
+            visit(sourceFile);
+        }
     }
 
     return errors;
@@ -169,11 +221,14 @@ function main() {
             );
         }
 
-        errors.push(...validateComponentCode(name, componentDir, files));
+        errors.push(...validateComponentTypeDeclarations(name, componentDir, files));
     }
 
+    // (d) Literales mágicos: todo el código productivo del proyecto (src/ + libs/)
+    errors.push(...collectMagicLiteralErrors(MAGIC_LITERAL_CHECK_ROOTS));
+
     if (errors.length > 0) {
-        console.error('check-components: se han encontrado problemas en libs/components/:\n');
+        console.error('check-components: se han encontrado problemas en el proyecto:\n');
         for (const error of errors) {
             console.error(`  - ${error}`);
         }
@@ -181,7 +236,7 @@ function main() {
     }
 
     console.log(
-        `check-components: ${componentDirs.length} componente(s) verificado(s) sin problemas.`,
+        `check-components: ${componentDirs.length} componente(s) verificado(s) sin problemas (más literales mágicos en todo el proyecto).`,
     );
 }
 
