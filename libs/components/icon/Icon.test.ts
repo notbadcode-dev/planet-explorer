@@ -86,6 +86,19 @@ describe('createIcon', () => {
         expect(icon.querySelector('path')).not.toBeNull();
     });
 
+    it('renderiza icono del catálogo no usado en stories: robot', () => {
+        const icon = createIcon({ name: 'robot' });
+        expect(icon.querySelector('path')).not.toBeNull();
+    });
+
+    it('renderiza icono robot como retrato de BOT-6 con tamaño personalizado', () => {
+        const icon = createIcon({ name: 'robot', size: 64, ariaLabel: 'BOT-6' });
+        expect(icon.getAttribute('width')).toBe('64');
+        expect(icon.getAttribute('height')).toBe('64');
+        expect(icon.getAttribute(ICON_ARIA_LABEL_ATTRIBUTE)).toBe('BOT-6');
+        expect(icon.getAttribute(ICON_ROLE_ATTRIBUTE)).toBe(ICON_ROLE_IMAGE_VALUE);
+    });
+
     it('combina ariaLabel con tamaño personalizado', () => {
         const icon = createIcon({ name: 'rocket', ariaLabel: 'Lanzar', size: 64 });
         expect(icon.getAttribute('aria-label')).toBe('Lanzar');

@@ -12,9 +12,11 @@
 import Phaser from 'phaser';
 
 import { DESTINATIONS } from '../core/content/destinations';
+import { MAP_WELCOME_MESSAGE } from '../core/content/bot6-messages.constants';
 import { beginTransitionToDestination } from '../core/navigation/navigation-state';
 import { SCENE_ID_DESTINATION, SCENE_ID_MAP } from '../core/navigation/navigation-state.constants';
 import type { NavigationState, SceneInitData } from '../core/navigation/navigation-state.type';
+import { createBot6Dialogue } from '../overlay/bot6-dialogue';
 import {
     CENTER_DIVISOR,
     DESTINATION_LABEL_COLOR,
@@ -32,6 +34,7 @@ export class MapScene extends Phaser.Scene {
 
     private marker?: Phaser.GameObjects.Arc;
     private label?: Phaser.GameObjects.Text;
+    private bot6DialogueElement?: HTMLElement;
 
     constructor() {
         super(SCENE_ID_MAP);
@@ -79,6 +82,13 @@ export class MapScene extends Phaser.Scene {
             this.scene.start(SCENE_ID_DESTINATION, { navigationState: nextState } satisfies SceneInitData);
         });
 
+        // T008 [FR-001]: Mount BOT-6 dialogue overlay on map entry (repeated each visit)
+        this.bot6DialogueElement = createBot6Dialogue({
+            message: MAP_WELCOME_MESSAGE,
+            onClose: () => this.handleBot6DialogueClose(),
+        });
+        this.game.canvas.parentElement?.append(this.bot6DialogueElement);
+
         this.scale.on(Phaser.Scale.Events.RESIZE, this.handleResize, this);
         this.events.on(Phaser.Scenes.Events.SHUTDOWN, this.handleShutdown, this);
     }
@@ -91,8 +101,17 @@ export class MapScene extends Phaser.Scene {
         this.label?.setPosition(centerX, centerY + DESTINATION_LABEL_OFFSET_Y);
     }
 
+    // T009 [FR-004]: Close BOT-6 dialogue and restore normal map interaction
+    private handleBot6DialogueClose(): void {
+        this.bot6DialogueElement?.remove();
+        this.bot6DialogueElement = undefined;
+    }
+
     private handleShutdown(): void {
         this.scale.off(Phaser.Scale.Events.RESIZE, this.handleResize, this);
+        // T010: Clean up BOT-6 dialogue if still mounted when scene shuts down
+        this.bot6DialogueElement?.remove();
+        this.bot6DialogueElement = undefined;
     }
 }
 

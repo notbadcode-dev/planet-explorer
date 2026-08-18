@@ -3,6 +3,7 @@ import checkCircleDuotoneSvg from '@phosphor-icons/core/duotone/check-circle-duo
 import infoDuotoneSvg from '@phosphor-icons/core/duotone/info-duotone.svg?raw';
 import planetDuotoneSvg from '@phosphor-icons/core/duotone/planet-duotone.svg?raw';
 import rocketLaunchDuotoneSvg from '@phosphor-icons/core/duotone/rocket-launch-duotone.svg?raw';
+import robotDuotoneSvg from '@phosphor-icons/core/duotone/robot-duotone.svg?raw';
 import sparkleDuotoneSvg from '@phosphor-icons/core/duotone/sparkle-duotone.svg?raw';
 import starDuotoneSvg from '@phosphor-icons/core/duotone/star-duotone.svg?raw';
 import trashDuotoneSvg from '@phosphor-icons/core/duotone/trash-duotone.svg?raw';
@@ -13,6 +14,7 @@ import arrowDownFlatSvg from './assets/arrow-down-flat.svg?raw';
 export const APP_ICON_NAMES = [
     'orbit',
     'rocket',
+    'robot',
     'sparkles',
     'star',
     'trash',
@@ -27,6 +29,7 @@ export const APP_ICON_NAMES = [
 export const APP_ICON_SVGS = {
     orbit: planetDuotoneSvg,
     rocket: rocketLaunchDuotoneSvg,
+    robot: robotDuotoneSvg,
     sparkles: sparkleDuotoneSvg,
     star: starDuotoneSvg,
     trash: trashDuotoneSvg,
