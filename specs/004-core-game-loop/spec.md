@@ -4,8 +4,8 @@ feature: "004-core-game-loop"
 type: "feature-spec"
 version: "1.2"
 created: "2026-08-17"
-updated: "2026-08-17"
-status: "Draft"
+updated: "2026-08-18"
+status: "Implemented"
 priority: "P1"
 tags: ["game", "architecture"]
 dependencies: ["001-component-library-architecture", "002-button-variants", "003-shared-components-base"]
