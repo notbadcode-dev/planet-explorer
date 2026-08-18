@@ -3,9 +3,12 @@ id: "006-skill-progress-model"
 name: "Modelo de progreso por habilidades"
 phase: "Fase 1 — Motor de juego base y primer destino jugable"
 depends_on: ["004-core-game-loop"]
+status: "Implemented"
 ---
 
 # 006 — Modelo de progreso por habilidades (skill-progress-model)
+
+**Implementado en**: [specs/006-skill-progress-model/](../specs/006-skill-progress-model/spec.md)
 
 ## Objetivo
 Definir e implementar el modelo de datos que representa el dominio del jugador por habilidad (counting, addition, memory, logic, reading, etc.), independiente de cualquier destino o reto concreto.
