@@ -4,8 +4,8 @@ feature: "006-skill-progress-model"
 type: "feature-spec"
 version: "1.0"
 created: "2026-08-19"
-updated: "2026-08-19"
-status: "Draft"
+updated: "2026-08-20"
+status: "Implemented"
 priority: "P1"
 tags: ["game", "progression", "data", "education"]
 dependencies: ["004-core-game-loop"]

@@ -5,8 +5,8 @@ feature: "006-skill-progress-model"
 type: "implementation-plan"
 version: "1.0"
 created: "2026-08-19"
-updated: "2026-08-19"
-status: "Draft"
+updated: "2026-08-20"
+status: "Implemented"
 spec: "./spec.md"
 tags: ["game", "progression", "data", "education"]
 dependencies: ["004-core-game-loop"]
