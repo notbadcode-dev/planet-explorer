@@ -4,8 +4,8 @@ feature: "005-bot6-narrative-shell"
 type: "feature-spec"
 version: "1.1"
 created: "2026-08-18"
-updated: "2026-08-18"
-status: "Draft"
+updated: "2026-08-19"
+status: "Implemented"
 priority: "P1"
 tags: ["game", "narrative", "education"]
 dependencies: ["004-core-game-loop"]

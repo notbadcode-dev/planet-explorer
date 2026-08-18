@@ -5,8 +5,8 @@ feature: "005-bot6-narrative-shell"
 type: "implementation-plan"
 version: "1.0"
 created: "2026-08-18"
-updated: "2026-08-18"
-status: "Draft"
+updated: "2026-08-19"
+status: "Implemented"
 spec: "./spec.md"
 tags: ["game", "narrative", "education"]
 dependencies: ["004-core-game-loop"]
