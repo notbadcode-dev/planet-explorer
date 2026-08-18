@@ -2,7 +2,7 @@
 id: "002-button-variants"
 name: "Variantes del componente Button"
 phase: "Fase 0 — Fundamentos ya construidos (documentación retroactiva)"
-status: "Hecha"
+status: "Implemented"
 depends_on: ["001-component-library-architecture"]
 ---
 

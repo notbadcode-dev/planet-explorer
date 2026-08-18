@@ -2,13 +2,13 @@
 id: "003-shared-components-base"
 name: "Base ampliada de componentes compartidos reutilizables"
 phase: "Fase 0 — Fundamentos ya construidos (documentación retroactiva)"
-status: "En progreso"
+status: "Implemented"
 depends_on: ["002-button-variants"]
 ---
 
 # 003 — Base ampliada de componentes compartidos reutilizables (shared-components-base)
 
-> **Nota**: esta ficha es una reconstrucción retroactiva en el formato de `specs_pending/`, escrita **después** de que la funcionalidad ya estuviera especificada e implementada (parcialmente) siguiendo el ciclo completo de Spec Kit. La especificación formal y vinculante vive en [`specs/003-shared-components-base/spec.md`](../specs/003-shared-components-base/spec.md); este fichero solo existe para que el roadmap tenga una entrada consistente para los cimientos del proyecto.
+> **Nota**: esta ficha es una reconstrucción retroactiva en el formato de `specs_pending/`, escrita **después** de que la funcionalidad ya estuviera especificada e implementada siguiendo el ciclo completo de Spec Kit. La especificación formal y vinculante vive en [`specs/003-shared-components-base/spec.md`](../specs/003-shared-components-base/spec.md); este fichero solo existe para que el roadmap tenga una entrada consistente para los cimientos del proyecto.
 
 ## Objetivo
 Ampliar `libs/components` con un catálogo base de componentes compartidos reutilizables (`Input`, `Panel`, `Badge`, `Progress`, `Dialog`, `Card/Tile`, `Select`, `RadioGroup`/`Checkbox`, `Tabs`, `Toast`, `Tooltip`, `Spinner`, `Accordion`, `Slider`) para construir vistas de juego sin duplicar UI, todos agnósticos de dominio.
