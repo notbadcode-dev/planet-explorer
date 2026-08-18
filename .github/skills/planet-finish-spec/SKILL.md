@@ -17,8 +17,8 @@ Esta skill **no sustituye** a `planet-git-flow` ni a `planet-git-commit-policy`:
 1. La rama actual coincide con `^[0-9]{3,}-` (rama de feature). Si no, STOP y pide al usuario que se sitúe en la rama de la feature a cerrar (`git checkout <###-feature-name>`).
 2. Árbol de trabajo limpio (`git status --short --branch`), salvo los cambios de front matter que esta misma skill va a crear en los pasos 1-2.
 3. Convergencia confirmada: si `/speckit-converge` no se ha ejecutado ya en esta sesión para esta feature, ejecútalo ahora.
-   - Si devuelve `tasks_appended`, **STOP**: hay que ejecutar `/speckit-implement` para completar esas tareas nuevas antes de cerrar la spec.
-   - Solo continúa si el resultado es `converged` ("✅ Converged").
+    - Si devuelve `tasks_appended`, **STOP**: hay que ejecutar `/speckit-implement` para completar esas tareas nuevas antes de cerrar la spec.
+    - Solo continúa si el resultado es `converged` ("✅ Converged").
 4. Gate de CI en verde (`npm run lint && npm test && npm run build`, o el equivalente del stack que indique `plan.md` si difiere).
 
 Si cualquier precondición falla, detente e informa exactamente qué falta. Nunca fuerces el cierre saltándote una precondición.
