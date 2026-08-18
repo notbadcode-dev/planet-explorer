@@ -1,10 +1,11 @@
 {
     "name": "planet-explorer",
-    "version": "0.3.1",
+    "version": "0.4.0",
     "description": "Explorador Espacial: juego educativo de astronomía para niños.",
     "type": "module",
     "private": true,
     "scripts": {
+        "dev": "vite",
         "test": "vitest run",
         "lint": "node scripts/check-components.mjs && eslint .",
         "check:components": "node scripts/check-components.mjs",
@@ -29,6 +30,7 @@
         "vitest": "^4.1.10"
     },
     "dependencies": {
-        "@phosphor-icons/core": "^2.1.1"
+        "@phosphor-icons/core": "^2.1.1",
+        "phaser": "^4.2.1"
     }
 }

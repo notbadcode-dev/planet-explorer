@@ -1,11 +1,11 @@
 ---
 title: "Convención: Estructura de escenas Phaser y separación lógica/render"
 type: "convention"
-version: "1.1"
+version: "1.2"
 created: "2026-08-16"
 updated: "2026-08-17"
 status: "Draft"
-source: "constitution.md (sección 'Arquitectura y tecnología' y principio VII 'Separación entre lógica y renderizado')"
+source: "constitution.md (sección 'Arquitectura y tecnología' y principio VII 'Separación entre lógica y renderizado'); specs/004-core-game-loop/plan.md (primera implementación real)"
 tags: [architecture, game-engine, phaser]
 ---
 
@@ -38,6 +38,7 @@ src/
 │   │   ├── progress/        # Modelo de progreso por habilidad y persistencia (ver progress-persistence-model.md)
 │   │   └── content/         # Datos de System/Destination/Expedition/Mission (ver content-model.md)
 │   ├── scenes/               # Subclases de Phaser.Scene: presentación, input, sprites, audio, cámaras
+│   ├── overlay/              # UI de overlay HTML (hermano del <canvas>): HUD, menús, diálogos — ver R8
 │   └── main.ts                # Bootstrap de Phaser.Game, registro de escenas
 └── styles/                    # (ya existente) tokens de diseño CSS
 ```
@@ -68,6 +69,12 @@ src/
   Phaser renderiza sobre `<canvas>` (WebGL/Canvas2D), un contexto de dibujo
   ajeno al DOM. Su único uso válido en el motor de juego es como capa de overlay
   HTML independiente (ver sección siguiente).
+* **R8** (añadida en `004-core-game-loop`, primera implementación real): El código
+  de la capa de overlay MUST vivir en `src/game/overlay/`, hermano de `core/` y
+  `scenes/`. MUST estar compuesto por HTML real fuera de cualquier `Phaser.Scene`,
+  MAY reutilizar `libs/components/` (ver R7), y se comunica con `core/` mediante
+  las mismas funciones puras que consultan las escenas de `scenes/` — nunca
+  mediante una referencia directa a una instancia de escena Phaser ni viceversa.
 
 ## UI de overlay (DOM) vs. contenido del canvas (Phaser)
 

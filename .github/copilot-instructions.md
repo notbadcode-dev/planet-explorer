@@ -60,4 +60,7 @@ Flujo de trabajo por feature (spec-kit): `/speckit-specify` → `/speckit-plan` 
   clarify, checklist, constitution, converge, taskstoissues, branch-create).
 - `planet-*` — convenciones propias del repo: `planet-git-flow`,
   `planet-git-commit-policy`, `planet-docs-conventions`,
-  `planet-storybook-conventions`.
+  `planet-storybook-conventions`, `planet-finish-spec` (cierre formal de una
+  spec ya convergida: front matter → "Implemented", marca `specs_pending/`
+  como hecha, commit, merge a `develop` y sincronización opcional de `master`;
+  hook opcional `after_converge`).

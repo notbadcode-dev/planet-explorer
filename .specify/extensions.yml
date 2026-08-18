@@ -5,3 +5,9 @@ hooks:
       description: "Crea la rama de git para la nueva feature. Siempre parte de develop/main/master, salvo relación explícita con la spec de la rama actual."
       optional: false
       enabled: true
+  after_converge:
+    - extension: "local"
+      command: "planet.finish.spec"
+      description: "Cierra la spec ya convergida: front matter a 'Implemented', marca specs_pending/ como hecha, commit, merge de la feature a develop (git-flow) y sincronización opcional de master."
+      optional: true
+      enabled: true
