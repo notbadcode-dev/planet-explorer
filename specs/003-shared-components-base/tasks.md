@@ -5,7 +5,7 @@ type: "task-list"
 version: "2.5"
 created: "2026-08-16"
 updated: "2026-08-19T00:00:00Z"
-status: "Completed"
+status: "Implemented"
 spec: "./spec.md"
 plan: "./plan.md"
 tags: [frontend, ui, accessibility, testing, architecture]

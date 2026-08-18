@@ -2,7 +2,7 @@
 id: "001-component-library-architecture"
 name: "Arquitectura de la librería de componentes"
 phase: "Fase 0 — Fundamentos ya construidos (documentación retroactiva)"
-status: "Hecha"
+status: "Implemented"
 depends_on: []
 ---
 

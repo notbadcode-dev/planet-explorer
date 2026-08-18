@@ -3,7 +3,7 @@ id: "004-core-game-loop"
 name: "Bucle de juego base"
 phase: "Fase 1 — Motor de juego base y primer destino jugable"
 depends_on: ["001-component-library-architecture", "002-button-variants", "003-shared-components-base"]
-status: "done"
+status: "Implemented"
 ---
 
 # 004 — Bucle de juego base (core-game-loop)
