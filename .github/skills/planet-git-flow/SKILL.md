@@ -1,6 +1,6 @@
 ---
 name: planet-git-flow
-description: Apply this repository's simplified git-flow branch and release model. Use when finishing a feature branch (merge into develop), cutting a release (develop -> master + semver tag), performing a hotfix (master -> hotfix/* -> master + develop), or deciding/creating a new branch outside the automated /speckit-specify flow.
+description: Apply this repository's simplified git-flow branch model. Use when finishing a feature branch (merge into develop AND master in the same operation, no separate release step), performing a hotfix (master -> hotfix/* -> master + develop), or deciding/creating a new branch outside the automated /speckit-specify flow.
 ---
 
 # Git-Flow (simplificado) de planet-explorer
@@ -29,68 +29,62 @@ git checkout -b hotfix/<descripcion-corta>
 
 ## Cerrar una feature ("feature finish")
 
+El proyecto no mantiene un proceso de release independiente: cerrar una feature la publica de inmediato en `master`, en la misma operación que la integra en `develop`.
+
 1. Verifica que la rama de feature pasa el Gate de finalización de la constitución.
 2. Fusiona en `develop` con `--no-ff` (preserva el historial de la feature):
-   ```bash
-   git checkout develop && git pull
-   git merge --no-ff <###-feature-name> -m "merge: finish feature <###-feature-name> into develop"
-   ```
+    ```bash
+    git checkout develop && git pull
+    git merge --no-ff <###-feature-name> -m "merge: finish feature <###-feature-name> into develop"
+    ```
 3. Valida tras el merge (`npm ci && npx tsc --noEmit && npm run lint && npm run test && npm run build`).
-4. Push y borrado de la rama (local + remota):
-   ```bash
-   git push origin develop
-   git branch -d <###-feature-name>
-   git push origin --delete <###-feature-name>
-   ```
-5. **`master` MUST NOT recibir este merge directamente** — solo se actualiza mediante una release (ver abajo).
+4. Push de `develop`:
+    ```bash
+    git push origin develop
+    ```
+5. Fusiona el mismo estado en `master` con `--no-ff` y publica:
+    ```bash
+    git checkout master && git pull
+    git merge --no-ff develop -m "merge: finish feature <###-feature-name> into master"
+    git push origin master
+    ```
+    Esto dispara el deploy automático a GitHub Pages (`.github/workflows/ci.yml`, job `deploy`). No se necesita ninguna acción manual adicional salvo que `Settings → Pages → Source` no esté configurado como "GitHub Actions".
+6. Borra la rama de feature (local + remota):
+    ```bash
+    git branch -d <###-feature-name>
+    git push origin --delete <###-feature-name>
+    ```
+7. Vuelve a `develop` al terminar: `git checkout develop`.
 
-## Cortar una release
-
-1. `develop` MUST haber superado el Gate de finalización (todas las features incluidas ya validadas).
-2. Decide el bump de versión (SemVer, `MAJOR.MINOR.PATCH`):
-   - `MAJOR`: cambio de ruptura o hito mayor.
-   - `MINOR`: nuevas funcionalidades completas (caso habitual).
-   - `PATCH`: solo hotfixes.
-3. Actualiza `version` en `package.json` si aún no coincide con la versión objetivo (commit `chore(release): bump version to vX.Y.Z` si hace falta, o inclúyelo en el propio merge commit).
-4. Fusiona `develop` en `master` y tagea:
-   ```bash
-   git checkout master && git pull
-   git merge --no-ff develop -m "release: vX.Y.Z"
-   git tag -a vX.Y.Z -m "vX.Y.Z: <resumen breve>"
-   git push origin master
-   git push origin vX.Y.Z
-   ```
-5. El push a `master` dispara el deploy automático a GitHub Pages (`.github/workflows/ci.yml`, job `deploy`). No se necesita ninguna acción manual adicional salvo que `Settings → Pages → Source` no esté configurado como "GitHub Actions".
-6. Vuelve a `develop` al terminar: `git checkout develop`.
+El campo `version` de `package.json` y los tags de Git (`vX.Y.Z`) MAY actualizarse puntualmente para marcar un hito, pero no son un requisito de este flujo.
 
 ## Hotfix
 
 1. Rama desde `master` (ver arriba, `hotfix/<descripcion-corta>`).
 2. Aplica y valida la corrección (tests + lint + build).
-3. Fusiona a `master`, tagea PATCH, y fusiona el mismo commit/rama también a `develop` para que la corrección no se pierda en la siguiente release:
-   ```bash
-   git checkout master && git merge --no-ff hotfix/<descripcion> -m "fix: <resumen>"
-   git tag -a vX.Y.(Z+1) -m "vX.Y.(Z+1): hotfix <resumen>"
-   git push origin master && git push origin vX.Y.(Z+1)
+3. Fusiona a `master` y fusiona el mismo commit/rama también a `develop` para mantener ambas ramas sincronizadas (el tag `vX.Y.(Z+1)` es opcional, ver "Estrategia de release" de la constitución):
+    ```bash
+    git checkout master && git merge --no-ff hotfix/<descripcion> -m "fix: <resumen>"
+    git push origin master
 
-   git checkout develop && git merge --no-ff hotfix/<descripcion> -m "merge: bring hotfix <descripcion> into develop"
-   git push origin develop
-   ```
+    git checkout develop && git merge --no-ff hotfix/<descripcion> -m "merge: bring hotfix <descripcion> into develop"
+    git push origin develop
+    ```
 4. Borra la rama `hotfix/*` (local + remota) tras fusionar en ambas.
 
 ## Verificación de sincronización
 
-Para comprobar que `master`/`develop` locales y remotos están al día:
+Como `develop` y `master` se fusionan en la misma operación al cerrar cada feature, no debería existir divergencia entre ambas salvo un hotfix a medio aplicar. Para comprobarlo:
 
 ```bash
 git fetch origin --prune
 git rev-parse master origin/master
 git rev-parse develop origin/develop
-git rev-list --left-right --count master...develop   # divergencia esperada: develop puede ir por delante, master nunca debería ir por delante de develop
+git rev-list --left-right --count master...develop   # divergencia esperada: ninguna (0 0); si aparece, sincroniza develop y master antes de continuar
 ```
 
 ## Referencias cruzadas
 
-- Mensajes de commit: usa el formato de `.github/skills/planet-git-commit-policy/SKILL.md` (Conventional Commits) para cualquier commit que no sea el propio merge/tag de release.
+- Mensajes de commit: usa el formato de `.github/skills/planet-git-commit-policy/SKILL.md` (Conventional Commits) para cualquier commit que no sea el propio merge.
 - Creación de ramas de feature: `.github/skills/speckit-branch-create/SKILL.md`.
 - Reglas normativas completas: `.specify/memory/constitution.md` § "Control de ramas (Git)" y § "Estrategia de release".

@@ -1,6 +1,6 @@
 ---
 name: planet-finish-spec
-description: Cierra formalmente una feature de spec-kit ya convergida (`/speckit-converge` = "✅ Converged"). Actualiza el front matter de spec.md/plan.md/tasks.md a status "Implemented", marca la entrada de specs_pending/ como hecha, commitea esos cambios, fusiona la rama de feature en develop siguiendo git-flow, sincroniza develop/master remotos y hace push. Use when the user asks to "cerrar/terminar/dar por completada la spec/feature", "mergear y cerrar la rama ya implementada", or right after /speckit-converge reports a clean "Converged" result.
+description: Cierra formalmente una feature de spec-kit ya convergida (`/speckit-converge` = "✅ Converged", ejecutado por el usuario). Actualiza el front matter de spec.md/plan.md/tasks.md a status "Implemented", marca la entrada de specs_pending/ como hecha, y en un único cierre fusiona la rama de feature con --no-ff tanto en develop como en master (sin proceso de release aparte), hace push, borra la rama e invoca `planet-retrospective-check` para evaluar si el proyecto necesita una retrospectiva transversal. Use when the user asks to "cerrar/terminar/dar por completada la spec/feature", "mergear y cerrar la rama ya implementada", or right after /speckit-converge reports a clean "Converged" result.
 ---
 
 # Cerrar una spec (`planet-finish-spec`)
@@ -16,9 +16,7 @@ Esta skill **no sustituye** a `planet-git-flow` ni a `planet-git-commit-policy`:
 
 1. La rama actual coincide con `^[0-9]{3,}-` (rama de feature). Si no, STOP y pide al usuario que se sitúe en la rama de la feature a cerrar (`git checkout <###-feature-name>`).
 2. Árbol de trabajo limpio (`git status --short --branch`), salvo los cambios de front matter que esta misma skill va a crear en los pasos 1-2.
-3. Convergencia confirmada: si `/speckit-converge` no se ha ejecutado ya en esta sesión para esta feature, ejecútalo ahora.
-    - Si devuelve `tasks_appended`, **STOP**: hay que ejecutar `/speckit-implement` para completar esas tareas nuevas antes de cerrar la spec.
-    - Solo continúa si el resultado es `converged` ("✅ Converged").
+3. Convergencia confirmada: `/speckit-converge` es responsabilidad del usuario, **no lo ejecutes tú automáticamente**. Confirma con el usuario que ya lo ha ejecutado para esta feature y que el resultado fue `converged` ("✅ Converged"). Si no consta o el usuario indica que devolvió `tasks_appended`, **STOP** y pide que ejecute `/speckit-converge` (y, si aplica, `/speckit-implement`) antes de continuar.
 4. Gate de CI en verde (`npm run lint && npm test && npm run build`, o el equivalente del stack que indique `plan.md` si difiere).
 
 Si cualquier precondición falla, detente e informa exactamente qué falta. Nunca fuerces el cierre saltándote una precondición.
@@ -42,33 +40,30 @@ Busca `specs_pending/<feature>.md` (mismo id que la carpeta de `specs/<feature>/
 
 Si no existe (la feature se creó sin pasar por `specs_pending/`), omite este paso silenciosamente — no es un error.
 
-### 3. Commit de los cambios de documentación
+### 3. Commitear y cerrar la feature en un solo cierre
 
-Sigue `planet-git-commit-policy` (Conventional Commits): un único commit tipo `docs(<feature>): marcar spec como implementada`, que incluya **solo** los ficheros tocados en los pasos 1-2. Antes de commitear, enseña al usuario el mensaje propuesto y `git diff --stat`.
+Este repo **no mantiene un proceso de release aparte** (constitución § "Estrategia de release"): cerrar la feature la publica de inmediato en `master`, sin preguntar si se "corta" una release.
 
-### 4. Cerrar la feature con git-flow
-
-Sigue **al pie de la letra** la sección "Cerrar una feature" de `planet-git-flow`:
-
-1. `git checkout develop && git pull`
-2. `git merge --no-ff <###-feature-name> -m "merge: finish feature <###-feature-name> into develop"`
-3. Revalida el gate tras el merge (`npm ci && npx tsc --noEmit && npm run lint && npm run test && npm run build` — recuerda que `tsc --noEmit` es un falso positivo conocido, no lo uses como bloqueante).
-4. `git push origin develop`
-5. Borra la rama de feature local y remota.
+1. Commitea los cambios de front matter de los pasos 1-2 directamente en la rama de feature, sin ceremonia adicional: sigue `planet-git-commit-policy` (Conventional Commits) con un mensaje tipo `docs(<feature>): marcar spec como implementada` que incluya **solo** los ficheros tocados en los pasos 1-2. Enseña el mensaje y `git diff --stat` antes de commitear; no hace falta un paso de confirmación separado del resto del cierre.
+2. Sigue **al pie de la letra** la sección "Cerrar una feature" de `planet-git-flow` (merge `--no-ff` a `develop`, revalidar el gate, push, merge `--no-ff` de `develop` a `master`, push de `master`, borrado de la rama de feature local y remota).
 
 **Antes de ejecutar cualquier `git push` o borrado de rama, enseña los comandos exactos y pide confirmación explícita del usuario** — son operaciones sobre ramas compartidas, difíciles de revertir sin coordinación.
 
-### 5. Sincronizar `develop` y `master`
+### 4. Informe final
 
-En este repo `master` **solo** se actualiza mediante una release formal (`planet-git-flow`, sección "Cortar una release"), nunca en cada cierre de feature. Por tanto:
+Resume en la respuesta: commit de documentación creado (hash + mensaje), merge a `develop` y a `master` (hashes), push de `master` (dispara el deploy a GitHub Pages), rama de feature borrada (local/remota, sí/no), y próximos pasos si quedara algo pendiente.
 
-- Pregunta explícitamente al usuario (`vscode_askQuestions`): "¿Quieres cortar una release ahora (develop → master + tag semver) o dejar `develop` por delante de `master` hasta acumular más features?"
-- Si confirma release: sigue la sección "Cortar una release" de `planet-git-flow` (bump de versión en `package.json` si aplica, merge `--no-ff` a `master`, tag `vX.Y.Z`, push de `master` y del tag). Recuerda que esto dispara el deploy automático a GitHub Pages.
-- Si no: verifica igualmente que ambos remotos están sincronizados con sus locales (sección "Verificación de sincronización" de `planet-git-flow`: `git fetch origin --prune` + `git rev-parse`/`git rev-list --left-right --count`) y deja constancia en el informe final de que `master` sigue intencionalmente por detrás de `develop`.
+### 5. Evaluar necesidad de retrospectiva
 
-### 6. Informe final
+Una vez cerrada correctamente la feature, ejecuta `planet-retrospective-check`. Esta evaluación es **obligatoria** tras cada cierre de spec, pero no implica que deba crearse una retrospectiva — `planet-finish-spec` nunca realiza directamente la retrospectiva, solo invoca el check y reporta su resultado.
 
-Resume en la respuesta: commit de documentación creado (hash + mensaje), merge a `develop` (hash), rama de feature borrada (local/remota, sí/no), estado de `master` (sincronizado / release cortada `vX.Y.Z` / dejado atrás a propósito), y próximos pasos si quedara algo pendiente.
+Resultados posibles:
+
+- `NOT_REQUIRED`: finalizar normalmente, sin acción adicional.
+- `RECOMMENDED`: informar al usuario de los motivos y el alcance sugerido, y ofrecer ejecutar `planet-spec-retrospective` — no ejecutarla sin confirmación.
+- `REQUIRED`: informar de que se ha alcanzado un criterio obligatorio de retrospectiva y recomendar ejecutar `planet-spec-retrospective` antes de comenzar otra feature, salvo que el usuario indique explícitamente continuar.
+
+Un resultado `RECOMMENDED` o `REQUIRED` de este paso **no deshace** el cierre de la feature ya completado en los pasos 1-4.
 
 ## Registro como hook opcional
 
@@ -76,7 +71,10 @@ Esta skill está registrada como hook **opcional** `after_converge` en `.specify
 
 ## Referencias cruzadas
 
-- `.github/skills/planet-git-flow/SKILL.md` — mecánica exacta de merge de feature / release / hotfix / verificación de sincronización.
+- `.github/skills/planet-git-flow/SKILL.md` — mecánica exacta de merge de feature (develop + master) / hotfix / verificación de sincronización.
 - `.github/skills/planet-git-commit-policy/SKILL.md` — formato del commit de documentación del paso 3.
-- `.github/skills/speckit-converge/SKILL.md` — precondición de convergencia (paso 3 de precondiciones).
+- `.github/skills/speckit-converge/SKILL.md` — convergencia que el usuario ejecuta antes de invocar esta skill (precondición 3).
+- `.github/skills/planet-retrospective-check/SKILL.md` — determina si el proyecto requiere una retrospectiva transversal tras cerrar una spec (paso 5).
+- `.github/skills/planet-spec-retrospective/SKILL.md` — ejecuta la auditoría transversal de las specs cuando el check anterior devuelve `RECOMMENDED` o `REQUIRED`.
 - `.specify/templates/spec-template.md`, `plan-template.md`, `tasks-template.md` — enum válido del campo `status`.
+- `.specify/memory/constitution.md` § "Control de ramas (Git)" y § "Estrategia de release" — master recibe el merge directo, sin proceso de release independiente.
