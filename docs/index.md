@@ -27,7 +27,8 @@ documentación dentro del conjunto completo del proyecto.
   el flujo de speckit (`speckit-*`) y convenciones operativas del repositorio no
   cubiertas por principios ni por convenciones técnicas (`planet-git-flow`,
   `planet-storybook-conventions`, `planet-git-commit-policy`,
-  `planet-docs-conventions`).
+  `planet-docs-conventions`, `planet-finish-spec`, `planet-retrospective-check`,
+  `planet-spec-retrospective`).
 
 ## Cómo crear un nuevo documento
 

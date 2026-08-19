@@ -8,6 +8,6 @@ hooks:
   after_converge:
     - extension: "local"
       command: "planet.finish.spec"
-      description: "Cierra la spec ya convergida: front matter a 'Implemented', marca specs_pending/ como hecha, commit, merge de la feature a develop (git-flow) y sincronización opcional de master."
+      description: "Cierra la spec ya convergida: front matter a 'Implemented', marca specs_pending/ como hecha, y cierra la feature fusionándola con --no-ff en develop y master (sin proceso de release aparte)."
       optional: true
       enabled: true

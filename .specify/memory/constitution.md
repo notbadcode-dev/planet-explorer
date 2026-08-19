@@ -3,9 +3,9 @@
 title: "Explorador Espacial Constitution"
 project: "Explorador Espacial"
 type: "constitution"
-version: "1.11.0"
+version: "2.0.0"
 ratified: "2026-08-15"
-updated: "2026-08-17"
+updated: "2026-08-19"
 status: "Active"
 tags:
 
@@ -29,22 +29,26 @@ tags:
 
 <!--
 Sync Impact Report
-Version change: 1.10.1 → 1.11.0 (MINOR: nueva regla normativa en "Componentes
-  compartidos" sobre HTML/markup escrito fuera de `libs/components/`. Antes solo
-  existía el flujo de parada para cuando una funcionalidad *requiere* un
-  componente reutilizable que no existe. Ahora se añade una regla explícita
-  para el caso general de escribir HTML nuevo: MUST valorarse si ese HTML debe
-  convertirse en componente (mismas convenciones que el resto de
-  `libs/components/`) solo cuando sea genuinamente reutilizable o cuando el
-  mismo fragmento ya esté duplicado en otro sitio del repositorio; en caso
-  contrario MAY permanecer como HTML plano específico de la feature, sin
-  necesidad de pausar/justificar.)
-Modified principles: none
-Added sections: subsección "HTML fuera de un componente compartido" dentro de
-  "Componentes compartidos"
-Removed sections: none
-Templates requiring updates: none pending (templates read constitution rules dynamically)
-Follow-up TODOs: none
+Version change: 1.11.0 → 2.0.0 (MAJOR: redefinición retroactiva del modelo de
+  ramas/release. Antes `master` MUST NOT recibir merges directos de features
+  y solo se actualizaba mediante un proceso de release independiente
+  (SemVer + tag manual). Ahora, dado el tamaño reducido del proyecto, cerrar
+  una funcionalidad MUST fusionarla con `--no-ff` tanto en `develop` como en
+  `master` en la misma operación: no existe ya un proceso de release
+  independiente ni una ventana en la que `develop` vaya por delante de
+  `master`. Es un cambio incompatible con la regla anterior, de ahí el bump
+  MAJOR.)
+Modified principles: "Control de ramas (Git)" (regla de `master` y de "feature
+  finish"); "Estrategia de release" (sustituida por publicación continua sin
+  proceso de release independiente).
+Added sections: none
+Removed sections: ninguna sección eliminada, pero "Estrategia de release" deja
+  de exigir un proceso de release/tag independiente.
+Templates requiring updates: `.github/skills/planet-git-flow/SKILL.md` y
+  `.github/skills/planet-finish-spec/SKILL.md` actualizados en el mismo cambio
+  para reflejar el merge directo a `master` y la eliminación del paso de
+  release.
+Follow-up TODOs: ninguno
 -->
 
 # Constitución de Explorador Espacial
@@ -1041,27 +1045,23 @@ El proyecto MUST seguir un modelo de ramas estilo git-flow simplificado: `develo
 
 `develop` MUST ser la rama base para toda nueva funcionalidad. La detección de la rama base para crear una rama de feature MUST priorizar `develop` cuando exista localmente, antes que `origin/HEAD`, `main` o `master`.
 
-`master` MUST representar el estado estable/publicado del proyecto. `master` MUST NOT recibir merges directos de ramas de feature; solo se actualiza mediante un proceso de release (manual en esta fase del proyecto).
+`master` MUST representar el estado estable/publicado del proyecto. Dado el tamaño reducido del proyecto, `master` MUST recibir el mismo merge `--no-ff` que `develop` al cerrar cada funcionalidad: no existe un proceso de release independiente ni una ventana en la que `develop` vaya por delante de `master`.
 
-Cerrar una funcionalidad ("feature finish") MUST consistir en fusionar su rama en `develop` (MUST usarse `--no-ff` para preservar el historial de la funcionalidad) y, tras la fusión, MUST eliminarse la rama de feature (local y remota).
+Cerrar una funcionalidad ("feature finish") MUST consistir en fusionar su rama con `--no-ff` tanto en `develop` como en `master` (para preservar el historial de la funcionalidad y mantener ambas ramas sincronizadas) y, tras la fusión, MUST eliminarse la rama de feature (local y remota).
 
-Las ramas `hotfix/*` MUST partir de `master` para corregir un problema urgente ya publicado, y MUST fusionarse de vuelta tanto en `master` como en `develop` para que la corrección no se pierda en la siguiente release.
+Las ramas `hotfix/*` MUST partir de `master` para corregir un problema urgente ya publicado, y MUST fusionarse de vuelta tanto en `master` como en `develop`.
 
 Una rama de feature nueva MUST NOT crearse partiendo de otra rama de feature, salvo que la nueva funcionalidad esté explícitamente relacionada con la spec de la rama actual (ver **Componentes compartidos** y el procedimiento del hook de creación de ramas).
 
-**Motivo**: mantener `master` siempre desplegable, permitir que varias funcionalidades convivan en `develop` antes de una release, y disponer de una vía rápida y aislada (`hotfix/*`) para corregir producción sin mezclar trabajo en curso de otras funcionalidades.
+**Motivo**: mantener `master` siempre desplegable y sincronizado con `develop`, evitando la sobrecarga de un proceso de release independiente en un proyecto de este tamaño, y disponer de una vía rápida y aislada (`hotfix/*`) para corregir producción sin mezclar trabajo en curso de otras funcionalidades.
 
 ---
 
 ## Estrategia de release
 
-El proyecto MUST versionarse con [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PATCH`), reflejado en el campo `version` de `package.json` y en un tag de Git (`vX.Y.Z`) sobre `master`.
+El proyecto MUST NOT mantener un proceso de release independiente: cada funcionalidad cerrada ("feature finish") se publica de inmediato en `master` mediante el mismo merge `--no-ff` que la integra en `develop` (ver **Control de ramas (Git)**), sin necesidad de decidir ni confirmar si se "corta" una release.
 
-Una release MUST consistir en fusionar `develop` en `master` (tras superar el Gate de finalización) y crear un tag `vX.Y.Z` sobre el commit resultante en `master`. MUST NOT usarse ramas `release/*` de estabilización: `develop` ya actúa como candidato a release una vez superado el Gate de finalización.
-
-El incremento de versión SHOULD seguir: `MAJOR` para cambios de ruptura o hitos mayores, `MINOR` para nuevas funcionalidades completas, `PATCH` para hotfixes (`hotfix/*`) publicados sobre `master`.
-
-La cadencia de release SHOULD ser frecuente y de bajo riesgo: liberar tras cerrar una funcionalidad (o un grupo pequeño de funcionalidades relacionadas) en lugar de acumular muchas funcionalidades sin publicar en `develop`.
+El campo `version` de `package.json` y los tags de Git (`vX.Y.Z`) MAY actualizarse puntualmente cuando se considere oportuno marcar un hito, pero no son un requisito para publicar cambios en `master`.
 
 Cada push a `master` MUST disparar el despliegue automático a GitHub Pages mediante el pipeline de CI, de forma que `master` refleje siempre lo publicado.
 
@@ -1619,6 +1619,6 @@ La complejidad adicional MUST estar justificada por una necesidad concreta y act
 
 ---
 
-**Versión**: 1.6.0
+**Versión**: 2.0.0
 **Ratificada**: 2026-08-15
-**Última modificación**: 2026-08-15
+**Última modificación**: 2026-08-19
