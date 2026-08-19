@@ -6,7 +6,7 @@ type: "implementation-plan"
 version: "1.0"
 created: "2026-08-19"
 updated: "2026-08-19"
-status: "Draft"
+status: "Implemented"
 spec: "./spec.md"
 tags: ["game", "challenges", "core", "data-driven", "education", "logic", "testing"]
 dependencies: ["006-skill-progress-model"]

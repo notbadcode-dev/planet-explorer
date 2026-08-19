@@ -6,7 +6,7 @@ type: "task-list"
 version: "1.0"
 created: "2026-08-19"
 updated: "2026-08-19"
-status: "Draft"
+status: "Implemented"
 spec: "./spec.md"
 plan: "./plan.md"
 tags: ["game", "challenges", "core", "data-driven", "education", "logic", "testing"]

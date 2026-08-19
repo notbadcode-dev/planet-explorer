@@ -5,7 +5,7 @@ type: "feature-spec"
 version: "1.0"
 created: "2026-08-19"
 updated: "2026-08-19"
-status: "Draft"
+status: "Implemented"
 priority: "P1"
 tags: ["game", "challenges", "core", "data", "education"]
 dependencies: ["006-skill-progress-model"]

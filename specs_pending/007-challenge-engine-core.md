@@ -3,9 +3,12 @@ id: "007-challenge-engine-core"
 name: "Motor genérico de retos"
 phase: "Fase 1 — Motor de juego base y primer destino jugable"
 depends_on: ["006-skill-progress-model"]
+status: "Implemented"
 ---
 
 # 007 — Motor genérico de retos (challenge-engine-core)
+
+**Implementado en**: [specs/007-challenge-engine-core/](../specs/007-challenge-engine-core/spec.md)
 
 ## Objetivo
 Construir el motor genérico de generación y validación de retos (challenges), desacoplado de Phaser y de cualquier tipo de reto concreto, junto con el primer tipo real: `counting`.
