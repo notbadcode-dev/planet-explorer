@@ -31,7 +31,7 @@ Bucle de juego mínimo jugable de principio a fin, con un único destino real (l
 - [ ] [005-bot6-narrative-shell.md](005-bot6-narrative-shell.md) — Cascarón narrativo de BOT-6 ([spec.md](../specs/005-bot6-narrative-shell/spec.md)) — 🔄 En progreso (rama `005-quiero-adir-bot`, tasks.md generado (18 tareas, US1+US2), pendiente `/speckit-implement`)
 - [ ] [006-skill-progress-model.md](006-skill-progress-model.md) — Modelo de progreso por habilidades
 - [ ] [007-challenge-engine-core.md](007-challenge-engine-core.md) — Motor genérico de retos
-- [ ] [008-moon-destination-counting.md](008-moon-destination-counting.md) — Destino: la Luna con retos de conteo
+- [ ] [008-moon-destination-counting.md](008-moon-destination-counting.md) — Destino: la Luna con retos de conteo ([spec.md](../specs/008-moon-destination-counting/spec.md)) — 🔄 En progreso (rama `008-quiero-convertir-destino`, spec.md v1.1, plan completo, `tasks.md` generado (24 tareas, US1+US2+US3), pendiente `/speckit-implement`)
 - [ ] [009-adaptive-difficulty-v1.md](009-adaptive-difficulty-v1.md) — Dificultad adaptativa v1
 - [ ] [010-hints-and-retry-flow.md](010-hints-and-retry-flow.md) — Pistas y reintento sin penalización
 - [ ] [011-save-progress-local.md](011-save-progress-local.md) — Persistencia local de progreso

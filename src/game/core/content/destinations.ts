@@ -6,12 +6,17 @@
  * sin cambiar la forma del dato (principio IX, `data-model.md`).
  */
 
+import type { CountingChallengeConfig } from '../challenge-engine/challenge-engine.type';
+
 export interface Destination {
     /** Identificador estable en kebab-case. */
     id: string;
 
     /** Nombre visible del destino en el mapa. */
     name: string;
+
+    /** Configuración opcional de retos para este destino (spec 008). */
+    challengeConfigs?: readonly CountingChallengeConfig[];
 }
 
 export { DESTINATIONS } from './destinations.constants';
