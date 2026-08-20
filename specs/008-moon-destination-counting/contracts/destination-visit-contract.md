@@ -12,6 +12,14 @@ spec: "./spec.md"
 
 # Contrato: `core/destination-visit`
 
+> **Nota (009-adaptive-difficulty-v1)**: la firma de `createDestinationVisit` documentada
+> a continuación fue ampliada por la spec 009 — el segundo parámetro pasó de
+> `readonly CountingChallengeConfig[]` a `readonly ChallengeConfig[]`, y el tercer
+> parámetro (`skillLevel`) se combina ahora con `getDifficultyConfig()` (`core/difficulty/`)
+> en vez de fusionarse manualmente con un rango fijo. Este contrato no se ha reescrito
+> retroactivamente; ver `specs/009-adaptive-difficulty-v1/plan.md` y
+> `specs/009-adaptive-difficulty-v1/contracts/difficulty-contract.md` para la firma vigente.
+
 API pública y garantías del nuevo módulo puro que coordina la secuencia de retos
 de una visita a un destino con contenido (inicialmente, solo "moon"). Sin
 dependencia de `phaser` (regla R1 de `docs/conventions/architecture/game-engine-scenes.md`).

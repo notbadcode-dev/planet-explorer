@@ -193,4 +193,31 @@ describe('challenge-engine', () => {
             expect(asGeneric.type).toBe('addition');
         });
     });
+
+    describe('Correcciones R2/R5 (spec 009) — patrón de registro y desacoplamiento de progress/', () => {
+        it('R2: generateChallenge() sigue generando retos counting correctamente con el patrón de registro (no if/switch)', () => {
+            const config: CountingChallengeConfig = { type: 'counting', min: 2, max: 8 };
+            const challenge = generateChallenge(config) as CountingChallenge;
+
+            expect(challenge.type).toBe('counting');
+            expect(challenge.correctAnswer).toBeGreaterThanOrEqual(2);
+            expect(challenge.correctAnswer).toBeLessThanOrEqual(8);
+        });
+
+        it('R2: tipo de reto no registrado lanza error (mismo comportamiento que antes)', () => {
+            const unsupportedConfig: ChallengeConfig = { type: 'memory', difficulty: 5 };
+
+            expect(() => generateChallenge(unsupportedConfig)).toThrow(/unsupported challenge type/i);
+        });
+
+        it('R5: validateAnswer() devuelve "success"/"failure" correctamente tras desacoplamiento de progress/', () => {
+            const challenge = generateChallenge({ type: 'counting', min: 5, max: 5 }) as CountingChallenge;
+
+            const successResult = validateAnswer(challenge, 5);
+            const failureResult = validateAnswer(challenge, 3);
+
+            expect(successResult).toBe('success');
+            expect(failureResult).toBe('failure');
+        });
+    });
 });
