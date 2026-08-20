@@ -6,7 +6,7 @@ type: "task-list"
 version: "1.0"
 created: "2026-08-20"
 updated: "2026-08-20"
-status: "Draft"
+status: "Implemented"
 spec: "./spec.md"
 plan: "./plan.md"
 tags: ["game", "education", "challenges", "narrative", "planets"]

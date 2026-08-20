@@ -5,7 +5,7 @@ type: "feature-spec"
 version: "1.1"
 created: "2026-08-20"
 updated: "2026-08-20"
-status: "Draft"
+status: "Implemented"
 priority: "P1"
 tags: ["game", "education", "challenges", "narrative", "planets"]
 dependencies: ["004-core-game-loop", "005-bot6-narrative-shell", "007-challenge-engine-core"]
