@@ -5,8 +5,8 @@ feature: "008-moon-destination-counting"
 type: "contract"
 version: "1.0"
 created: "2026-08-20"
-updated: "2026-08-20"
-status: "Draft"
+updated: "2026-08-21"
+status: "Implemented"
 spec: "./spec.md"
 ------------------------------------------------------------
 
