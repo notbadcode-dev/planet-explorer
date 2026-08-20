@@ -5,6 +5,8 @@
  * `specs/004-core-game-loop/contracts/navigation-core-contract.md`.
  */
 
+import type { SkillProgressState } from '../progress/skill-progress-state.type';
+
 export type SceneId = 'map' | 'destination';
 
 export interface NavigationState {
@@ -21,7 +23,8 @@ export interface NavigationState {
     isTransitioning: boolean;
 }
 
-/** Datos que cada escena recibe en su `init()` para arrancar con el `NavigationState` vigente. */
+/** Datos que cada escena recibe en su `init()` para arrancar con el `NavigationState` vigente y el estado de habilidades. */
 export interface SceneInitData {
     navigationState: NavigationState;
+    skillProgressState: SkillProgressState;
 }
