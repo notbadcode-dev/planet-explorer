@@ -11,11 +11,12 @@
 
 import Phaser from 'phaser';
 
-import { DESTINATIONS } from '../core/content/destinations';
 import { MAP_WELCOME_MESSAGE } from '../core/content/bot6-messages.constants';
+import { DESTINATIONS } from '../core/content/destinations';
 import { beginTransitionToDestination } from '../core/navigation/navigation-state';
 import { SCENE_ID_DESTINATION, SCENE_ID_MAP } from '../core/navigation/navigation-state.constants';
 import type { NavigationState, SceneInitData } from '../core/navigation/navigation-state.type';
+import type { SkillProgressState } from '../core/progress/skill-progress-state.type';
 import { createBot6Dialogue } from '../overlay/bot6-dialogue';
 import {
     CENTER_DIVISOR,
@@ -32,6 +33,9 @@ export class MapScene extends Phaser.Scene {
     /** Público para que el listener de `popstate` de `main.ts` (T025) pueda leerlo. */
     navigationState!: NavigationState;
 
+    /** Público para que el listener de `popstate` de `main.ts` (T025) pueda leerlo. */
+    skillProgressState!: SkillProgressState;
+
     private marker?: Phaser.GameObjects.Arc;
     private label?: Phaser.GameObjects.Text;
     private bot6DialogueElement?: HTMLElement;
@@ -42,6 +46,7 @@ export class MapScene extends Phaser.Scene {
 
     init(data: SceneInitData): void {
         this.navigationState = data.navigationState;
+        this.skillProgressState = data.skillProgressState;
     }
 
     create(): void {
@@ -79,7 +84,10 @@ export class MapScene extends Phaser.Scene {
             }
 
             this.navigationState = nextState;
-            this.scene.start(SCENE_ID_DESTINATION, { navigationState: nextState } satisfies SceneInitData);
+            this.scene.start(SCENE_ID_DESTINATION, {
+                navigationState: nextState,
+                skillProgressState: this.skillProgressState,
+            } satisfies SceneInitData);
         });
 
         // T008 [FR-001]: Mount BOT-6 dialogue overlay on map entry (repeated each visit)

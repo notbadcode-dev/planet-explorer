@@ -44,3 +44,48 @@ export const DESTINATION_TRANSITION_MESSAGE: Bot6Message = {
     id: 'destination-transition',
     text: '¡Bienvenido! Estamos explorando el espacio. ¿Listo para aprender?',
 };
+
+/**
+ * Intro message for Moon destination challenges (spec 008, FR-002).
+ * Wraps the first counting challenge in narrative framing.
+ */
+export const MOON_CHALLENGE_INTRO_MESSAGE: Bot6Message = {
+    id: 'moon-challenge-intro',
+    text: 'En la Luna, recolecta muestras. ¿Cuántas ves?',
+};
+
+/**
+ * Next challenge message for Moon destination (spec 008, FR-003).
+ * Shown when advancing to the next challenge in the sequence.
+ */
+export const MOON_CHALLENGE_NEXT_MESSAGE: Bot6Message = {
+    id: 'moon-challenge-next',
+    text: 'Excelente. Pasemos a la siguiente muestra.',
+};
+
+/**
+ * Retry message for Moon destination (spec 008, FR-004).
+ * Shown when the player answers incorrectly and retries.
+ */
+export const MOON_CHALLENGE_RETRY_MESSAGE: Bot6Message = {
+    id: 'moon-challenge-retry',
+    text: 'Vuelve a intentarlo. Observa con atención.',
+};
+
+/**
+ * Success message for Moon destination (spec 008, FR-003).
+ * Shown when the player answers correctly.
+ */
+export const MOON_CHALLENGE_SUCCESS_MESSAGE: Bot6Message = {
+    id: 'moon-challenge-success',
+    text: '¡Correcto! Has aprendido bien.',
+};
+
+/**
+ * Completion message for Moon destination (spec 008, FR-009).
+ * Shown when the player completes all challenges in the sequence.
+ */
+export const MOON_DESTINATION_COMPLETE_MESSAGE: Bot6Message = {
+    id: 'moon-destination-complete',
+    text: '¡Has completado la exploración de la Luna!',
+};

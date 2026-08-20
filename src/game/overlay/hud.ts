@@ -11,8 +11,15 @@ import { createProgress } from '../../../libs/components/progress';
 import {
     HUD_CLASS,
     HUD_ROOT_ELEMENT_TAG,
+    PROGRESS_ARIA_LABEL_ATTR,
+    PROGRESS_CSS_PERCENT_SUFFIX,
+    PROGRESS_CSS_VAR_NAME,
+    PROGRESS_DISPLAY_SEPARATOR,
+    PROGRESS_PERCENTAGE_MULTIPLIER,
     PROGRESS_PLACEHOLDER_LABEL,
     PROGRESS_PLACEHOLDER_VALUE,
+    PROGRESS_TITLE_ATTR,
+    PROGRESS_ZERO_CHECK,
     RETURN_TO_MAP_BUTTON_SIZE,
     RETURN_TO_MAP_LABEL,
 } from './hud.constants';
@@ -22,7 +29,12 @@ export interface HudProps {
     onReturnToMap: () => void;
 }
 
-export function createHud(props: HudProps): HTMLElement {
+export interface HudInstance {
+    element: HTMLElement;
+    updateProgress: (current: number, total: number) => void;
+}
+
+export function createHud(props: HudProps): HudInstance {
     const { onReturnToMap } = props;
 
     const root = document.createElement(HUD_ROOT_ELEMENT_TAG);
@@ -34,13 +46,26 @@ export function createHud(props: HudProps): HTMLElement {
         onClick: onReturnToMap,
     });
 
-    const progress = createProgress({
+    const progressElement = createProgress({
         value: PROGRESS_PLACEHOLDER_VALUE,
         label: PROGRESS_PLACEHOLDER_LABEL,
         showValue: false,
     });
 
-    root.append(returnButton, progress);
+    root.append(returnButton, progressElement);
 
-    return root;
+    const updateProgress = (current: number, total: number) => {
+        // Update the progress element's label to show current/total
+        const label = current + PROGRESS_DISPLAY_SEPARATOR + total;
+        progressElement.setAttribute(PROGRESS_ARIA_LABEL_ATTR, label);
+        progressElement.setAttribute(PROGRESS_TITLE_ATTR, label);
+        // Update progress value as percentage
+        const percentage = total > PROGRESS_ZERO_CHECK ? (current / total) * PROGRESS_PERCENTAGE_MULTIPLIER : PROGRESS_PLACEHOLDER_VALUE;
+        progressElement.style.setProperty(PROGRESS_CSS_VAR_NAME, percentage + PROGRESS_CSS_PERCENT_SUFFIX);
+    };
+
+    return {
+        element: root,
+        updateProgress,
+    };
 }

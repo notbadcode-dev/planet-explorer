@@ -3,9 +3,12 @@ id: "008-moon-destination-counting"
 name: "Destino: la Luna con retos de conteo"
 phase: "Fase 1 — Motor de juego base y primer destino jugable"
 depends_on: ["004-core-game-loop", "005-bot6-narrative-shell", "007-challenge-engine-core"]
+status: "Implemented"
 ---
 
 # 008 — Destino: la Luna con retos de conteo (moon-destination-counting)
+
+**Implementado en**: specs/008-moon-destination-counting/
 
 ## Objetivo
 Convertir el destino placeholder en el primer destino real y jugable: la Luna, con retos de `counting` integrados en una situación narrativa (no como ficha escolar).
