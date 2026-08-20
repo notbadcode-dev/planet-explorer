@@ -18,6 +18,10 @@ El principio IV exige que la dificultad se adapte al rendimiento (aciertos, fall
 - Reglas explícitas y testables de subida/bajada de dificultad (sin IA/ML, ver nota de simplicidad).
 - Integración con `007-challenge-engine-core` para que la config generada use el resultado del ajuste.
 - Tests unitarios que cubran escenarios de mejora, empeoramiento y estabilidad.
+- **Deuda técnica previa a incorporar como tareas Foundational** (detectada en la retrospectiva `specs/retrospectives/R001-cierre-especificaciones-001-008.md`, hallazgos de la sección "Contratos compartidos"): dado que esta spec ya modifica cómo `007-challenge-engine-core` recibe su configuración de dificultad, aprovechar el mismo `plan.md`/`tasks.md` para corregir `src/game/core/challenge-engine/challenge-engine.ts` conforme a `docs/conventions/architecture/challenge-engine-contract.md`:
+  - R2: sustituir el `if`/`switch` de `generateChallenge()` por un patrón de registro por tipo de reto.
+  - R5: eliminar el import directo de `../progress/skill-progress-state.constants` (acoplamiento no permitido por el contrato).
+  - Actualizar `docs/conventions/architecture/challenge-engine-contract.md` y `game-engine-scenes.md` para reflejar la implementación real resultante (nombre de carpeta, ausencia de acoplamiento directo).
 
 ## Alcance excluido
 - Señales avanzadas (uso extensivo de pistas ponderado, dificultad de retos recientes combinada con múltiples habilidades) — ver 042.
