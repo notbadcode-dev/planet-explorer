@@ -17,6 +17,7 @@ import {
     DIFFICULTY_COUNTING_MIN_VALUE,
     DIFFICULTY_COUNTING_MAX_BASE,
     DIFFICULTY_COUNTING_MAX_STEP,
+    DIFFICULTY_LEVEL_OFFSET,
     makeInvalidSkillLevelError,
     makeUnsupportedChallengeTypeForDifficultyError,
 } from './difficulty.constants';
@@ -30,7 +31,7 @@ import {
  * El campo `difficulty` siempre se fija igual al `skillLevel` recibido (FR-002a).
  */
 const buildCountingDifficultyConfig: DifficultyConfigBuilder = (skillLevel: number): ChallengeConfig => {
-    const max = DIFFICULTY_COUNTING_MAX_BASE + (skillLevel - 1) * DIFFICULTY_COUNTING_MAX_STEP;
+    const max = DIFFICULTY_COUNTING_MAX_BASE + (skillLevel - DIFFICULTY_LEVEL_OFFSET) * DIFFICULTY_COUNTING_MAX_STEP;
     return {
         type: CHALLENGE_TYPE_COUNTING,
         min: DIFFICULTY_COUNTING_MIN_VALUE,

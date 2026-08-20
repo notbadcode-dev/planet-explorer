@@ -29,6 +29,9 @@ export const DIFFICULTY_COUNTING_MIN_VALUE = 1;
 export const DIFFICULTY_COUNTING_MAX_BASE = 3;
 export const DIFFICULTY_COUNTING_MAX_STEP = 1;
 
+/** Offset para la fórmula de dificultad: (skillLevel - 1). Representa el número de pasos después del nivel base. */
+export const DIFFICULTY_LEVEL_OFFSET = 1;
+
 /**
  * Crea un error para un `skillLevel` fuera del rango válido [DIFFICULTY_LEVEL_MIN, DIFFICULTY_LEVEL_MAX].
  *
