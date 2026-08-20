@@ -8,12 +8,29 @@
  * 80 characters as proxy for ~2 visual lines at typical screen widths.
  */
 
-import { describe, it, expect } from 'vitest';
-import { BOT6_MESSAGE_MAX_LENGTH, MAP_WELCOME_MESSAGE, DESTINATION_TRANSITION_MESSAGE } from './bot6-messages.constants';
+import { describe, expect, it } from 'vitest';
+import {
+    BOT6_MESSAGE_MAX_LENGTH,
+    DESTINATION_TRANSITION_MESSAGE,
+    MAP_WELCOME_MESSAGE,
+    MOON_CHALLENGE_INTRO_MESSAGE,
+    MOON_CHALLENGE_NEXT_MESSAGE,
+    MOON_CHALLENGE_RETRY_MESSAGE,
+    MOON_CHALLENGE_SUCCESS_MESSAGE,
+    MOON_DESTINATION_COMPLETE_MESSAGE,
+} from './bot6-messages.constants';
 
 describe('bot6-messages', () => {
     describe('Message constraints', () => {
-        const messages = [MAP_WELCOME_MESSAGE, DESTINATION_TRANSITION_MESSAGE];
+        const messages = [
+            MAP_WELCOME_MESSAGE,
+            DESTINATION_TRANSITION_MESSAGE,
+            MOON_CHALLENGE_INTRO_MESSAGE,
+            MOON_CHALLENGE_NEXT_MESSAGE,
+            MOON_CHALLENGE_RETRY_MESSAGE,
+            MOON_CHALLENGE_SUCCESS_MESSAGE,
+            MOON_DESTINATION_COMPLETE_MESSAGE,
+        ];
 
         it('should not have empty text', () => {
             messages.forEach((msg) => {
@@ -55,6 +72,41 @@ describe('bot6-messages', () => {
             expect(DESTINATION_TRANSITION_MESSAGE.id).toBe('destination-transition');
             expect(DESTINATION_TRANSITION_MESSAGE.text.length).toBeGreaterThan(0);
             expect(DESTINATION_TRANSITION_MESSAGE.text.length).toBeLessThanOrEqual(BOT6_MESSAGE_MAX_LENGTH);
+        });
+
+        it('MOON_CHALLENGE_INTRO_MESSAGE should be defined and valid', () => {
+            expect(MOON_CHALLENGE_INTRO_MESSAGE).toBeDefined();
+            expect(MOON_CHALLENGE_INTRO_MESSAGE.id).toBe('moon-challenge-intro');
+            expect(MOON_CHALLENGE_INTRO_MESSAGE.text.length).toBeGreaterThan(0);
+            expect(MOON_CHALLENGE_INTRO_MESSAGE.text.length).toBeLessThanOrEqual(BOT6_MESSAGE_MAX_LENGTH);
+        });
+
+        it('MOON_CHALLENGE_NEXT_MESSAGE should be defined and valid', () => {
+            expect(MOON_CHALLENGE_NEXT_MESSAGE).toBeDefined();
+            expect(MOON_CHALLENGE_NEXT_MESSAGE.id).toBe('moon-challenge-next');
+            expect(MOON_CHALLENGE_NEXT_MESSAGE.text.length).toBeGreaterThan(0);
+            expect(MOON_CHALLENGE_NEXT_MESSAGE.text.length).toBeLessThanOrEqual(BOT6_MESSAGE_MAX_LENGTH);
+        });
+
+        it('MOON_CHALLENGE_RETRY_MESSAGE should be defined and valid', () => {
+            expect(MOON_CHALLENGE_RETRY_MESSAGE).toBeDefined();
+            expect(MOON_CHALLENGE_RETRY_MESSAGE.id).toBe('moon-challenge-retry');
+            expect(MOON_CHALLENGE_RETRY_MESSAGE.text.length).toBeGreaterThan(0);
+            expect(MOON_CHALLENGE_RETRY_MESSAGE.text.length).toBeLessThanOrEqual(BOT6_MESSAGE_MAX_LENGTH);
+        });
+
+        it('MOON_CHALLENGE_SUCCESS_MESSAGE should be defined and valid', () => {
+            expect(MOON_CHALLENGE_SUCCESS_MESSAGE).toBeDefined();
+            expect(MOON_CHALLENGE_SUCCESS_MESSAGE.id).toBe('moon-challenge-success');
+            expect(MOON_CHALLENGE_SUCCESS_MESSAGE.text.length).toBeGreaterThan(0);
+            expect(MOON_CHALLENGE_SUCCESS_MESSAGE.text.length).toBeLessThanOrEqual(BOT6_MESSAGE_MAX_LENGTH);
+        });
+
+        it('MOON_DESTINATION_COMPLETE_MESSAGE should be defined and valid', () => {
+            expect(MOON_DESTINATION_COMPLETE_MESSAGE).toBeDefined();
+            expect(MOON_DESTINATION_COMPLETE_MESSAGE.id).toBe('moon-destination-complete');
+            expect(MOON_DESTINATION_COMPLETE_MESSAGE.text.length).toBeGreaterThan(0);
+            expect(MOON_DESTINATION_COMPLETE_MESSAGE.text.length).toBeLessThanOrEqual(BOT6_MESSAGE_MAX_LENGTH);
         });
     });
 
