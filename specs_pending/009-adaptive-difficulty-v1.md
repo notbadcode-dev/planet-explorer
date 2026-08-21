@@ -3,9 +3,12 @@ id: "009-adaptive-difficulty-v1"
 name: "Dificultad adaptativa v1"
 phase: "Fase 1 — Motor de juego base y primer destino jugable"
 depends_on: ["006-skill-progress-model", "007-challenge-engine-core"]
+status: "Implemented"
 ---
 
 # 009 — Dificultad adaptativa v1 (adaptive-difficulty-v1)
+
+**Implementado en**: [specs/009-adaptive-difficulty-v1/](../specs/009-adaptive-difficulty-v1/)
 
 ## Objetivo
 Implementar la primera versión del ajuste de dificultad de los retos generados, basada en el rendimiento reciente del jugador en una habilidad concreta.
