@@ -2,8 +2,7 @@ import type { StorageAdapter, PlayerProgress } from '../types';
 import { serialize } from '../core/serialize';
 import { deserialize } from '../core/deserialize';
 import { updateSaveTimestamp } from '../core/factories';
-
-const STORAGE_KEY = 'planet-explorer:progress';
+import { ERROR_MESSAGES, STORAGE_KEY } from './PersistenceService.constants';
 
 /**
  * PersistenceService: Main API for loading/saving player progress.
@@ -41,7 +40,7 @@ export class PersistenceService {
         } catch (error) {
             // Fire-and-forget: log error but don't throw
             // Game continues; recovery on next event
-            console.error(`Failed to save PlayerProgress: ${String(error)}`);
+            console.error(`${ERROR_MESSAGES.SAVE_FAILED_PREFIX}${String(error)}`);
         }
     }
 
@@ -53,7 +52,7 @@ export class PersistenceService {
         try {
             this.adapter.removeItem(STORAGE_KEY);
         } catch (error) {
-            console.error(`Failed to clear PlayerProgress: ${String(error)}`);
+            console.error(`${ERROR_MESSAGES.CLEAR_FAILED_PREFIX}${String(error)}`);
         }
     }
 }

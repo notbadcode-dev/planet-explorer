@@ -3,7 +3,16 @@
  * Messages and default values for fallback strategy
  */
 
+export const TYPE_STRING = 'string' as const;
+export const TYPE_NUMBER = 'number' as const;
+export const TYPE_BOOLEAN = 'boolean' as const;
+export const TYPE_OBJECT = 'object' as const;
+
+export const MIN_VERSION = 1;
 export const FALLBACK_VERSION = 1;
+
+export const ENTRY_QUOTE = "'";
+export const ENTRY_SEPARATOR = ' ';
 
 export const WARNING_MESSAGES = {
     NOT_OBJECT: 'PlayerProgress fallback: data is not an object, using clean state',

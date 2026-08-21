@@ -1,7 +1,7 @@
 import type { PlayerProgress } from '../types';
 import { validatePlayerProgress } from './validate';
 import { applyFallback } from './fallback';
-import { ERROR_MESSAGES } from './deserialize.constants';
+import { COLON_SPACE, ERROR_MESSAGES } from './deserialize.constants';
 
 /**
  * Deserialize JSON string to PlayerProgress.
@@ -18,7 +18,7 @@ export function deserialize(jsonString: string | null): PlayerProgress {
         data = JSON.parse(jsonString);
     } catch (error) {
     // JSON parsing failed — apply fallback
-        console.error(`${ERROR_MESSAGES.PARSE_FAILED}: ${String(error)}`);
+        console.error(`${ERROR_MESSAGES.PARSE_FAILED}${COLON_SPACE}${String(error)}`);
         return applyFallback(null);
     }
 

@@ -23,13 +23,6 @@ import ts from 'typescript';
 const COMPONENTS_DIR = join(process.cwd(), 'libs', 'components');
 const MAGIC_LITERAL_CHECK_ROOTS = ['src', 'libs'].map((dir) => join(process.cwd(), dir));
 
-// Directories to exclude from magic literal checks (internal libraries, not UI components)
-const MAGIC_LITERAL_EXCLUDE_DIRS = ['libs/persistence'];
-
-function shouldExcludeFromMagicLiteralCheck(filePath) {
-    return MAGIC_LITERAL_EXCLUDE_DIRS.some((excludeDir) => filePath.includes(excludeDir));
-}
-
 function listComponentDirs(dir) {
     return readdirSync(dir).filter((entry) => statSync(join(dir, entry)).isDirectory());
 }
@@ -157,11 +150,6 @@ function collectMagicLiteralErrors(rootDirs) {
         for (const filePath of listTsFilesRecursively(rootDir)) {
             const fileName = basename(filePath);
             if (!isCheckedImplementationFile(fileName)) {
-                continue;
-            }
-
-            // Skip directories excluded from magic literal checks
-            if (shouldExcludeFromMagicLiteralCheck(filePath)) {
                 continue;
             }
 

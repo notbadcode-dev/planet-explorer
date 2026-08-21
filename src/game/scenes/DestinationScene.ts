@@ -39,6 +39,7 @@ import type { SkillProgressState } from '../core/progress/skill-progress-state.t
 import { createBot6Dialogue } from '../overlay/bot6-dialogue';
 import { createChallengeDialogue } from '../overlay/challenge-dialogue';
 import { createHud, type HudInstance } from '../overlay/hud';
+import { getSaveCoordinator } from '../../services/persistence';
 import { MIN_COLLECTION_LENGTH, PROGRESS_DISPLAY_OFFSET, SKILL_ID_COUNTING, VALIDATE_OUTCOME_SUCCESS } from './DestinationScene.constants';
 
 export class DestinationScene extends Phaser.Scene {
@@ -156,6 +157,17 @@ export class DestinationScene extends Phaser.Scene {
 
         this.destinationVisitState = updatedVisit;
         this.skillProgressState = updatedSkillState;
+
+        // T042: Autoguardado fire-and-forget en los puntos reales de finalización (FR-003 a FR-005)
+        const saveCoordinator = getSaveCoordinator();
+        if (outcome === VALIDATE_OUTCOME_SUCCESS) {
+            saveCoordinator.onChallengeCompleted(SKILL_ID_COUNTING, updatedSkillState[SKILL_ID_COUNTING].level);
+        } else {
+            saveCoordinator.onSkillPracticed(SKILL_ID_COUNTING, updatedSkillState[SKILL_ID_COUNTING].failureCount);
+        }
+        if (updatedVisit.status === VISIT_STATUS_COMPLETED && this.navigationState.selectedDestinationId) {
+            saveCoordinator.onDestinationCompleted(this.navigationState.selectedDestinationId);
+        }
 
         if (outcome === VALIDATE_OUTCOME_SUCCESS) {
             // T015: Success branch
