@@ -6,6 +6,8 @@
  * `specs/007-challenge-engine-core/contracts/challenge-interface.md`.
  */
 
+import type { Hint } from './challenge-engine.type';
+
 /** Tipo de reto: conteo de elementos. */
 export const CHALLENGE_TYPE_COUNTING = 'counting' as const;
 
@@ -97,6 +99,41 @@ export function makeInvalidDifficultyError(difficulty: unknown): Error {
 export function makeUnsupportedChallengeTypeError(type: unknown): Error {
     return new Error(`unsupported challenge type: ${String(type)}`);
 }
+
+/** ID de la primera pista para retos de tipo `counting`. */
+export const COUNTING_HINT_1_ID = 'counting-hint-1' as const;
+
+/** ID de la segunda pista para retos de tipo `counting`. */
+export const COUNTING_HINT_2_ID = 'counting-hint-2' as const;
+
+/** Orden de la primera pista en la secuencia. */
+export const COUNTING_HINT_ORDER_FIRST = 1 as const;
+
+/** Orden de la segunda pista en la secuencia. */
+export const COUNTING_HINT_ORDER_SECOND = 2 as const;
+
+/** Texto de la primera pista para retos de tipo `counting`. */
+export const COUNTING_HINT_1_TEXT = 'Señala cada estrella con el dedo y cuenta de una en una.';
+
+/** Texto de la segunda pista para retos de tipo `counting`. */
+export const COUNTING_HINT_2_TEXT = 'Agrupa las estrellas de dos en dos: así cuentas más rápido.';
+
+/**
+ * Catálogo de pistas progresivas para retos de tipo `counting`.
+ * Estas pistas se adjuntan a cada `CountingChallenge` generado.
+ */
+export const COUNTING_HINTS: readonly Hint[] = [
+    {
+        id: COUNTING_HINT_1_ID,
+        order: COUNTING_HINT_ORDER_FIRST,
+        text: COUNTING_HINT_1_TEXT,
+    },
+    {
+        id: COUNTING_HINT_2_ID,
+        order: COUNTING_HINT_ORDER_SECOND,
+        text: COUNTING_HINT_2_TEXT,
+    },
+] as const;
 
 /**
  * Mensaje de error para respuesta `null`/`undefined`.

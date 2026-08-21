@@ -43,6 +43,8 @@ sin renderizar nada (principio VII).
   opcionales. Solicitar una pista es una acción de primera clase que se registra
   como señal para el progreso/dificultad — MUST NOT tratarse como penalización
   (principio I, y `specs_pending/010-hints-and-retry-flow.md`).
+  **[Implementada por spec 010]**: Ver `specs/010-hints-and-retry-flow/contracts/hint-contract.md`
+  para detalles de la interfaz `Hint` y las funciones `requestHint()`/`requestNextHint()`.
 * **R5**: El resultado de validar una respuesta MUST poder alimentar el modelo de
   progreso por habilidad (ver [`progress-persistence-model.md`](./progress-persistence-model.md))
   a través de una capa de coordinación explícita — el motor de retos MUST NOT

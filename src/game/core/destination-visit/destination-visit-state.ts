@@ -9,8 +9,8 @@
  * `specs/008-moon-destination-counting/contracts/destination-visit-contract.md`.
  */
 
-import { generateChallenge, validateAnswer } from '../challenge-engine/challenge-engine';
-import type { Challenge, ChallengeConfig, SkillUpdateResult } from '../challenge-engine/challenge-engine.type';
+import { generateChallenge, validateAnswer, requestHint } from '../challenge-engine/challenge-engine';
+import type { Challenge, ChallengeConfig, Hint, SkillUpdateResult } from '../challenge-engine/challenge-engine.type';
 import { getDifficultyConfig } from '../difficulty/difficulty';
 import { updateSkillProgress } from '../progress/skill-progress-state';
 import type { SkillProgressState } from '../progress/skill-progress-state.type';
@@ -28,6 +28,9 @@ import {
     SKILL_COUNTING_ID,
     VISIT_STATUS_COMPLETED,
     VISIT_STATUS_IN_PROGRESS,
+    INITIAL_HINTS_REVEALED_COUNT,
+    HINTS_REVEALED_INCREMENT,
+    HINT_USED_RESULT,
     makeCompletedVisitAccessError,
     makeEmptyChallengeConfigsError,
     makeInvalidCurrentIndexError
@@ -68,6 +71,7 @@ export function createDestinationVisit(
         currentIndex: INITIAL_CHALLENGE_INDEX,
         status: VISIT_STATUS_IN_PROGRESS,
         lastOutcome: LAST_OUTCOME_INITIAL,
+        hintsRevealedCount: INITIAL_HINTS_REVEALED_COUNT,
     };
 }
 
@@ -115,6 +119,54 @@ export function getAnswerOptions(visit: DestinationVisitState): readonly number[
 }
 
 /**
+ * Solicita la siguiente pista para el reto actual.
+ *
+ * Si el reto tiene pistas disponibles en la posición `visit.hintsRevealedCount`,
+ * devuelve esa pista, registra el uso vía `updateSkillProgress(..., 'hint-used')`,
+ * e incrementa `hintsRevealedCount`. Si no hay más pistas, devuelve `undefined` sin
+ * modificar el estado de progresión.
+ *
+ * @param visit Estado actual de la visita
+ * @param skillState Estado actual de habilidades
+ * @returns Objeto con visit/skillState actualizados, y la hint devuelta (o undefined)
+ *
+ * Ver `specs/010-hints-and-retry-flow/contracts/hint-contract.md` (garantías H1-H7).
+ */
+export function requestNextHint(
+    visit: DestinationVisitState,
+    skillState: SkillProgressState,
+): {
+    visit: DestinationVisitState;
+    skillState: SkillProgressState;
+    hint: Hint | undefined;
+} {
+    const challenge = getCurrentChallenge(visit);
+    const hint = requestHint(challenge, visit.hintsRevealedCount);
+
+    if (!hint) {
+        // Sin pistas disponibles: devolver state sin cambios
+        return {
+            visit,
+            skillState,
+            hint: undefined,
+        };
+    }
+
+    // Pista disponible: registrar uso y actualizar estado
+    const updatedSkillState = updateSkillProgress(skillState, SKILL_COUNTING_ID, HINT_USED_RESULT);
+    const updatedVisit = {
+        ...visit,
+        hintsRevealedCount: visit.hintsRevealedCount + HINTS_REVEALED_INCREMENT,
+    };
+
+    return {
+        visit: updatedVisit,
+        skillState: updatedSkillState,
+        hint,
+    };
+}
+
+/**
  * Procesa la respuesta del jugador: valida, actualiza visita y habilidad.
  *
  * @param visit Estado actual de la visita
@@ -150,9 +202,11 @@ export function submitAnswer(
             currentIndex: nextIndex,
             status: isCompleted ? VISIT_STATUS_COMPLETED : VISIT_STATUS_IN_PROGRESS,
             lastOutcome: outcome,
+            hintsRevealedCount: INITIAL_HINTS_REVEALED_COUNT,
         };
     } else {
         // Fallo: mantener índice, solo actualizar lastOutcome (G2)
+        // hintsRevealedCount se preserva automáticamente via el spread operator
         updatedVisit = {
             ...visit,
             lastOutcome: outcome,

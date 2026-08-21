@@ -12,6 +12,7 @@
 import {
     CHALLENGE_ID_PREFIX,
     CHALLENGE_TYPE_COUNTING,
+    COUNTING_HINTS,
     COUNTING_ITEM_TYPE,
     COUNTING_QUESTION_TEXT,
     DEFAULT_DIFFICULTY,
@@ -36,6 +37,7 @@ import type {
     CountingChallenge,
     CountingChallengeConfig,
     CountingChallengeItem,
+    Hint,
     SkillUpdateResult,
 } from './challenge-engine.type';
 
@@ -115,6 +117,23 @@ export function validateAnswer(challenge: Challenge, answer: unknown): SkillUpda
 }
 
 /**
+ * Obtiene una pista de un reto por índice.
+ *
+ * Función pura y genérica: funciona con cualquier `Challenge` que tenga
+ * definidas pistas, sin dependencia del tipo específico de reto.
+ *
+ * @param challenge — reto generado por `generateChallenge()`
+ * @param hintIndex — índice de la pista a obtener (0-based)
+ * @returns la `Hint` en position `hintIndex`, o `undefined` si no existe
+ *
+ * Ver `specs/010-hints-and-retry-flow/contracts/hint-contract.md`
+ * (garantías H1-H2).
+ */
+export function requestHint(challenge: Challenge, hintIndex: number): Hint | undefined {
+    return challenge.hints?.[hintIndex];
+}
+
+/**
  * Genera un `CountingChallenge` válido a partir de una `CountingChallengeConfig`.
  */
 function generateCountingChallenge(config: CountingChallengeConfig): CountingChallenge {
@@ -129,6 +148,7 @@ function generateCountingChallenge(config: CountingChallengeConfig): CountingCha
         correctAnswer,
         difficulty,
         items: buildCountingItems(correctAnswer),
+        hints: COUNTING_HINTS,
     };
 }
 
