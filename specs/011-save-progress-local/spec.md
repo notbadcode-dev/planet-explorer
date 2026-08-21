@@ -1,0 +1,239 @@
+---
+title: "Persistencia local de progreso"
+feature: "011-save-progress-local"
+type: "feature-spec"
+version: "1.0"
+created: "2026-08-21T18:30:00Z"
+updated: "2026-08-21T18:30:00Z"
+status: "Draft"
+priority: "P1"
+tags: ["progression", "data", "persistence", "storage", "game"]
+dependencies: ["006-skill-progress-model", "008-moon-destination-counting"]
+related_specs: ["012-player-name-identity"]
+---
+
+# Especificación de funcionalidad: Persistencia local de progreso
+
+**Rama de la funcionalidad**: `011-persistir-progreso-del`
+
+**Creado**: 2026-08-21
+
+**Estado**: Draft
+
+**Entrada**: Persistir el progreso del jugador (dominio por habilidad y destinos completados) en almacenamiento local del navegador, con un esquema versionado y carga/guardado testeables.
+
+---
+
+## Escenarios de usuario y pruebas
+
+### Historia de usuario 1 — Primera sesión (Prioridad: P1)
+
+El jugador abre el juego por primera vez. No existe estado guardado. El juego debe iniciar con un estado limpio (sin progreso previo, todas las habilidades en dominio 0, sin destinos completados) sin errores de lectura.
+
+**Por qué tiene esta prioridad**: El arranque sin errores es precondición para cualquier sesión. Sin esto, el juego no funciona.
+
+**Prueba independiente**: Puede probarse aisladamente limpiando localStorage, cerrando el navegador/pestaña y verificando que el juego arranque correctamente sin errores de parsing.
+
+**Escenarios de aceptación**:
+
+1. **Given** localStorage no contiene datos guardados de Explorador Espacial, **When** el juego inicia, **Then** se crea un estado inicial con todas las habilidades en dominio 0 y sin destinos completados
+2. **Given** localStorage contiene datos corruptos bajo la clave de juego, **When** el juego inicia, **Then** se ignoran los datos corruptos y se usa estado inicial limpio sin throwing error
+
+---
+
+### Historia de usuario 2 — Guardar progreso de reto (Prioridad: P1)
+
+El jugador completa un reto en una misión de Luna. Su dominio en la habilidad correspondiente aumenta. Cuando cierra y reabre el juego, ese progreso persiste.
+
+**Por qué tiene esta prioridad**: Guardar cambios de habilidad es el caso de uso fundamental. Sin esto, cada sesión es aislada y la dificultad adaptativa no tiene sentido.
+
+**Prueba independiente**: Puede probarse completando un reto (validando que `skillLevel` aumenta en memoria), guardando, limpiando memoria, rehydratando desde storage, y verificando que el nivel persiste.
+
+**Escenarios de aceptación**:
+
+1. **Given** un juego en sesión con `skillLevel` de conteo = 3, **When** se completa un reto que incrementa conteo a 4, **Then** localStorage se actualiza reflejando la nueva habilidad
+2. **Given** se guardó progreso en storage, **When** se abre una nueva sesión, **Then** las habilidades se restauran exactamente como se guardaron
+3. **Given** se han guardado cambios en múltiples habilidades, **When** se recarga la sesión, **Then** todas las habilidades restauran sus valores individuales sin mezcla
+
+---
+
+### Historia de usuario 3 — Guardar destinos completados (Prioridad: P1)
+
+El jugador completa todas las misiones de un destino (ej: Luna). El destino se marca como completado. Al reabrir el juego, Luna aparece como completada.
+
+**Por qué tiene esta prioridad**: La persistencia de destinos desbloqueados es fundamental para la rejugabilidad y estructura de contenido (spec 021).
+
+**Prueba independiente**: Puede probarse completando un destino, guardando, limpiando, rehydratando, y verificando que `destination.completed` refleja el estado guardado.
+
+**Escenarios de aceptación**:
+
+1. **Given** una sesión con destino Luna no completado, **When** se completan todas las misiones de Luna, **Then** el estado de Luna se marca como completado y se persiste en localStorage
+2. **Given** múltiples destinos con estados diferentes (Luna completado, Marte no), **When** se guarda y rehydrata, **Then** cada destino restaura su estado correcto sin confusiones
+
+---
+
+### Historia de usuario 4 — Guardar tras evento clave (Prioridad: P2)
+
+Los eventos de progreso significativo disparan guardar automáticamente: fin de reto, fin de destino, avance de nivel. No hay guardar manual explícito.
+
+**Por qué tiene esta prioridad**: La persistencia automática en eventos mejora la experiencia (no hay que pensar en guardar), pero es secundaria si los escenarios 1-3 funcionan.
+
+**Prueba independiente**: Puede probarse completando un reto, sin cerrar sesión, y verificando que localStorage fue actualizado en el evento (no solo al cerrar).
+
+**Escenarios de aceptación**:
+
+1. **Given** un reto se completa correctamente, **When** se actualiza el dominio de habilidad, **Then** localStorage se persiste automáticamente sin intervención del usuario
+2. **Given** se está jugando en una sesión, **When** el jugador navega fuera sin cerrar, **Then** el último estado persisted es reciente (dentro del evento más reciente, no antiguo)
+
+---
+
+### Historia de usuario 5 — Esquema versionado (Prioridad: P2)
+
+El esquema de datos incluye un número de versión. En futuras specs, si el modelo de progreso cambia, la versión se incrementa. Datos de versiones anteriores pueden migrarse o descartarse de forma controlada.
+
+**Por qué tiene esta prioridad**: Facilita evolución futura sin romper datos antiguos, pero no es urgente si no existen cambios de esquema planeados.
+
+**Prueba independiente**: Puede probarse verificando que los datos guardados incluyen un campo de versión, y que múltiples sesiones leen/respetan ese campo.
+
+**Escenarios de aceptación**:
+
+1. **Given** se guardan datos en localStorage, **When** se inspeccionan, **Then** incluyen un campo `version` con valor numérico
+2. **Given** datos de versión antigua, **When** se cargan en una sesión, **Then** se aplica estrategia definida (migración, descarte, error controlado)
+
+---
+
+### Casos límite
+
+* ¿Qué sucede si localStorage alcanza su límite de capacidad (tipicamente ~5MB)? → Sistema debe advertir o manejar gracefully, no fallar
+* ¿Qué sucede si el jugador borra manualmente localStorage mientras juega? → Al siguiente evento de guardar, se recrea el almacén
+* ¿Qué sucede si múltiples pestañas intentan guardar simultáneamente? → Una debe ser source of truth; comportamiento eventual consistent aceptable
+* ¿Qué sucede si se importan datos de otra sesión (esquema igual pero valores dispares)? → Debe aceptar sin validar corrección de datos (se asume input válido)
+* ¿Qué sucede con habilidades nuevas añadidas en specs futuras que no existen en datos antiguos? → Inicializar con dominio 0, no error
+
+---
+
+## Requisitos
+
+### Requisitos funcionales
+
+**FR-001**: The system MUST load persisted player progress (skill levels and completed destinations) from localStorage on game startup.
+
+**FR-002**: IF persisted data is missing or corrupted, THEN the system MUST initialize a clean initial state (all skills at level 0, no destinations completed) without throwing an error.
+
+**FR-003**: WHEN a challenge is completed and a skill level changes, THEN the system MUST persist the updated skill level to localStorage.
+
+**FR-004**: WHEN a destination is marked as completed, THEN the system MUST persist the completed destination to localStorage.
+
+**FR-005**: WHILE a game session is active, WHEN a significant event occurs (challenge completion, destination completion, level up), THEN the system MUST automatically save to localStorage.
+
+**FR-006**: The persisted data schema MUST include a version field to enable future data migrations.
+
+**FR-007**: The system MUST serialize and deserialize player progress in a structured format (e.g., JSON) that preserves all required state.
+
+**FR-008**: WHERE the persisted data schema is invalid or partially missing, the system MUST apply a fallback strategy (logging the issue and using clean initial state, or migrating known fields).
+
+**FR-009**: WHEN localStorage is unavailable or quota exceeded, the system MUST not crash but handle gracefully with logging.
+
+**FR-010**: The persistence layer MUST be testeable without a browser (mock storage possible for unit tests).
+
+### Requisitos no funcionales
+
+**NFR-001**: Persistence operations (save/load) should complete in < 10ms for typical player progress data.
+
+**NFR-002**: Player progress must survive browser restarts, tab closures, and accidental page refreshes.
+
+**NFR-003**: The serialized data size should not exceed ~100KB for single-player progress (well under typical localStorage limits).
+
+### Entidades clave
+
+* **SkillProgress**: Represents mastery level of a single skill (e.g., counting, addition)
+  - Attributes: `skillId`, `skillLevel` (numeric), `failureCount`, `lastUpdateTime`
+  - Lifecycle: initialized at 0, increments on challenge completion or skill update events
+  
+* **DestinationState**: Represents completion status of a destination
+  - Attributes: `destinationId`, `completed` (boolean), `missionsCompleted` (list), `lastVisitTime`
+  - Lifecycle: created when destination first visited, marked completed when all missions done
+  
+* **PlayerProgress**: Root entity aggregating all player state
+  - Attributes: `version` (schema version), `skills` (map of skillId → SkillProgress), `destinations` (map of destId → DestinationState), `lastSavedTime`
+  - Lifecycle: created on first session, persisted after major events
+
+---
+
+## Criterios de éxito
+
+### Resultados medibles
+
+**SC-001**: Player can complete a challenge, close the game, reopen it, and verify their skill level matches what they left.
+
+**SC-002**: 100% of significant events (challenge completion, destination completion) trigger a persist to localStorage within the same event handler (no delay or queue).
+
+**SC-003**: Corrupted or missing data does not prevent game startup — clean initial state is created automatically.
+
+**SC-004**: Persistence/restore cycle completes in < 50ms for typical progress data (measured in unit tests).
+
+**SC-005**: Unit test coverage of load/save logic reaches ≥ 95% (excluding browser APIs where mocked).
+
+**SC-006**: Schema includes version field and can be updated in future specs without data loss or errors.
+
+---
+
+## Suposiciones
+
+* **Storage technology**: localStorage is the persistent storage backend (sufficient for single-player, single-device MVP). Multi-device sync or server-side backup are explicitly out of scope (future spec).
+
+* **Data format**: JSON serialization is used for storage (compatible with localStorage's string-only values).
+
+* **Browser context**: Game runs in a single browser tab per device initially (multi-tab conflicts are not a priority for v1).
+
+* **Data validation**: Player progress data loaded from storage is assumed valid (schema validation is out of scope for v1; see 030-security-baseline for future sanitization).
+
+* **Initial state**: First session always starts with clean state (no pre-filled progress), using defaults from 006-skill-progress-model.
+
+* **Dependency on 006 & 008**: SkillProgress model (006) and DestinationVisitState (008) are stable and won't break during this spec's implementation.
+
+* **No migration v1→v0**: This is the first version of the schema (v1.0). No migration from older schemas exists yet (will be added when schema evolves).
+
+---
+
+## Alcance incluido / excluido
+
+### Incluido en esta spec
+
+* localStorage persistence layer for player progress
+* Serialization/deserialization logic
+* Load on startup, save on significant events
+* Handling missing/corrupted data
+* Version field for future migrations
+* Unit test coverage (mocked storage)
+
+### Explícitamente excluido
+
+* Multi-device synchronization (future spec)
+* Server-side backup or cloud save (future spec, separate authentication spec)
+* Multiple player profiles (spec 029)
+* Player name/identity persistence (spec 012 extends this same storage layer)
+* Data encryption (spec 030-security-baseline)
+* Advanced conflict resolution (v2+)
+
+---
+
+## Alineación con la constitución
+
+* **Principio IV (Progresión adaptativa)**: El progreso por habilidad debe sobrevivir entre sesiones para mantener sentido. Sin persistencia, cada sesión restartea la dificultad adaptativa.
+
+* **Principio VI (Simplicidad primero)**: `localStorage` es la solución más simple antes de introducir backend. Evita infraestructura especulativa.
+
+* **Principio IX (Contenido dirigido por datos)**: El modelo de datos es explícito (SkillProgress, DestinationState), versionado, y testeable independientemente de UI.
+
+---
+
+## Notas para el planning y tasks
+
+* **Testing strategy**: Core logic (serialization, versioning) must be unit-testeable with mocked storage. Playwright E2E (spec 033+) will validate full flow.
+
+* **Dependency order**: Requires 006 (SkillProgress model) and 008 (DestinationVisitState). Can proceed after both are merged to develop.
+
+* **Future extension point**: Spec 012 (player name) will extend this same persistence layer with an additional field (`playerName`). Design should allow easy addition of new fields.
+
+* **Debt reference**: Spec 030 (security baseline) will add validation/sanitization of loaded data. For now, assume valid input.
