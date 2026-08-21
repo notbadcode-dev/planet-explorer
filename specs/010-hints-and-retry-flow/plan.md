@@ -6,7 +6,7 @@ type: "implementation-plan"
 version: "1.0"
 created: "2026-08-21"
 updated: "2026-08-21"
-status: "Draft"
+status: "Implemented"
 spec: "./spec.md"
 tags: [game, education, ui]
 dependencies: ["007-challenge-engine-core", "008-moon-destination-counting", "006-skill-progress-model"]

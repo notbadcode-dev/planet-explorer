@@ -6,7 +6,7 @@ type: "task-list"
 version: "1.0"
 created: "2026-08-21"
 updated: "2026-08-21"
-status: "Draft"
+status: "Implemented"
 spec: "./spec.md"
 plan: "./plan.md"
 tags: ["game", "education", "challenges", "hints", "retry"]
@@ -148,13 +148,13 @@ N/A — esta feature no añade ninguna dependencia de producción, configuració
 
 **Propósito**: Validar que la implementación completa satisface `spec.md`, `plan.md` y `constitution.md`, y cerrar la documentación de convenciones que ya anticipaba este contrato.
 
-* [ ] T021 [P] Verificar que [challenge-engine.ts](../../src/game/core/challenge-engine/challenge-engine.ts), [challenge-engine.type.ts](../../src/game/core/challenge-engine/challenge-engine.type.ts), [challenge-engine.constants.ts](../../src/game/core/challenge-engine/challenge-engine.constants.ts), [destination-visit-state.ts](../../src/game/core/destination-visit/destination-visit-state.ts) y [destination-visit-state.type.ts](../../src/game/core/destination-visit/destination-visit-state.type.ts) no importan `phaser` ni acceden al DOM (revisión de código, regla R1 de `game-engine-scenes.md`)
-* [ ] T022 [P] Ejecutar `node scripts/check-components.mjs` y confirmar que no hay literales mágicos sueltos en los ficheros nuevos/modificados fuera de sus `*.constants.ts`
-* [ ] T023 Actualizar [docs/conventions/architecture/challenge-engine-contract.md](../../docs/conventions/architecture/challenge-engine-contract.md) para marcar la regla R4 (pistas progresivas como acción de primera clase) como implementada por `010`, referenciando `contracts/hint-contract.md`
-* [ ] T024 [P] Añadir una nota breve al inicio de [specs/008-moon-destination-counting/contracts/destination-visit-contract.md](../../specs/008-moon-destination-counting/contracts/destination-visit-contract.md) indicando que `DestinationVisitState` fue ampliado por `010` con `hintsRevealedCount` y la función `requestNextHint()`, sin reescribir el resto del contrato histórico de `008` (mismo tratamiento ya aplicado por `009`)
-* [ ] T025 Ejecutar la validación manual completa de [quickstart.md](./quickstart.md) (pasos 1-5: pistas adjuntas, `requestHint()` puro, `requestNextHint()` y neutralidad, reinicio al avanzar, preservación en reintento)
-* [ ] T026 Ejecutar `npm run lint && npm test && npm run build` y confirmar que el gate de CI pasa incluyendo las extensiones de `challenge-engine`, `destination-visit-state`, `challenge-dialogue` y `DestinationScene`
-* [ ] T027 Verificar que los 9 principios de la Comprobación de la constitución en `plan.md` siguen satisfechos tras la implementación completa (re-chequeo post-diseño exigido por el propio `plan.md`)
+* [x] T021 [P] Verificar que [challenge-engine.ts](../../src/game/core/challenge-engine/challenge-engine.ts), [challenge-engine.type.ts](../../src/game/core/challenge-engine/challenge-engine.type.ts), [challenge-engine.constants.ts](../../src/game/core/challenge-engine/challenge-engine.constants.ts), [destination-visit-state.ts](../../src/game/core/destination-visit/destination-visit-state.ts) y [destination-visit-state.type.ts](../../src/game/core/destination-visit/destination-visit-state.type.ts) no importan `phaser` ni acceden al DOM (revisión de código, regla R1 de `game-engine-scenes.md`)
+* [x] T022 [P] Ejecutar `node scripts/check-components.mjs` y confirmar que no hay literales mágicos sueltos en los ficheros nuevos/modificados fuera de sus `*.constants.ts`
+* [x] T023 Actualizar [docs/conventions/architecture/challenge-engine-contract.md](../../docs/conventions/architecture/challenge-engine-contract.md) para marcar la regla R4 (pistas progresivas como acción de primera clase) como implementada por `010`, referenciando `contracts/hint-contract.md`
+* [x] T024 [P] Añadir una nota breve al inicio de [specs/008-moon-destination-counting/contracts/destination-visit-contract.md](../../specs/008-moon-destination-counting/contracts/destination-visit-contract.md) indicando que `DestinationVisitState` fue ampliado por `010` con `hintsRevealedCount` y la función `requestNextHint()`, sin reescribir el resto del contrato histórico de `008` (mismo tratamiento ya aplicado por `009`)
+* [x] T025 Ejecutar la validación manual completa de [quickstart.md](./quickstart.md) (pasos 1-5: pistas adjuntas, `requestHint()` puro, `requestNextHint()` y neutralidad, reinicio al avanzar, preservación en reintento)
+* [x] T026 Ejecutar `npm run lint && npm test && npm run build` y confirmar que el gate de CI pasa incluyendo las extensiones de `challenge-engine`, `destination-visit-state`, `challenge-dialogue` y `DestinationScene`
+* [x] T027 Verificar que los 9 principios de la Comprobación de la constitución en `plan.md` siguen satisfechos tras la implementación completa (re-chequeo post-diseño exigido por el propio `plan.md`)
 
 **Checkpoint final**: La funcionalidad completa satisface `spec.md`, `plan.md` y `constitution.md`; la documentación de convenciones que ya anticipaba el contrato de pistas (R4) queda marcada como implementada, y el contrato histórico de `008` queda anotado para evitar confusiones futuras sobre el estado vigente de `DestinationVisitState`.
 

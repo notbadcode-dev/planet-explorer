@@ -20,6 +20,13 @@ spec: "./spec.md"
 > retroactivamente; ver `specs/009-adaptive-difficulty-v1/plan.md` y
 > `specs/009-adaptive-difficulty-v1/contracts/difficulty-contract.md` para la firma vigente.
 
+> **Nota (010-hints-and-retry-flow)**: `DestinationVisitState` fue ampliada por la spec 010
+> con el campo `readonly hintsRevealedCount: number;` para trackear pistas reveladas, y la
+> función `requestNextHint()` fue añadida para solicitar la siguiente pista registrando el uso
+> sin modificar level/failureCount de la habilidad. Las garantías G1-G6 de este contrato (008)
+> permanecen inalteradas; ver `specs/010-hints-and-retry-flow/contracts/hint-contract.md` para
+> los detalles de la extensión (H1-H7).
+
 API pública y garantías del nuevo módulo puro que coordina la secuencia de retos
 de una visita a un destino con contenido (inicialmente, solo "moon"). Sin
 dependencia de `phaser` (regla R1 de `docs/conventions/architecture/game-engine-scenes.md`).
