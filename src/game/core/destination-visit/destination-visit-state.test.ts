@@ -278,6 +278,29 @@ describe('destination-visit-state', () => {
         });
     });
 
+    describe('H5 (spec 010) — Independencia de reintento: hintsRevealedCount/currentIndex/status preservados en fallo', () => {
+        it('T010: Tras fallo, currentIndex/status/hintsRevealedCount no cambian (H5 + regresión G2/G4 de 008)', () => {
+            const visit = createDestinationVisit('test-dest', mockChallengeConfigs, mockSkillLevel);
+            const skillState = createInitialSkillProgressState();
+
+            const challengeBefore = getCurrentChallenge(visit);
+            const indexBefore = visit.currentIndex;
+            const statusBefore = visit.status;
+            const hintsCountBefore = visit.hintsRevealedCount;
+
+            // Responder incorrectamente
+            const wrongAnswer = challengeBefore.correctAnswer !== 1 ? 1 : 2;
+            const { visit: afterWrongAnswer } = submitAnswer(visit, skillState, wrongAnswer as number);
+
+            const challengeAfter = getCurrentChallenge(afterWrongAnswer);
+
+            expect(afterWrongAnswer.currentIndex).toBe(indexBefore);
+            expect(afterWrongAnswer.status).toBe(statusBefore);
+            expect(afterWrongAnswer.hintsRevealedCount).toBe(hintsCountBefore);
+            expect(challengeAfter.id).toBe(challengeBefore.id);
+        });
+    });
+
     describe('requestNextHint() — H3-H7 (spec 010) pistas progresivas sin penalización', () => {
         it('H3 escenario 1: Primera llamada a requestNextHint() devuelve la primera pista', () => {
             const visit = createDestinationVisit('test-dest', mockChallengeConfigs, mockSkillLevel);
