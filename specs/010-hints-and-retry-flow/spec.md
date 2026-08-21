@@ -5,7 +5,7 @@ type: "feature-spec"
 version: "1.0"
 created: "2026-08-21"
 updated: "2026-08-21"
-status: "Draft"
+status: "Implemented"
 priority: "P1"
 tags: ["game", "education", "challenges", "hints", "retry", "adaptive-difficulty"]
 dependencies: ["007-challenge-engine-core", "008-moon-destination-counting", "006-skill-progress-model"]
