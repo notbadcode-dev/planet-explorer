@@ -337,6 +337,21 @@ describe('destination-visit-state', () => {
             expect(afterThird.hintsRevealedCount).toBe(2);
         });
 
+        it('T016: Llamadas sucesivas nunca repiten pista — segunda es diferente de primera', () => {
+            const visit = createDestinationVisit('test-dest', mockChallengeConfigs, mockSkillLevel);
+            const skillState = createInitialSkillProgressState();
+
+            const { hint: hint1 } = requestNextHint(visit, skillState);
+            const { visit: afterFirst } = requestNextHint(visit, skillState);
+            const { hint: hint2 } = requestNextHint(afterFirst, skillState);
+
+            expect(hint1).toBeDefined();
+            expect(hint2).toBeDefined();
+            expect(hint1?.id).not.toBe(hint2?.id);
+            expect(hint1?.order).toBe(1);
+            expect(hint2?.order).toBe(2);
+        });
+
         it('H4 neutrality: requestNextHint() no modifica level/failureCount de la habilidad', () => {
             const visit = createDestinationVisit('test-dest', mockChallengeConfigs, mockSkillLevel);
             const skillState = createInitialSkillProgressState();

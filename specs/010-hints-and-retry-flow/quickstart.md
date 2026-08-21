@@ -89,6 +89,32 @@ console.log(afterFailure.currentIndex === visit.currentIndex); // -> true (mismo
 console.log(afterFailure.hintsRevealedCount === visit.hintsRevealedCount); // -> true (sin reinicio)
 ```
 
+## 6. Verificar accesibilidad del botón "Pedir pista" (T017b, NFR-002)
+
+El botón "Pedir pista" se crea con `createButton()` de `libs/components/button`,
+que hereda soporte nativo de accesibilidad keyboard + touch + mouse:
+
+- **Teclado**: El botón es un `<button>` HTML nativo con `:focus` visible.
+  - Tab: navega al botón cuando está en el flujo de tabulación.
+  - Enter o Espacio: activa el evento `onClick`.
+  
+- **Touch**: El elemento responde a `click` que es disparado por taps en
+  dispositivos táctiles.
+  
+- **Ratón**: El elemento responde a clicks de ratón (estándar).
+
+Verificación manual:
+1. Ejecutar `npm run storybook` y abrir el story de `challenge-dialogue`.
+2. Proporcionar un `onRequestHint` callback, rellenar `hints` y `hintsRevealedCount`.
+3. Con el navegador:
+   - Pulsa Tab hasta el botón "Pedir pista" (debe verse con `:focus`).
+   - Pulsa Enter o Espacio (debe invocar `onRequestHint`).
+   - Haz clic con el ratón (debe invocar `onRequestHint`).
+   - En dispositivo táctil, toca el botón (debe invocar `onRequestHint`).
+
+**Resultado esperado**: El botón es totalmente accesible sin cambios adicionales
+de código, reutilizando la librería estándar de componentes.
+
 ## Ejecución real de pruebas
 
 ```sh
