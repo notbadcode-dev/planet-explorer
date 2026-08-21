@@ -115,7 +115,7 @@
 
 - [x] No implementation details leak into specification
   - ✓ localStorage used as example, not required implementation
-  - ✓ No specific JSON structure defined (design artifact)
+  - ✓ JSON structure defined as part of data model (Clarification Q1: Schema A structure with version at root)
   - ✓ No framework, language, or library mentioned
   - ✓ No database schema, API design, or code structure
 

@@ -4,8 +4,8 @@ feature: "011-save-progress-local"
 type: "feature-spec"
 version: "1.0"
 created: "2026-08-21T18:30:00Z"
-updated: "2026-08-21T18:30:00Z"
-status: "Draft"
+updated: "2026-08-21T22:58:00Z"
+status: "Implemented"
 priority: "P1"
 tags: ["progression", "data", "persistence", "storage", "game"]
 dependencies: ["006-skill-progress-model", "008-moon-destination-counting"]
@@ -21,6 +21,22 @@ related_specs: ["012-player-name-identity"]
 **Estado**: Draft
 
 **Entrada**: Persistir el progreso del jugador (dominio por habilidad y destinos completados) en almacenamiento local del navegador, con un esquema versionado y carga/guardado testeables.
+
+---
+
+## Clarifications
+
+### Session 2026-08-21
+
+- Q: ¿Debe la raíz del objeto PlayerProgress anidar todos los datos bajo un campo único `version`, o utilizar una estructura envuelta con secciones separadas de `metadata` y `payload`? → A: Opción A (raíz única con `version` al nivel superior). Más simple para v1 y se alinea con Principio VI. La versión puede evolucionar gracefully en futuras migraciones.
+
+- Q: Cuando se cargan datos parcialmente válidos (ej: existen habilidades pero faltan destinos), ¿debería descartar TODO, conservar válidos con defaults, o aplicar estrategia por sección? → A: Opción B (estrategia permisiva). Conservar campos válidos y completar faltantes con defaults. Maximiza recuperación de progreso válido (P1) y es escalable para nuevos campos en futuras specs (012).
+
+- Q: ¿Debería el sistema guardarse solo en 3 eventos específicos (Challenge Completion, Destination Completion, Level Up) o también incluir Fail attempts, Mission completion, Navigation? → A: Opción A (solo 3 eventos). Estos corresponden a cambios de progresión observable (P1). Fail attempts y navigation afectan gameplay pero no el modelo de progreso. Minimiza overhead y acoplamiento.
+
+- Q: ¿Debería el auto-save ser sincrónica/bloqueante, asincrónica no-bloqueante, o asincrónica esperada? → A: Opción B (asincrónica no-bloqueante/fire-and-forget). localStorage es local (típicamente < 1ms), pero fire-and-forget evita lag UX (Principio I). Fallos silenciosos se recuperan en próximo evento. Mejor experiencia para el jugador.
+
+- Q: En la estrategia permisiva, ¿qué criterios de validación aplican: solo estructura JSON, tipos de datos, o también rangos de valores? → A: Opción A (solo estructura + tipos). Suficiente para v1. Spec 030 valida rangos después. Fácil de testear, alineado con Principio VI (simplicidad primero).
 
 ---
 
@@ -109,6 +125,7 @@ El esquema de datos incluye un número de versión. En futuras specs, si el mode
 * ¿Qué sucede si múltiples pestañas intentan guardar simultáneamente? → Una debe ser source of truth; comportamiento eventual consistent aceptable
 * ¿Qué sucede si se importan datos de otra sesión (esquema igual pero valores dispares)? → Debe aceptar sin validar corrección de datos (se asume input válido)
 * ¿Qué sucede con habilidades nuevas añadidas en specs futuras que no existen en datos antiguos? → Inicializar con dominio 0, no error
+* ¿Qué sucede si los datos en localStorage son parcialmente válidos (ej: `skills` existe pero `destinations` falta)? → Restaurar campos válidos, inicializar campos faltantes con defaults, registrar en logs. Maximiza recuperación sin perder progreso válido. (Clarification Q2: Opción B)
 
 ---
 
@@ -124,13 +141,13 @@ El esquema de datos incluye un número de versión. En futuras specs, si el mode
 
 **FR-004**: WHEN a destination is marked as completed, THEN the system MUST persist the completed destination to localStorage.
 
-**FR-005**: WHILE a game session is active, WHEN a significant event occurs (challenge completion, destination completion, level up), THEN the system MUST automatically save to localStorage.
+**FR-005**: WHILE a game session is active, WHEN a significant progression event occurs, THEN the system MUST automatically save to localStorage using fire-and-forget async pattern (initiate save, do not block game loop). Significant progression events are: (1) Challenge Completion (challenge finishes, skill level may change), (2) Destination Completion (all missions in destination done, destination marked complete), (3) Skill Level Change (any skill increments, e.g., after mastery threshold reached). Save failures are logged but do not interrupt game flow; recovery occurs on next event.
 
 **FR-006**: The persisted data schema MUST include a version field to enable future data migrations.
 
 **FR-007**: The system MUST serialize and deserialize player progress in a structured format (e.g., JSON) that preserves all required state.
 
-**FR-008**: WHERE the persisted data schema is invalid or partially missing, the system MUST apply a fallback strategy (logging the issue and using clean initial state, or migrating known fields).
+**FR-008**: WHERE the persisted data schema is invalid or partially missing, the system MUST apply a permissive fallback strategy: (1) Validate structure (JSON parseable, has `skills` map, `destinations` map) and types (skillLevel is number, completed is boolean), (2) Restore all fields that pass validation, (3) Initialize missing or invalid sections with defaults, (4) Log validation failures for debugging. Do NOT validate value ranges (defer to spec 030). This allows data recovery without losing valid player progress.
 
 **FR-009**: WHEN localStorage is unavailable or quota exceeded, the system MUST not crash but handle gracefully with logging.
 
@@ -138,7 +155,7 @@ El esquema de datos incluye un número de versión. En futuras specs, si el mode
 
 ### Requisitos no funcionales
 
-**NFR-001**: Persistence operations (save/load) should complete in < 10ms for typical player progress data.
+**NFR-001**: Persistence operations (save/load) MUST complete in < 10ms for typical player progress data. Saves are non-blocking (fire-and-forget async); game loop continues immediately without waiting for storage write completion.
 
 **NFR-002**: Player progress must survive browser restarts, tab closures, and accidental page refreshes.
 
@@ -155,8 +172,23 @@ El esquema de datos incluye un número de versión. En futuras specs, si el mode
   - Lifecycle: created when destination first visited, marked completed when all missions done
   
 * **PlayerProgress**: Root entity aggregating all player state
-  - Attributes: `version` (schema version), `skills` (map of skillId → SkillProgress), `destinations` (map of destId → DestinationState), `lastSavedTime`
+  - Attributes: `version` (schema version, numeric), `skills` (map of skillId → SkillProgress), `destinations` (map of destId → DestinationState), `lastSavedTime`
   - Lifecycle: created on first session, persisted after major events
+  - **JSON serialization structure (Clarification: Schema A)**: Root-level version field with all data nested below
+    ```json
+    {
+      "version": 1,
+      "skills": {
+        "counting": { "skillId": "counting", "skillLevel": 3, "failureCount": 2, "lastUpdateTime": "2026-08-21T10:30:00Z" },
+        "addition": { "skillId": "addition", "skillLevel": 1, "failureCount": 5, "lastUpdateTime": "2026-08-21T09:15:00Z" }
+      },
+      "destinations": {
+        "moon": { "destinationId": "moon", "completed": true, "missionsCompleted": ["mission_1", "mission_2", "mission_3"], "lastVisitTime": "2026-08-21T10:00:00Z" },
+        "mars": { "destinationId": "mars", "completed": false, "missionsCompleted": ["mission_1"], "lastVisitTime": "2026-08-21T08:00:00Z" }
+      },
+      "lastSavedTime": "2026-08-21T10:30:45Z"
+    }
+    ```
 
 ---
 
@@ -166,7 +198,7 @@ El esquema de datos incluye un número de versión. En futuras specs, si el mode
 
 **SC-001**: Player can complete a challenge, close the game, reopen it, and verify their skill level matches what they left.
 
-**SC-002**: 100% of significant events (challenge completion, destination completion) trigger a persist to localStorage within the same event handler (no delay or queue).
+**SC-002**: 100% of significant progression events (Challenge Completion, Destination Completion, Skill Level Change) trigger a persist to localStorage within the same event handler (no delay or queue). No events missed, no out-of-order saves.
 
 **SC-003**: Corrupted or missing data does not prevent game startup — clean initial state is created automatically.
 
@@ -186,7 +218,7 @@ El esquema de datos incluye un número de versión. En futuras specs, si el mode
 
 * **Browser context**: Game runs in a single browser tab per device initially (multi-tab conflicts are not a priority for v1).
 
-* **Data validation**: Player progress data loaded from storage is assumed valid (schema validation is out of scope for v1; see 030-security-baseline for future sanitization).
+* **Data validation**: Player progress data loaded from storage is validated for JSON structure and type correctness (e.g., skillLevel is number, completed is boolean), but NOT for value ranges (e.g., 0 ≤ skillLevel ≤ 10). Range validation deferred to 030-security-baseline. This allows graceful recovery of partially corrupted data while keeping v1 simple.
 
 * **Initial state**: First session always starts with clean state (no pre-filled progress), using defaults from 006-skill-progress-model.
 

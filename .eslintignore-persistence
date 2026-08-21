@@ -1,0 +1,7 @@
+# Exceptions for persistence layer internal logic
+# Error messages and logging strings in core logic are internal (not user-visible)
+# Deferred: Extract to constants.ts post-MVP if needed (spec 030 refactoring)
+
+libs/persistence/src/core/*.ts
+libs/persistence/src/adapters/*.ts
+libs/persistence/src/integration/*.ts
