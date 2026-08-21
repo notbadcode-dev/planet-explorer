@@ -10,12 +10,12 @@
  */
 
 import { generateChallenge, validateAnswer } from '../challenge-engine/challenge-engine';
-import type { Challenge, CountingChallengeConfig, SkillUpdateResult } from '../challenge-engine/challenge-engine.type';
+import type { Challenge, ChallengeConfig, SkillUpdateResult } from '../challenge-engine/challenge-engine.type';
+import { getDifficultyConfig } from '../difficulty/difficulty';
 import { updateSkillProgress } from '../progress/skill-progress-state';
 import type { SkillProgressState } from '../progress/skill-progress-state.type';
 import {
     ANSWER_OUTCOME_SUCCESS,
-    CHALLENGE_DIFFICULTY_FIELD,
     DISTRACTOR_OFFSET_1,
     DISTRACTOR_OFFSET_2,
     DISTRACTOR_OFFSET_3,
@@ -37,24 +37,30 @@ import type { DestinationVisitState } from './destination-visit-state.type';
 /**
  * Crea una nueva visita a un destino (G1: secuencia fija generada una sola vez).
  *
+ * NOTA (spec 009-adaptive-difficulty-v1): La firma de esta función fue ampliada
+ * en la spec 009 para aceptar configs de cualquier tipo de reto (ChallengeConfig en lugar
+ * de CountingChallengeConfig) y para aplicar automáticamente la dificultad adaptativa
+ * por nivel de habilidad usando getDifficultyConfig().
+ *
  * @param destinationId Identificador del destino (p. ej. "moon")
- * @param challengeConfigs Configuración de retos a generar (usualmente 3 para Luna)
- * @param skillLevel Nivel actual de la habilidad "counting", usado como dificultad
+ * @param challengeConfigs Configuración de retos a generar (usualmente 3 para Luna), ampliado para aceptar cualquier ChallengeConfig
+ * @param skillLevel Nivel actual de la habilidad, usado para calcular dificultad adaptativa via getDifficultyConfig()
  * @returns DestinationVisitState nuevo con secuencia generada e índice 0
  * @throws Error si challengeConfigs está vacío
  */
 export function createDestinationVisit(
     destinationId: string,
-    challengeConfigs: readonly CountingChallengeConfig[],
+    challengeConfigs: readonly ChallengeConfig[],
     skillLevel: number,
 ): DestinationVisitState {
     if (!challengeConfigs || challengeConfigs.length === SHUFFLE_ZERO_FACTOR) {
         throw makeEmptyChallengeConfigsError(destinationId);
     }
 
-    const challenges = challengeConfigs.map((config) =>
-        generateChallenge({ ...config, [CHALLENGE_DIFFICULTY_FIELD]: skillLevel }),
-    ) as Challenge[];
+    const challenges = challengeConfigs.map((config) => {
+        const difficultyAdjustedConfig = getDifficultyConfig(config.type, skillLevel);
+        return generateChallenge(difficultyAdjustedConfig);
+    }) as Challenge[];
 
     return {
         destinationId,

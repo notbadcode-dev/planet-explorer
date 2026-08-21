@@ -17,9 +17,6 @@ export const NEXT_CHALLENGE_OFFSET = 1;
 /** Identificador de habilidad "counting" para actualización de progresión. */
 export const SKILL_COUNTING_ID = 'counting' as const;
 
-/** Nombre del parámetro de dificultad en la configuración de retos. */
-export const CHALLENGE_DIFFICULTY_FIELD = 'difficulty' as const;
-
 /** Índice de inicio para el algoritmo de barajado (Fisher-Yates). */
 export const SHUFFLE_START_FACTOR = 1;
 
