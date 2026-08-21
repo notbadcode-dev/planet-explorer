@@ -66,6 +66,13 @@ console.log(skillState.counting.level === before); // -> true (sin cambio, regla
 Esperado: `level`/`failureCount` de la habilidad `counting` no cambian tras
 pedir una pista (H4); `hintsRevealedCount` avanza en 1.
 
+**T020 Verificación manual realizada**: Paso 3 de este quickstart ha sido
+verificado exitosamente:
+- `skillState.counting.level` permanece idéntico antes y después de `requestNextHint()`
+- `skillState.counting.failureCount` permanece idéntico
+- El progreso se registra vía `'hint-used'` sin modificar métricas de nivel/fallo
+- Resultado observado coincide con lo documentado ✓
+
 ## 4. Verificar reinicio de pistas al avanzar de reto (acierto)
 
 ```ts

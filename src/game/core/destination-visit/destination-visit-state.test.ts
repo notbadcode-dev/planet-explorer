@@ -25,6 +25,7 @@ import {
     NUM_ANSWER_OPTIONS,
     VISIT_STATUS_COMPLETED,
     VISIT_STATUS_IN_PROGRESS,
+    ANSWER_OUTCOME_SUCCESS,
 } from './destination-visit-state.constants';
 
 describe('destination-visit-state', () => {
@@ -298,6 +299,43 @@ describe('destination-visit-state', () => {
             expect(afterWrongAnswer.status).toBe(statusBefore);
             expect(afterWrongAnswer.hintsRevealedCount).toBe(hintsCountBefore);
             expect(challengeAfter.id).toBe(challengeBefore.id);
+        });
+    });
+
+    describe('H4 (spec 010) — Neutralidad sobre progresión: level/failureCount no cambian tras pedir pista', () => {
+        it('T018: Tras una o más llamadas a requestNextHint(), level/failureCount permanecen idénticos', () => {
+            const visit = createDestinationVisit('test-dest', mockChallengeConfigs, mockSkillLevel);
+            const skillState = createInitialSkillProgressState();
+
+            const levelBefore = skillState.counting.level;
+            const failureCountBefore = skillState.counting.failureCount;
+
+            const { skillState: afterFirst } = requestNextHint(visit, skillState);
+            const { skillState: afterSecond } = requestNextHint(visit, afterFirst);
+
+            expect(afterSecond.counting.level).toBe(levelBefore);
+            expect(afterSecond.counting.failureCount).toBe(failureCountBefore);
+        });
+    });
+
+    describe('FR-007 (spec 010) — Independencia de validación: outcome no cambia tras pedir pista', () => {
+        it('T019: Outcome de submitAnswer() es idéntico con o sin pistas previas para la misma respuesta', () => {
+            const visit = createDestinationVisit('test-dest', mockChallengeConfigs, mockSkillLevel);
+            const skillState = createInitialSkillProgressState();
+
+            const challenge = getCurrentChallenge(visit);
+            const correctAnswer = challenge.correctAnswer as number;
+
+            // Path 1: Responder directamente sin pistas
+            const { outcome: outcomeWithoutHints } = submitAnswer(visit, skillState, correctAnswer);
+
+            // Path 2: Pedir pista(s) y luego responder lo mismo
+            const { visit: afterHint } = requestNextHint(visit, skillState);
+            const { outcome: outcomeWithHints } = submitAnswer(afterHint, skillState, correctAnswer);
+
+            // Outcome debe ser idéntico en ambos paths
+            expect(outcomeWithHints).toBe(outcomeWithoutHints);
+            expect(outcomeWithoutHints).toBe(ANSWER_OUTCOME_SUCCESS);
         });
     });
 
