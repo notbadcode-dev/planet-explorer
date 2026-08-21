@@ -20,6 +20,8 @@ import type { Challenge, SkillUpdateResult } from '../challenge-engine/challenge
  * - `currentIndex`: Posición 0-based del reto actual dentro de `challenges`.
  * - `status`: 'in-progress' mientras quedan retos; 'completed' tras el último acierto.
  * - `lastOutcome`: Resultado de la última llamada a `submitAnswer` (para feedback).
+ * - `hintsRevealedCount`: Número de pistas ya reveladas para el reto actual (extensión por spec 010).
+ *   Se reinicia a 0 al avanzar de reto; se preserva en reintentos.
  */
 export interface DestinationVisitState {
     readonly destinationId: string;
@@ -27,4 +29,5 @@ export interface DestinationVisitState {
     readonly currentIndex: number;
     readonly status: 'in-progress' | 'completed';
     readonly lastOutcome: SkillUpdateResult | null;
+    readonly hintsRevealedCount: number;
 }

@@ -19,6 +19,7 @@ import {
     getAnswerOptions,
     getCurrentChallenge,
     submitAnswer,
+    requestNextHint,
 } from './destination-visit-state';
 import {
     NUM_ANSWER_OPTIONS,
@@ -274,6 +275,97 @@ describe('destination-visit-state', () => {
             // Los retos pueden tener el mismo min/max base, pero con diferente difficulty
             expect(challenge5.type).toBe(CHALLENGE_TYPE_COUNTING);
             expect(challenge8.type).toBe(CHALLENGE_TYPE_COUNTING);
+        });
+    });
+
+    describe('requestNextHint() — H3-H7 (spec 010) pistas progresivas sin penalización', () => {
+        it('H3 escenario 1: Primera llamada a requestNextHint() devuelve la primera pista', () => {
+            const visit = createDestinationVisit('test-dest', mockChallengeConfigs, mockSkillLevel);
+            const skillState = createInitialSkillProgressState();
+
+            const { hint, visit: updatedVisit } = requestNextHint(visit, skillState);
+
+            expect(hint).toBeDefined();
+            expect(hint?.order).toBe(1);
+            expect(updatedVisit.hintsRevealedCount).toBe(1);
+        });
+
+        it('H3 escenario 2: Segunda llamada a requestNextHint() devuelve la segunda pista', () => {
+            const visit = createDestinationVisit('test-dest', mockChallengeConfigs, mockSkillLevel);
+            const skillState = createInitialSkillProgressState();
+
+            const { visit: afterFirst } = requestNextHint(visit, skillState);
+            const { hint, visit: afterSecond } = requestNextHint(afterFirst, skillState);
+
+            expect(hint).toBeDefined();
+            expect(hint?.order).toBe(2);
+            expect(afterSecond.hintsRevealedCount).toBe(2);
+        });
+
+        it('H3 escenario 3: Tercera llamada a requestNextHint() devuelve undefined sin incrementar', () => {
+            const visit = createDestinationVisit('test-dest', mockChallengeConfigs, mockSkillLevel);
+            const skillState = createInitialSkillProgressState();
+
+            const { visit: afterFirst } = requestNextHint(visit, skillState);
+            const { visit: afterSecond } = requestNextHint(afterFirst, skillState);
+            const { hint, visit: afterThird } = requestNextHint(afterSecond, skillState);
+
+            expect(hint).toBeUndefined();
+            expect(afterThird.hintsRevealedCount).toBe(2);
+        });
+
+        it('H4 neutrality: requestNextHint() no modifica level/failureCount de la habilidad', () => {
+            const visit = createDestinationVisit('test-dest', mockChallengeConfigs, mockSkillLevel);
+            const skillState = createInitialSkillProgressState();
+
+            const levelBefore = getSkillLevel(skillState, 'counting');
+            const { skillState: afterHint } = requestNextHint(visit, skillState);
+            const levelAfter = getSkillLevel(afterHint, 'counting');
+
+            expect(levelAfter).toBe(levelBefore);
+        });
+
+        it('H5 independence: currentIndex/status/hintsRevealedCount no cambian en fallo tras pedir pista', () => {
+            const visit = createDestinationVisit('test-dest', mockChallengeConfigs, mockSkillLevel);
+            const skillState = createInitialSkillProgressState();
+
+            // Pedir una pista
+            const { visit: afterHint } = requestNextHint(visit, skillState);
+
+            // Responder incorrectamente
+            const challenge = getCurrentChallenge(afterHint);
+            const wrongAnswer = challenge.correctAnswer !== 1 ? 1 : 2;
+            const { visit: afterWrongAnswer } = submitAnswer(afterHint, skillState, wrongAnswer as number);
+
+            // Verificar que hintsRevealedCount no fue afectado por la respuesta incorrecta
+            expect(afterWrongAnswer.hintsRevealedCount).toBe(afterHint.hintsRevealedCount);
+            expect(afterWrongAnswer.currentIndex).toBe(afterHint.currentIndex);
+            expect(afterWrongAnswer.status).toBe(VISIT_STATUS_IN_PROGRESS);
+        });
+
+        it('H6 reset on success: hintsRevealedCount se reinicia a 0 al avanzar tras acierto', () => {
+            const visit = createDestinationVisit('test-dest', mockChallengeConfigs, mockSkillLevel);
+            const skillState = createInitialSkillProgressState();
+
+            // Pedir una pista
+            const { visit: afterHint } = requestNextHint(visit, skillState);
+            expect(afterHint.hintsRevealedCount).toBe(1);
+
+            // Responder correctamente
+            const challenge = getCurrentChallenge(afterHint);
+            const { visit: afterCorrectAnswer } = submitAnswer(afterHint, skillState, challenge.correctAnswer as number);
+
+            // hintsRevealedCount debe volver a 0
+            expect(afterCorrectAnswer.hintsRevealedCount).toBe(0);
+        });
+
+        it('Regression G1-G6: garantías existentes de 008 siguen siendo válidas tras añadir hintsRevealedCount', () => {
+            const visit = createDestinationVisit('test-dest', mockChallengeConfigs, mockSkillLevel);
+
+            expect(visit.challenges.length).toBe(mockChallengeConfigs.length);
+            expect(visit.currentIndex).toBe(0);
+            expect(visit.status).toBe(VISIT_STATUS_IN_PROGRESS);
+            expect(visit.hintsRevealedCount).toBe(0);
         });
     });
 });
