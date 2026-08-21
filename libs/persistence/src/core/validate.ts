@@ -1,4 +1,5 @@
 import type { PlayerProgress, SkillProgressMap, DestinationStateMap } from '../types';
+import { EMPTY_LENGTH, MIN_VERSION, TYPE_BOOLEAN, TYPE_NUMBER, TYPE_OBJECT, TYPE_STRING } from './validate.constants';
 
 /**
  * Validate PlayerProgress data structure.
@@ -7,7 +8,7 @@ import type { PlayerProgress, SkillProgressMap, DestinationStateMap } from '../t
  */
 export function validatePlayerProgress(data: unknown): data is PlayerProgress {
     if (!isObject(data)) return false;
-    if (typeof data.version !== 'number' || data.version < 1) return false;
+    if (typeof data.version !== TYPE_NUMBER || data.version < MIN_VERSION) return false;
     if (!isValidSkillMap(data.skills)) return false;
     if (!isValidDestinationMap(data.destinations)) return false;
     if (!isValidISODate(data.lastSavedTime)) return false;
@@ -18,11 +19,11 @@ function isValidSkillMap(skills: unknown): skills is SkillProgressMap {
     if (!isObject(skills)) return false;
 
     for (const [id, skill] of Object.entries(skills as Record<string, unknown>)) {
-        if (typeof id !== 'string' || id.length === 0) return false;
+        if (typeof id !== TYPE_STRING || id.length === EMPTY_LENGTH) return false;
         if (!isObject(skill)) return false;
-        if (typeof skill.skillId !== 'string' || skill.skillId !== id) return false;
-        if (typeof skill.skillLevel !== 'number') return false;
-        if (typeof skill.failureCount !== 'number') return false;
+        if (typeof skill.skillId !== TYPE_STRING || skill.skillId !== id) return false;
+        if (typeof skill.skillLevel !== TYPE_NUMBER) return false;
+        if (typeof skill.failureCount !== TYPE_NUMBER) return false;
         if (!isValidISODate(skill.lastUpdateTime)) return false;
     }
 
@@ -33,12 +34,12 @@ function isValidDestinationMap(destinations: unknown): destinations is Destinati
     if (!isObject(destinations)) return false;
 
     for (const [id, dest] of Object.entries(destinations as Record<string, unknown>)) {
-        if (typeof id !== 'string' || id.length === 0) return false;
+        if (typeof id !== TYPE_STRING || id.length === EMPTY_LENGTH) return false;
         if (!isObject(dest)) return false;
-        if (typeof dest.destinationId !== 'string' || dest.destinationId !== id) return false;
-        if (typeof dest.completed !== 'boolean') return false;
+        if (typeof dest.destinationId !== TYPE_STRING || dest.destinationId !== id) return false;
+        if (typeof dest.completed !== TYPE_BOOLEAN) return false;
         if (!Array.isArray(dest.missionsCompleted)) return false;
-        if (!dest.missionsCompleted.every((m: string | unknown) => typeof m === 'string')) return false;
+        if (!dest.missionsCompleted.every((m: string | unknown) => typeof m === TYPE_STRING)) return false;
         if (!isValidISODate(dest.lastVisitTime)) return false;
     }
 
@@ -46,11 +47,11 @@ function isValidDestinationMap(destinations: unknown): destinations is Destinati
 }
 
 function isValidISODate(value: unknown): boolean {
-    if (typeof value !== 'string') return false;
+    if (typeof value !== TYPE_STRING) return false;
     const date = new Date(value);
     return !isNaN(date.getTime());
 }
 
 function isObject(value: unknown): value is Record<string, unknown> {
-    return typeof value === 'object' && value !== null && !Array.isArray(value);
+    return typeof value === TYPE_OBJECT && value !== null && !Array.isArray(value);
 }

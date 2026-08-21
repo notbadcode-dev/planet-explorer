@@ -7,16 +7,16 @@
  * Future v3: Add encryption key (spec 030)
  */
 
-const CURRENT_VERSION = 1;
+import { CURRENT_VERSION, TYPE_NUMBER, TYPE_OBJECT, WARNING_MESSAGES } from './versioning.constants';
 
 /**
  * Detect version of saved data.
  * Returns version number from data, or null if unversioned.
  */
 export function detectVersion(data: unknown): number | null {
-    if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
+    if (typeof data === TYPE_OBJECT && data !== null && !Array.isArray(data)) {
         const version = (data as Record<string, unknown>).version;
-        if (typeof version === 'number') {
+        if (typeof version === TYPE_NUMBER) {
             return version;
         }
     }
@@ -40,14 +40,14 @@ export function migrateToCurrentVersion(data: unknown, fromVersion: number): Rec
     }
 
     if (fromVersion > CURRENT_VERSION) {
-        console.warn(`PlayerProgress version ${fromVersion} is newer than supported ${CURRENT_VERSION}. Some features may not work.`);
+        console.warn(WARNING_MESSAGES.NEWER_VERSION_PREFIX + fromVersion + WARNING_MESSAGES.NEWER_VERSION_MIDDLE + CURRENT_VERSION + WARNING_MESSAGES.NEWER_VERSION_SUFFIX);
         return data;
     }
 
     // Future: Add migration logic as new versions are defined
     // if (fromVersion === 1) return migrateV1toV2(data);
 
-    console.warn(`PlayerProgress version ${fromVersion} migration not implemented. Using data as-is.`);
+    console.warn(WARNING_MESSAGES.MIGRATION_NOT_IMPLEMENTED_PREFIX + fromVersion + WARNING_MESSAGES.MIGRATION_NOT_IMPLEMENTED_SUFFIX);
     return data;
 }
 

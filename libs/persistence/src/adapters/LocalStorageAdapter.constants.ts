@@ -16,3 +16,9 @@ export const ERROR_MESSAGES = {
 } as const;
 
 export const TEST_KEY = '__planet_explorer_storage_test__';
+
+export const TYPE_UNDEFINED = 'undefined' as const;
+
+export const MESSAGE_SEPARATOR = ', ';
+export const KEY_SEPARATOR = ' ';
+export const DETAIL_SEPARATOR = ': ';

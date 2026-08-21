@@ -94,4 +94,11 @@ describe('User Story 4: Automatic Save on Game Events (FR-005, FR-006)', () => {
         expect(loaded.skills.counting.skillLevel).toBe(3);
         expect(loaded.destinations.moon.completed).toBe(true);
     });
+
+    it('should allow the game loop to replace the tracked progress via updateProgress()', () => {
+        const replacement = createInitialState();
+        coordinator.updateProgress(replacement);
+
+        expect(coordinator.getProgress()).toBe(replacement);
+    });
 });
