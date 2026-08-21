@@ -4,12 +4,30 @@ feature: "011-save-progress-local"
 type: "feature-spec"
 version: "1.0"
 created: "2026-08-21T18:30:00Z"
-updated: "2026-08-21T22:58:00Z"
+updated: "2026-08-22T00:00:00Z"
 status: "Implemented"
 priority: "P1"
 tags: ["progression", "data", "persistence", "storage", "game"]
 dependencies: ["006-skill-progress-model", "008-moon-destination-counting"]
 related_specs: ["012-player-name-identity"]
+Testing:
+  unit:
+    - libs/persistence/test/unit/deserialize.test.ts
+    - libs/persistence/test/unit/serialize.test.ts
+    - libs/persistence/test/unit/validate.test.ts
+    - libs/persistence/test/unit/fallback.test.ts
+    - libs/persistence/test/unit/versioning.test.ts
+    - libs/persistence/test/unit/first-session.test.ts
+    - libs/persistence/test/unit/skill-save.test.ts
+    - libs/persistence/test/unit/destination-save.test.ts
+    - libs/persistence/test/unit/auto-save-events.test.ts
+    - libs/persistence/test/unit/LocalStorageAdapter.test.ts
+    - libs/persistence/test/unit/PersistenceService.test.ts
+    - libs/persistence/test/unit/performance.test.ts
+    - src/services/persistence.test.ts
+  e2e: [] # N/A — anterior a spec 033
+  coverage_logic: "98.44% lines / 93.98% statements / 91.11% branches / 100% functions (libs/persistence, ver SUCCESS-CRITERIA.md SC-005)"
+  coverage_ui: "N/A — anterior a spec 033"
 ---
 
 # Especificación de funcionalidad: Persistencia local de progreso

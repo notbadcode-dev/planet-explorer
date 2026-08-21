@@ -1,4 +1,5 @@
 import type { PlayerProgress } from '../types';
+import { completeDestination, createSkillProgress, updateSkillLevel } from '../core/factories';
 import { PersistenceService } from './PersistenceService';
 
 /**
@@ -25,18 +26,8 @@ export class EventSaveCoordinator {
    * Triggered by game loop when challenge is passed.
    */
     onChallengeCompleted(skillId: string, newLevel: number): void {
-    // Update internal state
-        this.currentProgress = {
-            ...this.currentProgress,
-            skills: {
-                ...this.currentProgress.skills,
-                [skillId]: {
-                    ...(this.currentProgress.skills[skillId] || { skillId, skillLevel: 0, failureCount: 0, lastUpdateTime: new Date().toISOString() }),
-                    skillLevel: newLevel,
-                    lastUpdateTime: new Date().toISOString(),
-                },
-            },
-        };
+    // Update internal state (reuses the same factory logic as libs/persistence core)
+        this.currentProgress = updateSkillLevel(this.currentProgress, skillId, newLevel);
 
         // Fire-and-forget save
         this.persistence.save(this.currentProgress);
@@ -47,18 +38,8 @@ export class EventSaveCoordinator {
    * Triggered by game loop when destination is marked complete.
    */
     onDestinationCompleted(destinationId: string): void {
-    // Update internal state
-        this.currentProgress = {
-            ...this.currentProgress,
-            destinations: {
-                ...this.currentProgress.destinations,
-                [destinationId]: {
-                    ...(this.currentProgress.destinations[destinationId] || { destinationId, completed: false, missionsCompleted: [], lastVisitTime: new Date().toISOString() }),
-                    completed: true,
-                    lastVisitTime: new Date().toISOString(),
-                },
-            },
-        };
+    // Update internal state (reuses the same factory logic as libs/persistence core)
+        this.currentProgress = completeDestination(this.currentProgress, destinationId);
 
         // Fire-and-forget save
         this.persistence.save(this.currentProgress);
@@ -75,7 +56,7 @@ export class EventSaveCoordinator {
             skills: {
                 ...this.currentProgress.skills,
                 [skillId]: {
-                    ...(this.currentProgress.skills[skillId] || { skillId, skillLevel: 0, failureCount: 0, lastUpdateTime: new Date().toISOString() }),
+                    ...(this.currentProgress.skills[skillId] || createSkillProgress(skillId)),
                     failureCount,
                     lastUpdateTime: new Date().toISOString(),
                 },

@@ -134,3 +134,16 @@ docs/
   obligatoria de los contratos Markdown: front matter, idioma, trazabilidad
   (extraído de la constitución, sección Contratos).
 
+### `guides/` — guías de integración específicas de una feature
+
+A diferencia de `conventions/` (reglas transversales verificables), `guides/`
+documenta cómo está conectada una pieza concreta del sistema dentro del juego;
+vive en `docs/` en vez de en `specs/NNN-feature/contracts/` cuando ayuda a
+consultarlo sin tener que localizar primero la feature de origen.
+
+* [`persistence-integration.md`](./guides/persistence-integration.md) — cómo
+  `src/game/` usa `@planet-explorer/persistence` en la práctica: punto único de
+  wiring (`src/services/persistence.ts`), carga al arrancar y autoguardado
+  desde `DestinationScene`.
+
+

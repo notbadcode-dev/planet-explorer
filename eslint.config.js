@@ -8,7 +8,7 @@ export default tseslint.config(
     js.configs.recommended,
     ...tseslint.configs.recommended,
     {
-        ignores: ['dist/', 'storybook-static/', 'node_modules/', '.storybook/main.ts'],
+        ignores: ['dist/', 'storybook-static/', 'node_modules/', '.storybook/main.ts', 'coverage/', '**/coverage/'],
     },
     {
         languageOptions: {

@@ -1,5 +1,15 @@
 import type { PlayerProgress, SkillProgress, DestinationState, SkillProgressMap, DestinationStateMap } from '../types';
-import { FALLBACK_VERSION, WARNING_MESSAGES } from './fallback.constants';
+import {
+    ENTRY_QUOTE,
+    ENTRY_SEPARATOR,
+    FALLBACK_VERSION,
+    MIN_VERSION,
+    TYPE_BOOLEAN,
+    TYPE_NUMBER,
+    TYPE_OBJECT,
+    TYPE_STRING,
+    WARNING_MESSAGES,
+} from './fallback.constants';
 
 /**
  * Apply permissive fallback strategy.
@@ -21,7 +31,7 @@ export function applyFallback(data: unknown): PlayerProgress {
     }
 
     // Try to restore version
-    if (typeof data.version === 'number' && data.version >= 1) {
+    if (typeof data.version === TYPE_NUMBER && data.version >= MIN_VERSION) {
         result.version = data.version;
     } else {
         console.warn(WARNING_MESSAGES.INVALID_VERSION);
@@ -42,7 +52,7 @@ export function applyFallback(data: unknown): PlayerProgress {
     }
 
     // Try to restore lastSavedTime
-    if (typeof data.lastSavedTime === 'string' && isValidISODate(data.lastSavedTime)) {
+    if (typeof data.lastSavedTime === TYPE_STRING && isValidISODate(data.lastSavedTime)) {
         result.lastSavedTime = data.lastSavedTime;
     } else {
         console.warn(WARNING_MESSAGES.INVALID_TIME);
@@ -59,7 +69,7 @@ function restoreValidSkillMap(skills: Record<string, unknown>): SkillProgressMap
         if (isValidSkill(skill, id)) {
             validSkills[id] = skill as SkillProgress;
         } else {
-            console.warn(`${WARNING_MESSAGES.INVALID_SKILL_ENTRY} '${id}' ${WARNING_MESSAGES.IS_INVALID}`);
+            console.warn(`${WARNING_MESSAGES.INVALID_SKILL_ENTRY}${ENTRY_SEPARATOR}${ENTRY_QUOTE}${id}${ENTRY_QUOTE}${ENTRY_SEPARATOR}${WARNING_MESSAGES.IS_INVALID}`);
         }
     }
 
@@ -69,11 +79,11 @@ function restoreValidSkillMap(skills: Record<string, unknown>): SkillProgressMap
 function isValidSkill(skill: unknown, expectedId: string): skill is SkillProgress {
     return (
         isObject(skill) &&
-    typeof skill.skillId === 'string' &&
+    typeof skill.skillId === TYPE_STRING &&
     skill.skillId === expectedId &&
-    typeof skill.skillLevel === 'number' &&
-    typeof skill.failureCount === 'number' &&
-    typeof skill.lastUpdateTime === 'string' &&
+    typeof skill.skillLevel === TYPE_NUMBER &&
+    typeof skill.failureCount === TYPE_NUMBER &&
+    typeof skill.lastUpdateTime === TYPE_STRING &&
     isValidISODate(skill.lastUpdateTime)
     );
 }
@@ -85,7 +95,7 @@ function restoreValidDestinationMap(destinations: Record<string, unknown>): Dest
         if (isValidDestination(dest, id)) {
             validDestinations[id] = dest as DestinationState;
         } else {
-            console.warn(`${WARNING_MESSAGES.INVALID_DESTINATION_ENTRY} '${id}' ${WARNING_MESSAGES.IS_INVALID}`);
+            console.warn(`${WARNING_MESSAGES.INVALID_DESTINATION_ENTRY}${ENTRY_SEPARATOR}${ENTRY_QUOTE}${id}${ENTRY_QUOTE}${ENTRY_SEPARATOR}${WARNING_MESSAGES.IS_INVALID}`);
         }
     }
 
@@ -95,22 +105,22 @@ function restoreValidDestinationMap(destinations: Record<string, unknown>): Dest
 function isValidDestination(dest: unknown, expectedId: string): dest is DestinationState {
     return (
         isObject(dest) &&
-    typeof dest.destinationId === 'string' &&
+    typeof dest.destinationId === TYPE_STRING &&
     dest.destinationId === expectedId &&
-    typeof dest.completed === 'boolean' &&
+    typeof dest.completed === TYPE_BOOLEAN &&
     Array.isArray(dest.missionsCompleted) &&
-    dest.missionsCompleted.every((m: string | unknown) => typeof m === 'string') &&
-    typeof dest.lastVisitTime === 'string' &&
+    dest.missionsCompleted.every((m: string | unknown) => typeof m === TYPE_STRING) &&
+    typeof dest.lastVisitTime === TYPE_STRING &&
     isValidISODate(dest.lastVisitTime)
     );
 }
 
 function isValidISODate(value: unknown): boolean {
-    if (typeof value !== 'string') return false;
+    if (typeof value !== TYPE_STRING) return false;
     const date = new Date(value);
     return !isNaN(date.getTime());
 }
 
 function isObject(value: unknown): value is Record<string, unknown> {
-    return typeof value === 'object' && value !== null && !Array.isArray(value);
+    return typeof value === TYPE_OBJECT && value !== null && !Array.isArray(value);
 }

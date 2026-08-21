@@ -10,10 +10,10 @@
 import Phaser from 'phaser';
 
 import { createSpinner } from '../../libs/components/spinner';
+import { loadSkillProgressState } from '../services/persistence';
 import { createInitialNavigationState } from './core/navigation/navigation-state';
 import { SCENE_ID_DESTINATION, SCENE_ID_MAP } from './core/navigation/navigation-state.constants';
 import type { SceneInitData } from './core/navigation/navigation-state.type';
-import { createInitialSkillProgressState } from './core/progress/skill-progress-state';
 import {
     GAME_BACKGROUND_COLOR,
     GAME_PARENT_ELEMENT_ID,
@@ -52,7 +52,7 @@ export function startGame(): void {
         game.scene.add(SCENE_ID_DESTINATION, DestinationScene, false);
         game.scene.start(SCENE_ID_MAP, {
             navigationState: createInitialNavigationState(),
-            skillProgressState: createInitialSkillProgressState(),
+            skillProgressState: loadSkillProgressState(),
         } satisfies SceneInitData);
     });
 

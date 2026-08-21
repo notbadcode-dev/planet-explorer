@@ -1,4 +1,5 @@
 import type { PlayerProgress } from '../types';
+import { INITIAL_VERSION } from './initialState.constants';
 
 /**
  * Create initial clean state for first session.
@@ -7,7 +8,7 @@ import type { PlayerProgress } from '../types';
  */
 export function createInitialState(): PlayerProgress {
     return {
-        version: 1,
+        version: INITIAL_VERSION,
         skills: {},
         destinations: {},
         lastSavedTime: new Date().toISOString(),
