@@ -24,7 +24,10 @@ related_specs: ["006-skill-progress-model", "009-adaptive-difficulty-v1"]
 
 ## Clarifications
 
-_No aplican clarificaciones obligatorias después de revisar el pending y la constitución del proyecto. La forma en que se tratan las pistas (como señales, no castigos) y el reintento ilimitado están alineados con los Principios I, IV y VI de la constitución._
+### Session 2026-08-21
+
+- Q: ¿Debe el sistema registrar el uso de una pista llamando directamente a `updateSkillProgress(skill, 'hint-used')` —reutilizando el valor ya existente en el modelo de habilidades (006)— en el momento en que el jugador la solicita, en vez de adjuntar un nuevo indicador `hintUsed` al evento de validación de la respuesta final? → A: Sí. Se reutiliza `'hint-used'` (SkillUpdateResult ya existente en 006/007/009): se llama `updateSkillProgress(skill, 'hint-used')` en el momento de solicitar la pista; la respuesta final se sigue validando por separado como `'success'`/`'failure'`, sin flag adicional ni nuevo tipo de evento.
+- Q: ¿Debe la Historia de Usuario 3 mantenerse tal como está redactada —afirmando que 009 "puede considerar" el uso de pistas para ajustar la dificultad futura—, o debe corregirse para reflejar que `'hint-used'` es intencionalmente neutro (no cambia `level` ni `failureCount`, regla N4 de 006, ya confirmada por el edge case de 009) y por tanto no influye en la dificultad adaptativa en esta versión? → A: Se corrige. El uso de pistas se registra mediante la llamada ya existente a `updateSkillProgress(..., 'hint-used')`, que por diseño no altera nivel, `failureCount` ni dificultad futura (006 N4, 009). El valor de esta historia es la neutralidad garantizada (ninguna penalización, ni siquiera indirecta vía dificultad), no una futura adaptación.
 
 ## Escenarios de usuario y pruebas *(obligatorio)*
 
@@ -62,18 +65,18 @@ Tras fallar una respuesta, un jugador puede solicitar una pista. El sistema mues
 
 ---
 
-### Historia de usuario 3 - El uso de pistas se registra en el modelo de progreso (Prioridad: P2)
+### Historia de usuario 3 - El uso de pistas queda registrado de forma neutra, sin afectar la dificultad (Prioridad: P2)
 
-Tras completar un reto (con o sin pistas), el modelo de habilidades y el motor de dificultad adaptativa reciben una señal sobre si se usaron pistas. Esta señal se utiliza para ajustar la dificultad futura sin penalizar visiblemente al jugador.
+Tras solicitar una o más pistas en un reto, el sistema registra ese uso mediante el mecanismo ya existente del modelo de habilidades (`'hint-used'`), que por diseño no modifica el nivel de dominio de la habilidad ni la dificultad de retos futuros (clarificación Session 2026-08-21).
 
-**Por qué tiene esta prioridad**: Cierra el ciclo de feedback pedagógico: las pistas no son castigo, sino señal de que el jugador puede estar en un nivel intermedio. Sin esta historia no hay valor para la adaptación.
+**Por qué tiene esta prioridad**: Cierra el ciclo de feedback pedagógico: las pistas no son castigo, ni siquiera de forma indirecta a través de la dificultad adaptativa. Sin esta historia, no quedaría demostrado que el flujo de pistas de 010 se integra correctamente con el mecanismo ya neutro de 006/009 sin alterar sus reglas.
 
-**Prueba independiente**: Completar un reto del juego (p. ej. conteo con pistas), comparar el nivel de habilidad antes y después, verificar que el nivel evoluciona considerando el uso de pistas según las reglas ya definidas en 006/009 (sin nuevas reglas).
+**Prueba independiente**: Completar un reto del juego (p. ej. conteo) usando una o más pistas, comparar el nivel de dominio de la habilidad antes y después, y verificar que permanece igual (salvo por los efectos ya existentes de la respuesta final correcta/incorrecta), confirmando que 010 no introduce ningún comportamiento nuevo en 006/009.
 
 **Escenarios de aceptación**:
 
-1. **Given** un jugador ha completado un reto usando una o más pistas, **When** el sistema registra el acierto en el modelo de habilidades, **Then** la información "pistas usadas: sí" se adjunta al evento de validación de respuesta, para que 006/009 puedan usarla.
-2. **Given** el motor de dificultad adaptativa (009) recibe un evento de acierto con "pistas usadas: sí", **When** procesa ese evento, **Then** puede considerar este dato al decidir si aumentar o mantener la dificultad en futuros retos, según sus propias reglas (sin introducir comportamiento nuevo en 010).
+1. **Given** un jugador solicita una pista durante un reto, **When** el sistema procesa la solicitud, **Then** invoca la actualización de habilidades ya existente con `'hint-used'`, sin modificar `level` ni `failureCount` de esa habilidad (006, regla N4).
+2. **Given** un jugador ha usado una o más pistas y luego responde correcta o incorrectamente, **When** el sistema valida esa respuesta, **Then** el resultado (`'success'`/`'failure'`) se procesa exactamente igual que si no se hubieran usado pistas, sin ningún ajuste adicional de dificultad atribuible al uso de pistas.
 3. **Given** un jugador ha usado pistas en varios retos de una sesión, **When** la sesión termina, **Then** no aparece ningún "badge" de castigo, penalización visual, o marca negativa por haber usado pistas; el feedback es únicamente sobre el aprendizaje logrado.
 
 ---
@@ -94,8 +97,8 @@ Tras completar un reto (con o sin pistas), el modelo de habilidades y el motor d
 * **FR-003**: WHEN a player submits an incorrect answer to a challenge that has hints defined, the system MUST display a feedback message indicating the error (friendly, without punitive language) alongside a "Request Hint" button or equivalent affordance.
 * **FR-004**: WHEN a player clicks "Request Hint", the system MUST display the next available hint in the sequence for that challenge, integrating it into the narrative context (e.g., as BOT-6 advice) rather than as a standalone technical message.
 * **FR-005**: WHEN a player has already received a hint and requests another, the system MUST show the next hint in the progressive sequence (if available) or a friendly message stating no more hints exist; the system MUST NOT repeat the same hint.
-* **FR-006**: WHEN a player receives a hint, the system MUST NOT apply any in-game penalty (score, lives, time, resources); the use of the hint is recorded internally as a signal for the skill progress model and adaptive difficulty system.
-* **FR-007**: WHEN a player receives a hint and then answers the same challenge (correctly or incorrectly), the system MUST attach a flag `hintUsed: true` to the challenge validation event sent to the skill progress model (006) and adaptive difficulty engine (009).
+* **FR-006**: WHEN a player receives a hint, the system MUST NOT apply any in-game penalty (score, lives, time, resources); the use of the hint is recorded internally via the existing `'hint-used'` value of the skill progress model's `SkillUpdateResult` (006), not a newly introduced signal type.
+* **FR-007**: WHEN a player requests a hint, the system MUST call the existing skill progress update function with the challenge's associated skill and the `'hint-used'` result (006), separately from and without altering the eventual `'success'`/`'failure'` validation of that same challenge's answer (clarification Session 2026-08-21).
 * **FR-008**: WHEN a player completes a challenge after using one or more hints, the system MUST display positive feedback (same as if completed without hints) and MUST NOT show any visual indicator of "hint dependency" (no badges, colors, or language highlighting the hint usage as a negative factor).
 * **FR-009**: The system MUST make the hint/retry flow available to any challenge type (e.g., counting) without requiring modification to the specific challenge type's implementation; this MUST be implemented as a generic wrapper or middleware at the challenge engine level.
 * **FR-010**: The system MUST preserve the narrative framing of a challenge across multiple retry attempts and hint requests; the retry/hint UI overlay MUST not reset or interfere with the challenge's existing narrative message from BOT-6.
@@ -112,7 +115,7 @@ Tras completar un reto (con o sin pistas), el modelo de habilidades y el motor d
 - [ ] A player can retry a challenge after an incorrect answer without in-game penalty
 - [ ] A "Request Hint" affordance is displayed after an incorrect answer if hints are available
 - [ ] Hints are displayed progressively (no repetition within the same challenge attempt sequence)
-- [ ] Hint usage is recorded and passed to the skill progress model (006) and adaptive difficulty engine (009) as a `hintUsed` signal
+- [ ] Hint usage is recorded via the existing `'hint-used'` `SkillUpdateResult` (006), verified to leave the skill's `level` and `failureCount` unchanged
 - [ ] No visual or textual "punishment" appears for using hints (e.g., no badges, score reductions, or shaming language)
 - [ ] The hint/retry flow works for all challenge types (tested with `counting` challenge type)
 - [ ] Narrative framing of the challenge is preserved across retries and hint requests
@@ -124,7 +127,7 @@ Tras completar un reto (con o sin pistas), el modelo de habilidades y el motor d
 
 * **Alcance de Phase 1**: Esta feature solo integra el sistema de pistas y reintento en la escena de retos existentes y en el motor genérico ya construido (007); no incluye nuevos tipos de retos ni nuevos destinos.
 * **Sin persistencia entre sesiones**: El historial de pistas usadas en un reto individual no se guarda entre visitas al mismo destino en la misma sesión. Cada destino se regenera al entrar (regla establecida en 008). La persistencia entre sesiones queda para una feature posterior.
-* **Adaptación solo a nivel de motor**: El uso de pistas es una señal para 006/009; no hay nuevas reglas de dificultad introducidas en 010. Cualquier cambio en la dificultad adaptativa como respuesta a pistas usadas lo define 009.
+* **Neutralidad ya definida por 006/009**: El uso de pistas se registra vía `'hint-used'` (006), que por diseño no modifica `level`, `failureCount` ni la dificultad adaptativa (009, regla N4 de 006). 010 no introduce ni modifica ninguna regla de dificultad; se limita a disparar la llamada ya existente en el momento correcto (clarificación Session 2026-08-21).
 * **Localización**: Inicialmente solo castellano (según convenciones del proyecto); i18n queda para feature posterior (046).
 
 ### Asunciones
@@ -132,7 +135,7 @@ Tras completar un reto (con o sin pistas), el modelo de habilidades y el motor d
 * **Retos multiintento son la norma**: Se asume que la mayoría de retos educativos (conteo, lectura, memoria, etc.) requieren la opción de reintento; por tanto, el wrapper genérico de retry/hints es obligatorio para cualquier reto (no opcional).
 * **Pistas son un concepto de dominio pedagógico**: Las pistas son escritas por diseñadores de contenido (no IA generada en Fase 1) y se definen como parte del contrato del reto en los datos de configuración/contenido.
 * **BOT-6 es el vehículo narrativo**: Todas las pistas se entregan como mensajes de BOT-6 para mantener la consistencia narrativa ya establecida en 005.
-* **El modelo de habilidades (006) ya soporta eventos complejos**: Se asume que el sistema construido en 006 puede recibir y procesar eventos de validación que incluyan información adicional como `hintUsed: true`.
+* **El modelo de habilidades (006) ya soporta `'hint-used'` sin cambios**: Se reutiliza tal cual el valor `'hint-used'` de `SkillUpdateResult`, ya implementado y probado en 006/009; 010 no requiere ninguna extensión de su contrato.
 * **No hay competición de puntuación global**: La ausencia de penalización por pistas se alinea con el Principio I (sin frustración) y asume que el juego no tiene un sistema de tabla de clasificación competitiva en Fase 1 (ver roadmap).
 
 ## Entidades clave
@@ -152,26 +155,32 @@ interface Challenge {
 }
 ```
 
-### Challenge Validation Event (extensión del evento de 006/007)
+### Reutilización de `SkillUpdateResult` (006/007/009) — sin nueva entidad de evento
+
+No se introduce ningún tipo de evento nuevo. Solicitar una pista invoca directamente la función de actualización de habilidades ya existente con el valor `'hint-used'` que ya forma parte de `SkillUpdateResult` (clarificación Session 2026-08-21):
 
 ```typescript
-interface ChallengeValidationEvent {
-  // ... existing fields ...
-  hintUsed?: boolean;   // true if player used hints before answering this attempt
-  hintsUsedCount?: number; // Number of hints revealed in this attempt sequence
-}
+// Ya existente en 006/007, sin cambios:
+type SkillUpdateResult = 'success' | 'failure' | 'hint-used';
+
+// Al solicitar una pista (010):
+updateSkillProgress(skillState, skill, 'hint-used'); // no altera level/failureCount (006, regla N4)
+
+// Al enviar la respuesta final (ya existente, sin cambios):
+const outcome = validateAnswer(challenge, answer); // 'success' | 'failure'
+updateSkillProgress(skillState, skill, outcome);
 ```
 
 ## Alineación con la constitución
 
 - **Principio I — Experiencia centrada en el niño**: Reintento sin penalización y pistas sin culpa son aplicaciones directas. El jugador experimenta seguridad para explorar y aprender.
-- **Principio IV — Progresión adaptativa**: El uso de pistas es una señal rica para 009/006; permite ajustar dificultad sin frustración.
+- **Principio IV — Progresión adaptativa**: El uso de pistas se integra con el modelo de progreso existente (006/009) sin alterar sus reglas; la neutralidad ya definida de `'hint-used'` (sin cambio de nivel ni dificultad) refuerza que pedir ayuda nunca perjudica al jugador, ni siquiera indirectamente (clarificación Session 2026-08-21).
 - **Principio VI — Simplicidad primero**: El sistema es un wrapper genérico, no una arquitectura compleja de "modos dificultad" o "subesistema de pistas". Reutiliza contratos y flujos ya existentes.
 
 ## Dependencias
 
-- **Hard**: 007-challenge-engine-core (contrato Challenge base), 008-moon-destination-counting (destino y reto de prueba).
-- **Soft**: 006-skill-progress-model (consumidor de eventos con `hintUsed`), 009-adaptive-difficulty-v1 (consumidor de `hintUsed` para ajuste de dificultad).
+- **Hard**: 007-challenge-engine-core (contrato Challenge base), 008-moon-destination-counting (destino y reto de prueba), 006-skill-progress-model (valor `'hint-used'` ya existente en `SkillUpdateResult`, reutilizado tal cual).
+- **Soft**: 009-adaptive-difficulty-v1 (no requiere cambios; su comportamiento neutro ante `'hint-used'` ya definido se mantiene sin modificación).
 
 ## Notas para el planning
 

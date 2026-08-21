@@ -39,13 +39,14 @@
 - Explicit non-functional requirements for UX and accessibility
 - Extension to Challenge contract is minimal and non-breaking
 - Scope is bounded to Phase 1 and generic wrapper pattern (not new types)
-- Dependencies clearly mapped (hard: 007, 008; soft: 006, 009)
+- Dependencies clearly mapped (hard: 006, 007, 008; soft: 009) after clarification session 2026-08-21
 - Hint/retry flow is testable end-to-end using existing counting challenge
+- Hint usage reuses the already-implemented `'hint-used'` `SkillUpdateResult` (006/009) instead of inventing a parallel signal, avoiding rework and contradiction with already-Implemented specs (clarifications Q1, Q2)
 
 **Areas for planning**:
 - UI/UX design for error feedback + hint affordance (amable, no red/alert colors)
 - Hint content definition for counting challenge type (3-5 hints per difficulty level)
-- Integration point with skill progress model (006) — ensure `hintUsed` event schema
-- Testing strategy: retry logic, progressive hint display, narrative preservation
+- Integration point in `destination-visit-state.ts`: new `requestHint()`-style function calling `updateSkillProgress(..., 'hint-used')`, mirroring the existing `submitAnswer()` pattern
+- Testing strategy: retry logic, progressive hint display, narrative preservation, and a regression test confirming `'hint-used'` leaves `level`/`failureCount` unchanged (006 N4)
 
 **Readiness for `/speckit-plan`**: ✅ READY
