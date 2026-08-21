@@ -15,7 +15,7 @@ related_specs: ["009-adaptive-difficulty-v1"]
 
 # Plan de implementación: Pistas y reintento sin penalización
 
-**Rama**: `010-hints-and-retry-flow` | **Fecha**: 2026-08-21 | **Especificación**: [spec.md](./spec.md)
+**Rama**: `010-010-hints-and` | **Fecha**: 2026-08-21 | **Especificación**: [spec.md](./spec.md)
 
 **Entrada**: Especificación de funcionalidad de `/specs/010-hints-and-retry-flow/spec.md`
 
@@ -267,7 +267,7 @@ src/game/scenes/
 └── DestinationScene.ts                 # [MODIFICADO] rama de reintento pasa hints/onRequestHint; nuevo handler handleRequestHint()
 
 docs/conventions/architecture/
-└── challenge-engine-contract.md        # sin cambios — R4 ya anticipaba exactamente este contrato, ahora implementado
+└── challenge-engine-contract.md        # [MODIFICADO] marca R4 como implementada por 010 (T023), referenciando contracts/hint-contract.md
 ```
 
 **Decisión de estructura**: se mantiene el layout ya fijado por

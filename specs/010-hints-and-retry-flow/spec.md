@@ -8,7 +8,7 @@ updated: "2026-08-21"
 status: "Draft"
 priority: "P1"
 tags: ["game", "education", "challenges", "hints", "retry", "adaptive-difficulty"]
-dependencies: ["007-challenge-engine-core", "008-moon-destination-counting"]
+dependencies: ["007-challenge-engine-core", "008-moon-destination-counting", "006-skill-progress-model"]
 related_specs: ["006-skill-progress-model", "009-adaptive-difficulty-v1"]
 ---
 
@@ -109,6 +109,14 @@ Tras solicitar una o más pistas en un reto, el sistema registra ese uso mediant
 * **NFR-002**: The hint request flow MUST be accessible via keyboard, touch, and mouse without requiring special hardware.
 * **NFR-003**: Hint display MUST not obscure or replace the challenge's existing narrative context; hints MUST be presented as a complementary layer or message within the same scene.
 
+## Criterios de éxito *(obligatorio)*
+
+* **SC-001**: Tras una respuesta incorrecta, el jugador puede reintentar el mismo reto sin observar ninguna reducción de puntuación, vidas o tiempo disponible (idéntico a la garantía ya verificada por 008/SC-003).
+* **SC-002**: Cuando un reto tiene pistas definidas, el jugador puede solicitar hasta N pistas progresivas (N = `challenge.hints.length`) sin que ninguna se repita; al agotarlas, ve un mensaje amable en vez de que el botón desaparezca sin explicación.
+* **SC-003**: El nivel de dominio (`level`) y el `failureCount` de la habilidad `counting` del jugador son idénticos antes y después de solicitar una o más pistas, verificable comparando ambos valores (regla N4 de 006, garantía H4 del contrato de pistas).
+* **SC-004**: El 100% de la lógica nueva (`requestHint`, `requestNextHint`) pasa sus pruebas unitarias en Vitest sin renderizado, DOM ni inicialización de escenas Phaser.
+* **SC-005**: El feedback de acierto que ve el jugador es idéntico exista o no un historial de pistas usadas en ese reto (ningún indicador visual o textual distingue ambos casos).
+
 ## Criterios de aceptación *(obligatorio)*
 
 - [ ] Challenge contract is extended with optional `hints: Hint[]` field
@@ -144,14 +152,14 @@ Tras solicitar una o más pistas en un reto, el sistema registra ese uso mediant
 
 ```typescript
 interface Hint {
-  id: string;           // e.g., "hint-001"
-  order: number;        // 1, 2, 3, ... (progresión)
-  text: string;         // Spanish, child-friendly hint text
+  readonly id: string;           // e.g., "hint-001"
+  readonly order: number;        // 1, 2, 3, ... (progresión)
+  readonly text: string;         // Spanish, child-friendly hint text
 }
 
 interface Challenge {
   // ... existing fields from 007 ...
-  hints?: Hint[];       // Optional; empty array or undefined means no hints available
+  readonly hints?: readonly Hint[];       // Optional; empty array or undefined means no hints available
 }
 ```
 
