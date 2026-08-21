@@ -1,0 +1,26 @@
+{
+  "name": "@planet-explorer/persistence",
+  "version": "0.1.0",
+  "description": "Persistence layer for player progress using localStorage",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "build": "tsc --project tsconfig.json",
+    "lint": "eslint src/ test/"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.6.2",
+    "vitest": "^4.1.10"
+  }
+}

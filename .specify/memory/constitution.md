@@ -561,6 +561,103 @@ Nuevas expediciones, misiones y variantes SHOULD poder añadirse sin modificar c
 
 ---
 
+## X. Cobertura exhaustiva de testing
+
+Cada feature implementada MUST incluir tests automatizados que validen íntegramente su comportamiento.
+
+No existe una feature "completa" sin tests.
+
+La cobertura de testing MUST adaptar-se al tipo de funcionalidad:
+
+### Tests unitarios (Vitest)
+
+Toda lógica pura MUST estar cubierta por tests unitarios:
+
+* generación de retos;
+* validación de respuestas;
+* cálculo de progresión;
+* dificultad adaptativa;
+* máquinas de estado;
+* manipulación de datos;
+* funciones sin Phaser/DOM.
+
+Los tests unitarios MUST ejecutarse sin dependencias del navegador, Phaser, o DOM.
+
+Los tests unitarios MUST validar:
+
+* comportamiento correcto;
+* casos límite;
+* regresiones contra specs anteriores;
+* cumplimiento de contratos;
+* preservación de invariantes.
+
+### Tests end-to-end (Playwright)
+
+A partir de **spec 033** en adelante, toda interfaz de usuario que integre lógica testeada unitariamente MUST estar cubierta por tests E2E que validen el flujo completo:
+
+* interacción UI (clicks, taps, teclado);
+* integración lógica-renderizado;
+* flujos críticos de usuario;
+* regresiones de integración;
+* comportamiento accesible (Tab, Enter, Space).
+
+La cobertura E2E MUST ser exhaustiva dentro del alcance de la feature implementada.
+
+Cuando una feature implemente:
+
+* nuevos tipos de retos: cubrir todas sus variantes E2E;
+* nuevas pantallas: cubrir flujos E2E principales en esas pantallas;
+* nuevas interacciones: cubrir interacciones E2E de accesibilidad y dispositivo;
+* nuevos flujos de usuario: cubrir el flujo E2E completo de principio a fin.
+
+**Excepción**: A partir de spec 034 (CI/CD pipeline) en adelante, si una feature no introduce UI nueva (lógica pura únicamente), la cobertura E2E anterior (de spec 033) SHOULD reutilizarse para validar que sigue funcionando correctamente.
+
+### Ubicación de tests
+
+* Tests unitarios: co-localizados con el módulo (`*.test.ts` en la misma carpeta)
+* Tests E2E: en carpeta centralizada `e2e/` (estructura y convención definida en spec 033)
+
+### Reporte de cobertura
+
+Cada spec MUST documentar en su front matter (`spec.md`):
+
+* qué tests unitarios se agregan;
+* qué tests E2E se agregan o reutilizan (desde spec 033);
+* cobertura estimada de lógica;
+* cobertura estimada de UI (desde spec 033).
+
+Ejemplo:
+
+```yaml
+---
+Testing:
+  unit: [challenge-engine.test.ts (5 new tests), skill-progress-state.test.ts (3 new tests)]
+  e2e: [] # Si es anterior a spec 033
+  coverage_logic: 95%
+  coverage_ui: N/A # Si es anterior a spec 033
+---
+```
+
+### Gate de compilación
+
+Toda spec MUST pasar la gate de compilación:
+
+```bash
+npm run lint && npm test && npm run build
+```
+
+Ninguna spec MUST mergearse a `develop` o `master` sin pasar esta gate.
+
+Desde spec 033 en adelante:
+
+```bash
+npm run lint && npm test && npm run build && npm run test:e2e
+```
+
+**Motivo**: la cobertura exhaustiva de testing reduce bugs, regresiones y deuda técnica. Testing es parte integral de cada feature, no una tarea posterior. La separación entre tests unitarios (desde el inicio) y E2E (desde spec 033) refleja la madurez arquitectónica del proyecto.
+
+---
+
 # Restricciones globales
 
 ## Arquitectura y tecnología
