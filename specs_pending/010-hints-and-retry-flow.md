@@ -3,9 +3,12 @@ id: "010-hints-and-retry-flow"
 name: "Pistas y reintento sin penalización"
 phase: "Fase 1 — Motor de juego base y primer destino jugable"
 depends_on: ["007-challenge-engine-core", "008-moon-destination-counting"]
+status: "Implemented"
 ---
 
 # 010 — Pistas y reintento sin penalización (hints-and-retry-flow)
+
+**Implementado en**: specs/010-hints-and-retry-flow/
 
 ## Objetivo
 Añadir un sistema transversal de pistas y de reintento tras una respuesta incorrecta, reutilizable por cualquier tipo de reto del motor genérico.

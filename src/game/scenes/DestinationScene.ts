@@ -26,6 +26,7 @@ import {
     createDestinationVisit,
     getAnswerOptions,
     getCurrentChallenge,
+    requestNextHint,
     submitAnswer,
 } from '../core/destination-visit/destination-visit-state';
 import { VISIT_STATUS_COMPLETED } from '../core/destination-visit/destination-visit-state.constants';
@@ -201,15 +202,51 @@ export class DestinationScene extends Phaser.Scene {
             const currentChallenge = getCurrentChallenge(updatedVisit);
             const retryOptions = getAnswerOptions(updatedVisit);
 
-            // Show retry message and re-display the same challenge
+            // Show retry message and re-display the same challenge with hints (spec 010, T014)
             this.challengeDialogueElement = createChallengeDialogue({
                 description: MOON_CHALLENGE_RETRY_MESSAGE.text,
                 challenge: currentChallenge,
                 answerOptions: retryOptions,
                 onSelect: (retryAnswer: number) => this.handleAnswerSelected(retryAnswer),
+                hints: currentChallenge.hints,
+                hintsRevealedCount: updatedVisit.hintsRevealedCount,
+                onRequestHint: () => this.handleRequestHint(),
             });
             this.game.canvas.parentElement?.append(this.challengeDialogueElement);
         }
+    }
+
+    private handleRequestHint(): void {
+        if (!this.destinationVisitState) {
+            return;
+        }
+
+        // Request next hint and update state (spec 010, T015)
+        const { visit: updatedVisit, skillState: updatedSkillState } = requestNextHint(
+            this.destinationVisitState,
+            this.skillProgressState,
+        );
+
+        this.destinationVisitState = updatedVisit;
+        this.skillProgressState = updatedSkillState;
+
+        // Re-render challenge dialogue with updated hints (spec 010, FR-004)
+        this.challengeDialogueElement?.remove();
+        this.challengeDialogueElement = undefined;
+
+        const currentChallenge = getCurrentChallenge(updatedVisit);
+        const retryOptions = getAnswerOptions(updatedVisit);
+
+        this.challengeDialogueElement = createChallengeDialogue({
+            description: MOON_CHALLENGE_RETRY_MESSAGE.text,
+            challenge: currentChallenge,
+            answerOptions: retryOptions,
+            onSelect: (retryAnswer: number) => this.handleAnswerSelected(retryAnswer),
+            hints: currentChallenge.hints,
+            hintsRevealedCount: updatedVisit.hintsRevealedCount,
+            onRequestHint: () => this.handleRequestHint(),
+        });
+        this.game.canvas.parentElement?.append(this.challengeDialogueElement);
     }
 
     private handleShutdown(): void {

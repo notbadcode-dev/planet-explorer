@@ -64,6 +64,15 @@ export const ANSWER_OUTCOME_FAILURE = 'failure' as const;
 /** Valor neutral para lastOutcome en nueva visita. */
 export const LAST_OUTCOME_INITIAL = null;
 
+/** Número inicial de pistas reveladas (spec 010). */
+export const INITIAL_HINTS_REVEALED_COUNT = 0;
+
+/** Incremento de pistas reveladas tras solicitar una nueva (spec 010, H3). */
+export const HINTS_REVEALED_INCREMENT = 1;
+
+/** Tipo de resultado de progresión cuando se usa una pista (spec 010, contrato 006). */
+export const HINT_USED_RESULT = 'hint-used' as const;
+
 /**
  * Factory: error cuando challengeConfigs es vacío o inválido.
  */

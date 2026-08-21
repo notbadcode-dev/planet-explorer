@@ -8,7 +8,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { generateChallenge, validateAnswer } from './challenge-engine';
+import { generateChallenge, validateAnswer, requestHint } from './challenge-engine';
 import type { Challenge, ChallengeConfig, CountingChallenge, CountingChallengeConfig } from './challenge-engine.type';
 import { createInitialSkillProgressState, updateSkillProgress } from '../progress/skill-progress-state';
 
@@ -218,6 +218,66 @@ describe('challenge-engine', () => {
 
             expect(successResult).toBe('success');
             expect(failureResult).toBe('failure');
+        });
+    });
+
+    describe('requestHint() — US3 (010) obtención de pistas progresivas', () => {
+        it('US3 escenario 1: CountingChallenge generado incluye 2 pistas con orden creciente', () => {
+            const challenge = generateChallenge({ type: 'counting', min: 1, max: 10 }) as CountingChallenge;
+
+            expect(challenge.hints).toBeDefined();
+            expect(challenge.hints).toHaveLength(2);
+
+            const [hint1, hint2] = challenge.hints!;
+            expect(hint1.id).toBeTruthy();
+            expect(hint1.order).toBe(1);
+            expect(hint1.text).toBeTruthy();
+
+            expect(hint2.id).toBeTruthy();
+            expect(hint2.order).toBe(2);
+            expect(hint2.text).toBeTruthy();
+
+            expect(hint1.order).toBeLessThan(hint2.order);
+        });
+
+        it('US3 escenario 2: requestHint(challenge, 0) devuelve la primera pista', () => {
+            const challenge = generateChallenge({ type: 'counting', min: 1, max: 10 }) as CountingChallenge;
+
+            const hint = requestHint(challenge, 0);
+
+            expect(hint).toBeDefined();
+            expect(hint?.order).toBe(1);
+        });
+
+        it('US3 escenario 3: requestHint(challenge, 1) devuelve la segunda pista', () => {
+            const challenge = generateChallenge({ type: 'counting', min: 1, max: 10 }) as CountingChallenge;
+
+            const hint = requestHint(challenge, 1);
+
+            expect(hint).toBeDefined();
+            expect(hint?.order).toBe(2);
+        });
+
+        it('US3 escenario 4: requestHint(challenge, 2) devuelve undefined sin lanzar excepción', () => {
+            const challenge = generateChallenge({ type: 'counting', min: 1, max: 10 }) as CountingChallenge;
+
+            const hint = requestHint(challenge, 2);
+
+            expect(hint).toBeUndefined();
+        });
+
+        it('US3 escenario 5: requestHint sin hints definidas devuelve undefined', () => {
+            const challengeWithoutHints: Challenge = {
+                id: 'test-1',
+                type: 'unknown',
+                question: 'Test',
+                correctAnswer: 42,
+                difficulty: 5,
+            };
+
+            const hint = requestHint(challengeWithoutHints, 0);
+
+            expect(hint).toBeUndefined();
         });
     });
 });

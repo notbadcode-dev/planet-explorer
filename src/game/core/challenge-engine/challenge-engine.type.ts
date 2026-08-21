@@ -11,6 +11,17 @@ import type { SkillUpdateResult } from '../progress/skill-progress-state.type';
 export type { SkillUpdateResult };
 
 /**
+ * Pista progresiva para un reto (extensión por spec 010-hints-and-retry-flow).
+ * Cada pista es una sugerencia ordenada que el jugador puede solicitar tras
+ * fallar un reto, sin penalización.
+ */
+export interface Hint {
+  readonly id: string;
+  readonly order: number;
+  readonly text: string;
+}
+
+/**
  * Reto genérico, independiente de su tipo específico.
  */
 export interface Challenge {
@@ -19,6 +30,7 @@ export interface Challenge {
   readonly question: string;
   readonly correctAnswer: unknown;
   readonly difficulty: number;
+  readonly hints?: readonly Hint[];
 }
 
 /**

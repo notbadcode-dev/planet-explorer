@@ -12,13 +12,26 @@
 import { createButton } from '../../../libs/components/button';
 import { createDialog, type DialogProps } from '../../../libs/components/dialog';
 import { createIcon } from '../../../libs/components/icon';
-import type { Challenge, CountingChallenge } from '../core/challenge-engine/challenge-engine.type';
+import type { Challenge, CountingChallenge, Hint } from '../core/challenge-engine/challenge-engine.type';
 import {
     CHALLENGE_DIALOGUE_BUTTON_SIZE,
     CHALLENGE_DIALOGUE_BUTTON_VARIANT,
     CHALLENGE_DIALOGUE_EMPTY_LENGTH,
+    CHALLENGE_DIALOGUE_HINT_BUTTON_LABEL,
+    CHALLENGE_DIALOGUE_HINT_BUTTON_SIZE,
+    CHALLENGE_DIALOGUE_HINT_BUTTON_VARIANT,
+    CHALLENGE_DIALOGUE_HINT_COLOR,
+    CHALLENGE_DIALOGUE_HINT_ELEMENT_TYPE,
+    CHALLENGE_DIALOGUE_HINT_FONT_STYLE,
+    CHALLENGE_DIALOGUE_HINT_MARGIN_BOTTOM,
+    CHALLENGE_DIALOGUE_HINT_MARGIN_TOP,
     CHALLENGE_DIALOGUE_ICON_NAME,
     CHALLENGE_DIALOGUE_ICON_SIZE,
+    CHALLENGE_DIALOGUE_NO_MORE_HINTS_COLOR,
+    CHALLENGE_DIALOGUE_NO_MORE_HINTS_FONT_STYLE,
+    CHALLENGE_DIALOGUE_NO_MORE_HINTS_MARGIN_BOTTOM,
+    CHALLENGE_DIALOGUE_NO_MORE_HINTS_MARGIN_TOP,
+    CHALLENGE_DIALOGUE_NO_MORE_HINTS_TEXT,
     CHALLENGE_DIALOGUE_SIZE,
     CHALLENGE_DIALOGUE_TITLE,
     CHALLENGE_DIALOGUE_TYPE_ERROR,
@@ -55,6 +68,24 @@ export interface ChallengeDialogueProps {
      * and decide whether to display next challenge, retry, or completion.
      */
     onSelect: (answer: number) => void;
+
+    /**
+     * Array of hints for this challenge (spec 010, optional).
+     * If provided with onRequestHint, the "Pedir pista" button will be shown on failure.
+     */
+    hints?: readonly Hint[];
+
+    /**
+     * Number of hints already revealed (spec 010, optional).
+     * Used to display revealed hints and track progress through the hint sequence.
+     */
+    hintsRevealedCount?: number;
+
+    /**
+     * Callback invoked when player clicks the "Pedir pista" button (spec 010, optional).
+     * Consumers MUST use this to call requestNextHint(), update state, and re-render.
+     */
+    onRequestHint?: () => void;
 }
 
 /**
@@ -78,9 +109,13 @@ function isCountingChallenge(challenge: Challenge): challenge is CountingChallen
  * - Answer options as primary buttons, selectable via click
  * - No direct display of challenge.question (that's for other challenge types)
  * - Immutable: no mutation of props or challenge
+ *
+ * Spec 010 extension (FR-003/FR-004/FR-005):
+ * - If hints and onRequestHint provided, show revealed hints as additional content
+ * - If more hints available, show "Pedir pista" button; else show "No more hints" message
  */
 export function createChallengeDialogue(props: ChallengeDialogueProps): HTMLElement {
-    const { description, challenge, answerOptions, onSelect } = props;
+    const { description, challenge, answerOptions, onSelect, hints, hintsRevealedCount, onRequestHint } = props;
 
     // Create icon elements for each item to count (one 'star' per item)
     if (!isCountingChallenge(challenge)) {
@@ -100,11 +135,57 @@ export function createChallengeDialogue(props: ChallengeDialogueProps): HTMLElem
         }),
     );
 
-    // Combine items and buttons into the dialog content/actions
+    // Build content array: items + revealed hints + hint button/message
+    const contentElements: HTMLElement[] = [];
+
+    // Add item icons to content
+    if (itemElements.length > CHALLENGE_DIALOGUE_EMPTY_LENGTH) {
+        contentElements.push(...itemElements);
+    }
+
+    // Add revealed hints as text content (spec 010, FR-004)
+    if (hints && hintsRevealedCount && hintsRevealedCount > CHALLENGE_DIALOGUE_EMPTY_LENGTH) {
+        const revealedHints = hints.slice(CHALLENGE_DIALOGUE_EMPTY_LENGTH, hintsRevealedCount);
+        revealedHints.forEach((hint) => {
+            const hintElement = document.createElement(CHALLENGE_DIALOGUE_HINT_ELEMENT_TYPE);
+            hintElement.style.marginTop = CHALLENGE_DIALOGUE_HINT_MARGIN_TOP;
+            hintElement.style.marginBottom = CHALLENGE_DIALOGUE_HINT_MARGIN_BOTTOM;
+            hintElement.style.fontStyle = CHALLENGE_DIALOGUE_HINT_FONT_STYLE;
+            hintElement.style.color = CHALLENGE_DIALOGUE_HINT_COLOR;
+            hintElement.textContent = hint.text;
+            contentElements.push(hintElement);
+        });
+    }
+
+    // Add hint button or "no more hints" message (spec 010, FR-005)
+    if (onRequestHint && hints && hintsRevealedCount !== undefined) {
+        if (hintsRevealedCount < hints.length) {
+            // More hints available: add button to request next hint
+            buttonElements.push(
+                createButton({
+                    label: CHALLENGE_DIALOGUE_HINT_BUTTON_LABEL,
+                    onClick: onRequestHint,
+                    variant: CHALLENGE_DIALOGUE_HINT_BUTTON_VARIANT,
+                    size: CHALLENGE_DIALOGUE_HINT_BUTTON_SIZE,
+                }),
+            );
+        } else {
+            // No more hints: show friendly message
+            const noMoreHintsElement = document.createElement(CHALLENGE_DIALOGUE_HINT_ELEMENT_TYPE);
+            noMoreHintsElement.style.marginTop = CHALLENGE_DIALOGUE_NO_MORE_HINTS_MARGIN_TOP;
+            noMoreHintsElement.style.marginBottom = CHALLENGE_DIALOGUE_NO_MORE_HINTS_MARGIN_BOTTOM;
+            noMoreHintsElement.style.fontStyle = CHALLENGE_DIALOGUE_NO_MORE_HINTS_FONT_STYLE;
+            noMoreHintsElement.style.color = CHALLENGE_DIALOGUE_NO_MORE_HINTS_COLOR;
+            noMoreHintsElement.textContent = CHALLENGE_DIALOGUE_NO_MORE_HINTS_TEXT;
+            contentElements.push(noMoreHintsElement);
+        }
+    }
+
+    // Combine into dialog
     const dialogProps: DialogProps = {
         title: CHALLENGE_DIALOGUE_TITLE,
         description,
-        content: itemElements.length > CHALLENGE_DIALOGUE_EMPTY_LENGTH ? itemElements : undefined,
+        content: contentElements.length > CHALLENGE_DIALOGUE_EMPTY_LENGTH ? contentElements : undefined,
         actions: buttonElements,
         onClose: () => {
             // Challenge dialogue doesn't auto-close on button selection
