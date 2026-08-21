@@ -49,6 +49,22 @@ export const COUNTING_QUESTION_TEXT = '¿Cuántas estrellas ves?';
 export const TYPE_NUMBER = 'number' as const;
 
 /**
+ * Resultado de validar la respuesta del jugador a un reto.
+ *
+ * Valores: 'success' (respuesta correcta), 'failure' (respuesta incorrecta).
+ *
+ * Origen: históricamente importado de `../progress/skill-progress-state.constants`,
+ * pero la corrección R5 (spec 009) mueve estas constantes aquí, a `challenge-engine.constants.ts`,
+ * para desacoplar `challenge-engine.ts` de la lógica de progresión. El tipo
+ * `SkillUpdateResult` permanece en `challenge-engine.type.ts` (ya estaba allí).
+ *
+ * Nota: en futuro, `validateAnswer()` devolverá `SkillUpdateResult` en vez de string literal;
+ * por ahora, estos valores son strings literales para mantener compatibilidad.
+ */
+export const CHALLENGE_RESULT_SUCCESS = 'success' as const;
+export const CHALLENGE_RESULT_FAILURE = 'failure' as const;
+
+/**
  * Mensaje de error para `min` inválido (< `MIN_COUNTING_VALUE`).
  * Ver contrato: "min must be >= 1".
  */

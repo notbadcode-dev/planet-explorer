@@ -38,7 +38,34 @@ import type {
     CountingChallengeItem,
     SkillUpdateResult,
 } from './challenge-engine.type';
-import { SKILL_UPDATE_RESULT_FAILURE, SKILL_UPDATE_RESULT_SUCCESS } from '../progress/skill-progress-state.constants';
+
+/**
+ * Constantes de resultado de validación.
+ * 
+ * Corección R5 de la retrospectiva R001: estas constantes ahora se definen aquí
+ * (`challenge-engine.constants.ts`) en vez de importarse desde
+ * `../progress/skill-progress-state.constants`, desacoplando el módulo de motor
+ * de retos de la lógica de progresión.
+ */
+import { CHALLENGE_RESULT_FAILURE, CHALLENGE_RESULT_SUCCESS } from './challenge-engine.constants';
+
+/**
+ * Registro de generadores de retos por tipo de reto.
+ *
+ * Cada entrada mapea un `type` a una función que genera un `Challenge` específico
+ * de ese tipo. Cuando se añada un nuevo tipo de reto, debe:
+ * 1. Implementar su función generadora (ej. `generateMemoryChallenge`)
+ * 2. Registrarla aquí con la clave correspondiente (ej. `CHALLENGE_TYPE_MEMORY`)
+ *
+ * Si no se registra, `generateChallenge()` lanzará `makeUnsupportedChallengeTypeError`.
+ *
+ * Ver `specs/009-adaptive-difficulty-v1/research.md § Decisión 2` (corrección R2
+ * de la retrospectiva R001: patrón de registro en vez de if/switch).
+ */
+type ChallengeGenerator = (config: ChallengeConfig) => Challenge;
+const CHALLENGE_GENERATORS: Record<string, ChallengeGenerator> = {
+    [CHALLENGE_TYPE_COUNTING]: (config) => generateCountingChallenge(config as CountingChallengeConfig),
+};
 
 /**
  * Genera un nuevo reto según la configuración proporcionada.
@@ -55,11 +82,12 @@ export function generateChallenge(config: ChallengeConfig): Challenge {
         throw makeUnsupportedChallengeTypeError(config.type);
     }
 
-    if (config.type === CHALLENGE_TYPE_COUNTING) {
-        return generateCountingChallenge(config as CountingChallengeConfig);
+    const generator = CHALLENGE_GENERATORS[config.type];
+    if (!generator) {
+        throw makeUnsupportedChallengeTypeError(config.type);
     }
 
-    throw makeUnsupportedChallengeTypeError(config.type);
+    return generator(config);
 }
 
 /**
@@ -83,7 +111,7 @@ export function validateAnswer(challenge: Challenge, answer: unknown): SkillUpda
         throw makeInvalidAnswerTypeError(answer);
     }
 
-    return answer === challenge.correctAnswer ? SKILL_UPDATE_RESULT_SUCCESS : SKILL_UPDATE_RESULT_FAILURE;
+    return answer === challenge.correctAnswer ? CHALLENGE_RESULT_SUCCESS : CHALLENGE_RESULT_FAILURE;
 }
 
 /**
