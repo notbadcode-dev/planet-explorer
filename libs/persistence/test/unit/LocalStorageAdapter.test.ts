@@ -12,7 +12,7 @@ function createFakeLocalStorage(): FakeLocalStorage {
     let store: Record<string, string> = {};
 
     return {
-        getItem: (key) => (key in store ? store[key] : null),
+        getItem: (key) => store[key] ?? null,
         setItem: (key, value) => {
             store[key] = value;
         },

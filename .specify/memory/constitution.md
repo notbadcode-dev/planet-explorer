@@ -656,6 +656,10 @@ npm run lint && npm test && npm run build && npm run test:e2e
 
 **Motivo**: la cobertura exhaustiva de testing reduce bugs, regresiones y deuda técnica. Testing es parte integral de cada feature, no una tarea posterior. La separación entre tests unitarios (desde el inicio) y E2E (desde spec 033) refleja la madurez arquitectónica del proyecto.
 
+### Nota de alcance
+
+**Aplicación a partir de spec 033 (E2E pipeline)**: El bloque `Testing:` en el front matter MUST incluirse en todas las specs con `status: "Implemented"` a partir de **spec 033** en adelante. Specs anteriores a 033 (001-032) que ya hayan cerrado BEFORE de esta especificación entran en grandfathering: no es obligatorio retroactivamente actualizar su front matter. Cuando se implemente 033 y la arquitectura E2E esté completa, este grandfathering se elimina de la constitución y el Principio X se aplica uniformemente a todas las features nuevas.
+
 ---
 
 # Restricciones globales

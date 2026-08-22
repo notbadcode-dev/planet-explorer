@@ -65,6 +65,8 @@ docs/
     │   ├── content-model.md
     │   ├── challenge-engine-contract.md
     │   └── progress-persistence-model.md
+    ├── typescript/                   # reglas de código TypeScript transversales
+    │   └── type-safety.md
     └── process/                      # convenciones del flujo de speckit (no gobernanza)
         └── contracts.md
 ```
@@ -126,6 +128,15 @@ docs/
 * [`progress-persistence-model.md`](./conventions/architecture/progress-persistence-model.md) —
   decisión anticipada: modelo de progreso por habilidad, versionado del esquema
   persistido y estrategia de almacenamiento local (sin backend).
+
+### `conventions/typescript/` — reglas de código TypeScript transversales
+
+* [`type-safety.md`](./conventions/typescript/type-safety.md) — patrones para
+  evitar las categorías de error detectadas en la auditoría de `tsc --noEmit`
+  del 2026-08-22 (acceso a índices posiblemente `undefined`, tipos desalineados
+  con la implementación, mezcla de tipos de dominio similares, helpers de DOM
+  mal tipados entre `HTMLElement`/`SVGElement`, lectura de `unknown` sin
+  estrechar).
 
 ### `conventions/process/` — convenciones del flujo de speckit
 

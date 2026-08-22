@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { PersistenceService } from '../../src/integration/PersistenceService';
 import { MockStorageAdapter } from '../fixtures/MockStorageAdapter';
+import { requireSkill } from '../fixtures/progress-assertions';
 import { serialize } from '../../src/core/serialize';
 import type { PlayerProgress, SkillProgressMap, DestinationStateMap } from '../../src/types';
 
@@ -83,7 +84,7 @@ describe('Performance: single save/load cycle (NFR-001, SC-004)', () => {
         const elapsed = performance.now() - startTime;
 
         expect(elapsed).toBeLessThan(50);
-        expect(restored.skills.counting.skillLevel).toBe(1);
+        expect(requireSkill(restored, 'counting').skillLevel).toBe(1);
     });
 });
 

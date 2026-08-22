@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { PersistenceService } from '../../src/integration/PersistenceService';
 import { MockStorageAdapter } from '../fixtures/MockStorageAdapter';
+import { requireDestination } from '../fixtures/progress-assertions';
 import { completeDestination, addMissionToDestination } from '../../src/core/factories';
 import { createInitialState } from '../../src/core/initialState';
 
@@ -21,7 +22,7 @@ describe('User Story 3: Save Destination Completion (FR-004, FR-005)', () => {
 
         const loaded = service.load();
         expect(loaded.destinations.moon).toBeDefined();
-        expect(loaded.destinations.moon.completed).toBe(true);
+        expect(requireDestination(loaded, 'moon').completed).toBe(true);
     });
 
     it('[US3] should save and restore missions completed list', () => {
@@ -32,8 +33,8 @@ describe('User Story 3: Save Destination Completion (FR-004, FR-005)', () => {
         service.save(progress);
 
         const loaded = service.load();
-        expect(loaded.destinations.moon.missionsCompleted).toContain('mission-1');
-        expect(loaded.destinations.moon.missionsCompleted).toContain('mission-2');
+        expect(requireDestination(loaded, 'moon').missionsCompleted).toContain('mission-1');
+        expect(requireDestination(loaded, 'moon').missionsCompleted).toContain('mission-2');
     });
 
     it('[US3] should handle multiple destinations', () => {
@@ -44,8 +45,8 @@ describe('User Story 3: Save Destination Completion (FR-004, FR-005)', () => {
         service.save(progress);
 
         const loaded = service.load();
-        expect(loaded.destinations.moon.completed).toBe(true);
-        expect(loaded.destinations.mars.completed).toBe(true);
+        expect(requireDestination(loaded, 'moon').completed).toBe(true);
+        expect(requireDestination(loaded, 'mars').completed).toBe(true);
     });
 
     it('[US3] should not duplicate missions', () => {
@@ -56,7 +57,7 @@ describe('User Story 3: Save Destination Completion (FR-004, FR-005)', () => {
         service.save(progress);
 
         const loaded = service.load();
-        const count = loaded.destinations.moon.missionsCompleted.filter(m => m === 'mission-1').length;
+        const count = requireDestination(loaded, 'moon').missionsCompleted.filter(m => m === 'mission-1').length;
         expect(count).toBe(1); // Should only appear once
     });
 
@@ -66,11 +67,11 @@ describe('User Story 3: Save Destination Completion (FR-004, FR-005)', () => {
         service.save(progress);
 
         const session1 = service.load();
-        expect(session1.destinations.moon.completed).toBe(true);
+        expect(requireDestination(session1, 'moon').completed).toBe(true);
 
         // Simulate new session but data persists
         const session2 = service.load();
-        expect(session2.destinations.moon.completed).toBe(true);
+        expect(requireDestination(session2, 'moon').completed).toBe(true);
     });
 
     it('[FR-004] should mark destination with visit timestamp', () => {
@@ -79,7 +80,7 @@ describe('User Story 3: Save Destination Completion (FR-004, FR-005)', () => {
         service.save(progress);
 
         const loaded = service.load();
-        const visitTime = new Date(loaded.destinations.moon.lastVisitTime);
+        const visitTime = new Date(requireDestination(loaded, 'moon').lastVisitTime);
         const now = new Date();
 
         expect(now.getTime() - visitTime.getTime()).toBeLessThan(5000);

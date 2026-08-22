@@ -35,7 +35,7 @@ describe('createAccordion', () => {
         trigger?.dispatchEvent(new Event('click'));
 
         expect(trigger?.getAttribute('aria-expanded')).toBe('true');
-        const panel = accordion.querySelector('[role="region"]');
+        const panel = accordion.querySelector<HTMLElement>('[role="region"]');
         expect(panel?.hidden).toBe(false);
         expect(panel?.textContent).toBe('');
     });

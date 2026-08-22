@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { EventSaveCoordinator } from '../../src/integration/EventSaveCoordinator';
 import { PersistenceService } from '../../src/integration/PersistenceService';
 import { MockStorageAdapter } from '../fixtures/MockStorageAdapter';
+import { requireDestination, requireSkill } from '../fixtures/progress-assertions';
 import { createInitialState } from '../../src/core/initialState';
 
 describe('User Story 4: Automatic Save on Game Events (FR-005, FR-006)', () => {
@@ -20,21 +21,21 @@ describe('User Story 4: Automatic Save on Game Events (FR-005, FR-006)', () => {
         coordinator.onChallengeCompleted('counting', 3);
 
         const saved = service.load();
-        expect(saved.skills.counting.skillLevel).toBe(3);
+        expect(requireSkill(saved, 'counting').skillLevel).toBe(3);
     });
 
     it('[US4] should auto-save on destination completion event', () => {
         coordinator.onDestinationCompleted('moon');
 
         const saved = service.load();
-        expect(saved.destinations.moon.completed).toBe(true);
+        expect(requireDestination(saved, 'moon').completed).toBe(true);
     });
 
     it('[US4] should auto-save on skill practice event (failure count)', () => {
         coordinator.onSkillPracticed('counting', 2);
 
         const saved = service.load();
-        expect(saved.skills.counting.failureCount).toBe(2);
+        expect(requireSkill(saved, 'counting').failureCount).toBe(2);
     });
 
     it('[FR-005] should handle multiple sequential events', () => {
@@ -43,9 +44,9 @@ describe('User Story 4: Automatic Save on Game Events (FR-005, FR-006)', () => {
         coordinator.onDestinationCompleted('moon');
 
         const saved = service.load();
-        expect(saved.skills.counting.skillLevel).toBe(2);
-        expect(saved.skills.addition.skillLevel).toBe(1);
-        expect(saved.destinations.moon.completed).toBe(true);
+        expect(requireSkill(saved, 'counting').skillLevel).toBe(2);
+        expect(requireSkill(saved, 'addition').skillLevel).toBe(1);
+        expect(requireDestination(saved, 'moon').completed).toBe(true);
     });
 
     it('[SC-002] should fire-and-forget (100% of events trigger save without blocking)', () => {
@@ -67,11 +68,11 @@ describe('User Story 4: Automatic Save on Game Events (FR-005, FR-006)', () => {
     it('[FR-005] should update current progress on each event', () => {
         coordinator.onChallengeCompleted('counting', 3);
         let progress = coordinator.getProgress();
-        expect(progress.skills.counting.skillLevel).toBe(3);
+        expect(requireSkill(progress, 'counting').skillLevel).toBe(3);
 
         coordinator.onSkillPracticed('counting', 1);
         progress = coordinator.getProgress();
-        expect(progress.skills.counting.failureCount).toBe(1);
+        expect(requireSkill(progress, 'counting').failureCount).toBe(1);
     });
 
     it('[US4] should preserve previous events when new event occurs', () => {
@@ -79,8 +80,8 @@ describe('User Story 4: Automatic Save on Game Events (FR-005, FR-006)', () => {
         coordinator.onDestinationCompleted('moon');
 
         const saved = service.load();
-        expect(saved.skills.counting.skillLevel).toBe(2);
-        expect(saved.destinations.moon.completed).toBe(true);
+        expect(requireSkill(saved, 'counting').skillLevel).toBe(2);
+        expect(requireDestination(saved, 'moon').completed).toBe(true);
     });
 
     it('[SC-001] should persist auto-save across load', () => {
@@ -91,8 +92,8 @@ describe('User Story 4: Automatic Save on Game Events (FR-005, FR-006)', () => {
         const newService = new PersistenceService(adapter);
         const loaded = newService.load();
 
-        expect(loaded.skills.counting.skillLevel).toBe(3);
-        expect(loaded.destinations.moon.completed).toBe(true);
+        expect(requireSkill(loaded, 'counting').skillLevel).toBe(3);
+        expect(requireDestination(loaded, 'moon').completed).toBe(true);
     });
 
     it('should allow the game loop to replace the tracked progress via updateProgress()', () => {

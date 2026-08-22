@@ -19,7 +19,6 @@ import {
     TOAST_ROLE_STATUS,
     TOAST_ROOT_TAG,
     TOAST_STATUS_ICON_CLASS,
-    TOAST_TYPEOF_NUMBER,
     TOAST_VARIANTS,
     TOAST_VARIANT_CLASS_PREFIX,
     TOAST_VARIANT_STATUS_ICON,
@@ -57,7 +56,7 @@ export function showToast(props: ToastProps): void {
     const { message, variant, durationMs, onDismiss } = props;
 
     const resolvedVariant = resolveVariant(variant);
-    const resolvedDuration = typeof durationMs === TOAST_TYPEOF_NUMBER ? durationMs : DEFAULT_TOAST_DURATION_MS;
+    const resolvedDuration = durationMs ?? DEFAULT_TOAST_DURATION_MS;
 
     const container = getContainer();
 
