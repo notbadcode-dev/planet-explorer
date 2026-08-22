@@ -52,6 +52,25 @@ Allowed `type` values:
 
 Use a short lowercase `scope` when it clarifies the affected area, such as `ui`, `runtime`, `assets`, `docs`, `tests`, `deps`, or a package/module name. Omit scope when it would be vague.
 
+## Writing the Message in a zsh Terminal
+
+The repo's default shell is zsh (macOS). Never pass a commit message containing
+backticks (`` ` ``) through `git commit -m "..."`: zsh treats them as command
+substitution and silently corrupts the message (the commit still succeeds, no
+error from `git`, but the backtick-wrapped text is replaced by the output of
+running it as a command — often empty or a "command not found" side effect).
+This is easy to miss because the corruption is silent.
+
+- If the message body needs to reference code (`` `tsc --noEmit` ``, `` `foo()` ``),
+  write it to a temp file with a heredoc using a **quoted** delimiter
+  (`<< 'EOF'`, not `<< EOF`) so the shell does not expand backticks, `$vars`,
+  or other substitutions, then commit with `git commit -F /tmp/msg.txt`.
+- Avoid `git commit --amend -m "..."` with backticks for the same reason; use
+  `git commit --amend -F /tmp/msg.txt` instead.
+- After committing, verify the message landed intact with
+  `git show -s --format='%B' HEAD` before pushing, especially if the body
+  mentions code identifiers.
+
 ## Summary Rules
 
 - Write the summary in imperative mood: `fix orbit controls`, not `fixed orbit controls`.
