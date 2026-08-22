@@ -8,9 +8,8 @@
  * Ver `specs/009-adaptive-difficulty-v1/` para diseño e implementación.
  */
 
-import type { ChallengeConfig } from '../challenge-engine/challenge-engine.type';
 import { CHALLENGE_TYPE_COUNTING } from '../challenge-engine/challenge-engine.constants';
-import type { DifficultyConfigBuilder } from './difficulty.type';
+import type { DifficultyConfig, DifficultyConfigBuilder } from './difficulty.type';
 import {
     DIFFICULTY_LEVEL_MIN,
     DIFFICULTY_LEVEL_MAX,
@@ -30,7 +29,7 @@ import {
  *
  * El campo `difficulty` siempre se fija igual al `skillLevel` recibido (FR-002a).
  */
-const buildCountingDifficultyConfig: DifficultyConfigBuilder = (skillLevel: number): ChallengeConfig => {
+const buildCountingDifficultyConfig: DifficultyConfigBuilder = (skillLevel: number): DifficultyConfig => {
     const max = DIFFICULTY_COUNTING_MAX_BASE + (skillLevel - DIFFICULTY_LEVEL_OFFSET) * DIFFICULTY_COUNTING_MAX_STEP;
     return {
         type: CHALLENGE_TYPE_COUNTING,
@@ -88,7 +87,7 @@ const DIFFICULTY_BUILDERS: Record<string, DifficultyConfigBuilder> = {
  * getDifficultyConfig('memory', 5);      // throws makeUnsupportedChallengeTypeForDifficultyError
  * ```
  */
-export function getDifficultyConfig(challengeType: string, skillLevel: number): ChallengeConfig {
+export function getDifficultyConfig(challengeType: string, skillLevel: number): DifficultyConfig {
     // Validar rango de nivel de dominio (FR-009)
     if (skillLevel < DIFFICULTY_LEVEL_MIN || skillLevel > DIFFICULTY_LEVEL_MAX) {
         throw makeInvalidSkillLevelError(skillLevel);
