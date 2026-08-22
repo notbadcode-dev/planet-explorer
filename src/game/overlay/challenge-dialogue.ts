@@ -136,7 +136,7 @@ export function createChallengeDialogue(props: ChallengeDialogueProps): HTMLElem
     );
 
     // Build content array: items + revealed hints + hint button/message
-    const contentElements: HTMLElement[] = [];
+    const contentElements: (HTMLElement | SVGElement)[] = [];
 
     // Add item icons to content
     if (itemElements.length > CHALLENGE_DIALOGUE_EMPTY_LENGTH) {

@@ -33,4 +33,3 @@ export const TOAST_ROLE_ATTRIBUTE = 'role';
 export const TOAST_ROLE_STATUS = 'status';
 export const TOAST_ARIA_LIVE_ATTRIBUTE = 'aria-live';
 export const TOAST_ARIA_LIVE_POLITE = 'polite';
-export const TOAST_TYPEOF_NUMBER = 'number';

@@ -147,7 +147,7 @@ export function createAccordion(props: AccordionProps): HTMLElement {
         const direction =
             keyboardEvent.key === ACCORDION_ARROW_DOWN_KEY ? ACCORDION_NEXT_DIRECTION : ACCORDION_PREVIOUS_DIRECTION;
         const nextIndex = (currentIndex + direction + triggers.length) % triggers.length;
-        triggers[nextIndex].focus();
+        triggers[nextIndex]?.focus();
     });
 
     return root;

@@ -38,7 +38,7 @@ import { createButton } from '../button';
 
 export type { DialogProps, DialogSize } from './Dialog.type';
 
-function toNodes(content: HTMLElement | HTMLElement[] | undefined): HTMLElement[] {
+function toNodes(content: HTMLElement | SVGElement | (HTMLElement | SVGElement)[] | undefined): (HTMLElement | SVGElement)[] {
     if (!content) {
         return [];
     }
@@ -131,6 +131,9 @@ export function createDialog(props: DialogProps): HTMLElement {
 
         const firstFocusable = focusableElements[DIALOG_FIRST_FOCUSABLE_INDEX];
         const lastFocusable = focusableElements[focusableElements.length - DIALOG_LAST_FOCUSABLE_OFFSET];
+        if (!firstFocusable || !lastFocusable) {
+            return;
+        }
 
         if (event.shiftKey && document.activeElement === firstFocusable) {
             event.preventDefault();

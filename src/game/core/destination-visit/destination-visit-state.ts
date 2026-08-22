@@ -228,7 +228,13 @@ function shuffleArray<T>(array: readonly T[]): readonly T[] {
     const arr = [...array];
     for (let i = arr.length - SHUFFLE_START_FACTOR; i > SHUFFLE_ZERO_FACTOR; i--) {
         const j = Math.floor(Math.random() * (i + SHUFFLE_START_FACTOR));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
+        const current = arr[i];
+        const swapped = arr[j];
+        if (current === undefined || swapped === undefined) {
+            continue;
+        }
+        arr[i] = swapped;
+        arr[j] = current;
     }
     return arr;
 }
