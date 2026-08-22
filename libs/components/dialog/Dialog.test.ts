@@ -96,7 +96,7 @@ describe('createDialog', () => {
 
         expect(closeButtons.length).toBeGreaterThan(0);
 
-        closeButtons[0].click();
+        closeButtons[0]?.click();
 
         expect(onClose).toHaveBeenCalledTimes(1);
     });
@@ -135,6 +135,9 @@ describe('createDialog', () => {
         const buttons = dialogElement.querySelectorAll('button');
         const closeButton = buttons[0];
         const confirmButton = buttons[1];
+        if (!closeButton || !confirmButton) {
+            throw new Error('Se esperaban 2 botones dentro del diálogo');
+        }
 
         confirmButton.focus();
         const tabEvent = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true });

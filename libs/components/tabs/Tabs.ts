@@ -124,7 +124,7 @@ export function createTabs(props: TabsProps): HTMLDivElement {
     }
 
     function updateIndicator(): void {
-        const activeButton = tabButtons.find((_, index) => tabs[index].id === currentActiveId);
+        const activeButton = tabButtons.find((_, index) => tabs[index]?.id === currentActiveId);
         if (!activeButton) {
             return;
         }
@@ -141,8 +141,12 @@ export function createTabs(props: TabsProps): HTMLDivElement {
 
         tabs.forEach((tab, index) => {
             const isActive = tab.id === id;
-            tabButtons[index].setAttribute(TABS_ARIA_SELECTED_ATTRIBUTE, isActive ? TABS_TRUE_VALUE : TABS_FALSE_VALUE);
-            panelElements[index].hidden = !isActive;
+            const tabButton = tabButtons[index];
+            const panelElement = panelElements[index];
+            tabButton?.setAttribute(TABS_ARIA_SELECTED_ATTRIBUTE, isActive ? TABS_TRUE_VALUE : TABS_FALSE_VALUE);
+            if (panelElement) {
+                panelElement.hidden = !isActive;
+            }
         });
 
         updateIndicator();
@@ -151,17 +155,19 @@ export function createTabs(props: TabsProps): HTMLDivElement {
 
     tabButtons.forEach((tabButton, index) => {
         tabButton.addEventListener(TABS_CLICK_EVENT, () => {
-            if (tabs[index].disabled) {
+            const tab = tabs[index];
+            if (!tab || tab.disabled) {
                 return;
             }
-            activateTab(tabs[index].id);
+            activateTab(tab.id);
         });
     });
 
     function findNextEnabledIndex(startIndex: number, direction: number): number {
         for (let step = TABS_STEP_START; step <= tabs.length; step += TABS_STEP_INCREMENT) {
             const candidateIndex = (startIndex + direction * step + tabs.length) % tabs.length;
-            if (!tabs[candidateIndex].disabled) {
+            const candidate = tabs[candidateIndex];
+            if (candidate && !candidate.disabled) {
                 return candidateIndex;
             }
         }
@@ -180,9 +186,12 @@ export function createTabs(props: TabsProps): HTMLDivElement {
         const direction = keyboardEvent.key === TABS_ARROW_RIGHT_KEY ? TABS_NEXT_DIRECTION : TABS_PREVIOUS_DIRECTION;
         const nextIndex = findNextEnabledIndex(baseIndex, direction);
         const nextTab = tabs[nextIndex];
+        if (!nextTab) {
+            return;
+        }
 
         activateTab(nextTab.id);
-        tabButtons[nextIndex].focus();
+        tabButtons[nextIndex]?.focus();
     });
 
     if (typeof window.requestAnimationFrame === TABS_TYPEOF_FUNCTION) {

@@ -9,16 +9,21 @@
 
 import { CURRENT_VERSION, TYPE_NUMBER, TYPE_OBJECT, WARNING_MESSAGES } from './versioning.constants';
 
+function isNumber(value: unknown): value is number {
+    return typeof value === TYPE_NUMBER;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+    return typeof value === TYPE_OBJECT && value !== null && !Array.isArray(value);
+}
+
 /**
  * Detect version of saved data.
  * Returns version number from data, or null if unversioned.
  */
 export function detectVersion(data: unknown): number | null {
-    if (typeof data === TYPE_OBJECT && data !== null && !Array.isArray(data)) {
-        const version = (data as Record<string, unknown>).version;
-        if (typeof version === TYPE_NUMBER) {
-            return version;
-        }
+    if (isRecord(data) && isNumber(data.version)) {
+        return data.version;
     }
     return null;
 }
@@ -34,21 +39,23 @@ export function detectVersion(data: unknown): number | null {
  * }
  */
 export function migrateToCurrentVersion(data: unknown, fromVersion: number): Record<string, unknown> {
+    const record = isRecord(data) ? data : {};
+
     // V1 is current; no migrations yet
     if (fromVersion === CURRENT_VERSION) {
-        return data;
+        return record;
     }
 
     if (fromVersion > CURRENT_VERSION) {
         console.warn(WARNING_MESSAGES.NEWER_VERSION_PREFIX + fromVersion + WARNING_MESSAGES.NEWER_VERSION_MIDDLE + CURRENT_VERSION + WARNING_MESSAGES.NEWER_VERSION_SUFFIX);
-        return data;
+        return record;
     }
 
     // Future: Add migration logic as new versions are defined
     // if (fromVersion === 1) return migrateV1toV2(data);
 
     console.warn(WARNING_MESSAGES.MIGRATION_NOT_IMPLEMENTED_PREFIX + fromVersion + WARNING_MESSAGES.MIGRATION_NOT_IMPLEMENTED_SUFFIX);
-    return data;
+    return record;
 }
 
 /**

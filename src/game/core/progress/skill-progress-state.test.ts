@@ -12,7 +12,7 @@ import {
     getSkillLevel,
     updateSkillProgress,
 } from './skill-progress-state';
-import type { SkillProgressState } from './skill-progress-state.type';
+import type { SkillName, SkillProgressState, SkillUpdateResult } from './skill-progress-state.type';
 
 describe('skill-progress-state', () => {
     describe('G1 — createInitialSkillProgressState()', () => {
@@ -70,7 +70,7 @@ describe('skill-progress-state', () => {
         });
 
         it('US1 escenario 3: excepción al consultar habilidad no soportada', () => {
-            expect(() => getSkillLevel(state, 'chess' as unknown as typeof state['counting'])).toThrow(
+            expect(() => getSkillLevel(state, 'chess' as unknown as SkillName)).toThrow(
                 "Habilidad no soportada: 'chess'",
             );
         });
@@ -270,17 +270,17 @@ describe('skill-progress-state', () => {
         });
 
         it('updateSkillProgress con skill no soportada lanza Error (FR-008)', () => {
-            expect(() => updateSkillProgress(state, 'chess' as unknown as typeof state, 'success')).toThrow(
+            expect(() => updateSkillProgress(state, 'chess' as unknown as SkillName, 'success')).toThrow(
             );
         });
 
         it('updateSkillProgress con result no válido lanza Error (FR-009)', () => {
-            expect(() => updateSkillProgress(state, 'counting', 'draw' as unknown as typeof state['counting'])).toThrow(
+            expect(() => updateSkillProgress(state, 'counting', 'draw' as unknown as SkillUpdateResult)).toThrow(
             );
         });
 
         it('getSkillLevel con skill no soportada lanza Error (FR-008)', () => {
-            expect(() => getSkillLevel(state, 'unknown-skill' as unknown as typeof state['counting'])).toThrow(
+            expect(() => getSkillLevel(state, 'unknown-skill' as unknown as SkillName)).toThrow(
                 "Habilidad no soportada: 'unknown-skill'",
             );
         });

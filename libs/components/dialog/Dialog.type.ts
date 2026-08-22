@@ -5,7 +5,7 @@ export type DialogSize = (typeof DIALOG_SIZES)[number];
 export interface DialogProps {
     title: string;
     description?: string;
-    content?: HTMLElement | HTMLElement[];
+    content?: HTMLElement | SVGElement | (HTMLElement | SVGElement)[];
     actions?: HTMLElement | HTMLElement[];
     onClose: () => void;
     closeLabel?: string;

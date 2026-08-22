@@ -12,6 +12,16 @@ import { generateChallenge, validateAnswer, requestHint } from './challenge-engi
 import type { Challenge, ChallengeConfig, CountingChallenge, CountingChallengeConfig } from './challenge-engine.type';
 import { createInitialSkillProgressState, updateSkillProgress } from '../progress/skill-progress-state';
 
+/**
+ * Construye una `CountingChallengeConfig` tipada explícitamente, para pasarla a
+ * `generateChallenge()` sin excess-property error (su parámetro es la
+ * `ChallengeConfig` base, que no declara `min`/`max`; ver TS2 en
+ * `docs/conventions/typescript/type-safety.md`).
+ */
+function countingConfig(min: number, max: number): CountingChallengeConfig {
+    return { type: 'counting', min, max };
+}
+
 describe('challenge-engine', () => {
     describe('generateChallenge() — US1 generación de reto de conteo', () => {
         it('US1 escenario 1: config válida (rango 1-10) genera un CountingChallenge completo', () => {
@@ -94,7 +104,7 @@ describe('challenge-engine', () => {
 
     describe('validateAnswer() — US2 validación de la respuesta del jugador', () => {
         function makeChallenge(): CountingChallenge {
-            return generateChallenge({ type: 'counting', min: 5, max: 5 }) as CountingChallenge;
+            return generateChallenge(countingConfig(5, 5)) as CountingChallenge;
         }
 
         it('US2 escenario 1: respuesta correcta devuelve success', () => {
@@ -141,7 +151,7 @@ describe('challenge-engine', () => {
 
         it('US2 escenario 4: validaciones repetidas en secuencia con retos distintos son independientes', () => {
             const challengeA = makeChallenge();
-            const challengeB = generateChallenge({ type: 'counting', min: 1, max: 1 }) as CountingChallenge;
+            const challengeB = generateChallenge(countingConfig(1, 1)) as CountingChallenge;
 
             expect(validateAnswer(challengeA, challengeA.correctAnswer)).toBe('success');
             expect(validateAnswer(challengeB, challengeB.correctAnswer)).toBe('success');
@@ -151,7 +161,7 @@ describe('challenge-engine', () => {
 
     describe('Integración con updateSkillProgress() — US3', () => {
         it('US3: acierto sube el nivel de counting y fallo sube el failureCount', () => {
-            const challenge = generateChallenge({ type: 'counting', min: 3, max: 3 }) as CountingChallenge;
+            const challenge = generateChallenge(countingConfig(3, 3)) as CountingChallenge;
             let state = createInitialSkillProgressState();
 
             const successResult = validateAnswer(challenge, challenge.correctAnswer);
@@ -160,7 +170,7 @@ describe('challenge-engine', () => {
             expect(state.counting.level).toBe(2);
             expect(state.counting.failureCount).toBe(0);
 
-            const failureChallenge = generateChallenge({ type: 'counting', min: 3, max: 3 }) as CountingChallenge;
+            const failureChallenge = generateChallenge(countingConfig(3, 3)) as CountingChallenge;
             const failureResult = validateAnswer(failureChallenge, failureChallenge.correctAnswer + 1);
             state = updateSkillProgress(state, 'counting', failureResult);
 
@@ -211,7 +221,7 @@ describe('challenge-engine', () => {
         });
 
         it('R5: validateAnswer() devuelve "success"/"failure" correctamente tras desacoplamiento de progress/', () => {
-            const challenge = generateChallenge({ type: 'counting', min: 5, max: 5 }) as CountingChallenge;
+            const challenge = generateChallenge(countingConfig(5, 5)) as CountingChallenge;
 
             const successResult = validateAnswer(challenge, 5);
             const failureResult = validateAnswer(challenge, 3);
@@ -223,12 +233,15 @@ describe('challenge-engine', () => {
 
     describe('requestHint() — US3 (010) obtención de pistas progresivas', () => {
         it('US3 escenario 1: CountingChallenge generado incluye 2 pistas con orden creciente', () => {
-            const challenge = generateChallenge({ type: 'counting', min: 1, max: 10 }) as CountingChallenge;
+            const challenge = generateChallenge(countingConfig(1, 10)) as CountingChallenge;
 
             expect(challenge.hints).toBeDefined();
             expect(challenge.hints).toHaveLength(2);
 
-            const [hint1, hint2] = challenge.hints!;
+            const [hint1, hint2] = challenge.hints ?? [];
+            if (!hint1 || !hint2) {
+                throw new Error('Se esperaban exactamente 2 pistas en el CountingChallenge generado');
+            }
             expect(hint1.id).toBeTruthy();
             expect(hint1.order).toBe(1);
             expect(hint1.text).toBeTruthy();
@@ -241,7 +254,7 @@ describe('challenge-engine', () => {
         });
 
         it('US3 escenario 2: requestHint(challenge, 0) devuelve la primera pista', () => {
-            const challenge = generateChallenge({ type: 'counting', min: 1, max: 10 }) as CountingChallenge;
+            const challenge = generateChallenge(countingConfig(1, 10)) as CountingChallenge;
 
             const hint = requestHint(challenge, 0);
 
@@ -250,7 +263,7 @@ describe('challenge-engine', () => {
         });
 
         it('US3 escenario 3: requestHint(challenge, 1) devuelve la segunda pista', () => {
-            const challenge = generateChallenge({ type: 'counting', min: 1, max: 10 }) as CountingChallenge;
+            const challenge = generateChallenge(countingConfig(1, 10)) as CountingChallenge;
 
             const hint = requestHint(challenge, 1);
 
@@ -259,7 +272,7 @@ describe('challenge-engine', () => {
         });
 
         it('US3 escenario 4: requestHint(challenge, 2) devuelve undefined sin lanzar excepción', () => {
-            const challenge = generateChallenge({ type: 'counting', min: 1, max: 10 }) as CountingChallenge;
+            const challenge = generateChallenge(countingConfig(1, 10)) as CountingChallenge;
 
             const hint = requestHint(challenge, 2);
 

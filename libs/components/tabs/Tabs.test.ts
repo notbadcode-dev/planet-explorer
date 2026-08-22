@@ -15,6 +15,20 @@ function buildTabs() {
     ];
 }
 
+/**
+ * Acceso indexado con garantía de presencia para arrays de elementos del DOM
+ * construidos con longitud fija conocida en el propio test (ej. 3 pestañas).
+ * Evita silenciar `noUncheckedIndexedAccess` con `!` y falla rápido y con
+ * contexto si el índice esperado no existe.
+ */
+function nth<T>(items: readonly T[], index: number): T {
+    const item = items[index];
+    if (item === undefined) {
+        throw new Error('Índice ' + index + ' fuera de rango (longitud ' + items.length + ')');
+    }
+    return item;
+}
+
 describe('createTabs', () => {
     it('asocia cada pestaña con exactamente un panel vía aria-controls/aria-labelledby (VAL-1301)', () => {
         const tabs = createTabs({ tabs: buildTabs() });
@@ -23,7 +37,7 @@ describe('createTabs', () => {
 
         tabButtons.forEach((tabButton, index) => {
             const controlledId = tabButton.getAttribute('aria-controls');
-            const panel = panels[index];
+            const panel = nth(panels, index);
 
             expect(controlledId).toBe(panel.id);
             expect(panel.getAttribute('aria-labelledby')).toBe(tabButton.id);
@@ -34,9 +48,9 @@ describe('createTabs', () => {
         const tabs = createTabs({ tabs: buildTabs(), activeTabId: 'trivia' });
         const panels = Array.from(tabs.querySelectorAll('[role="tabpanel"]')) as HTMLDivElement[];
 
-        expect(panels[0].hidden).toBe(true);
-        expect(panels[1].hidden).toBe(false);
-        expect(panels[2].hidden).toBe(true);
+        expect(nth(panels, 0).hidden).toBe(true);
+        expect(nth(panels, 1).hidden).toBe(false);
+        expect(nth(panels, 2).hidden).toBe(true);
     });
 
     it('tolera una pestaña sin panel asociado sin romper la navegación (VAL-1304)', () => {
@@ -49,7 +63,7 @@ describe('createTabs', () => {
 
         const tabs = createTabs({ tabs: tabsData });
         const panels = Array.from(tabs.querySelectorAll('[role="tabpanel"]')) as HTMLDivElement[];
-        expect(panels[0].childElementCount).toBe(0);
+        expect(nth(panels, 0).childElementCount).toBe(0);
     });
 
     it('actualiza aria-selected y visibilidad al hacer clic en una pestaña', () => {
@@ -57,10 +71,10 @@ describe('createTabs', () => {
         const tabs = createTabs({ tabs: buildTabs(), onChange });
         const tabButtons = Array.from(tabs.querySelectorAll('[role="tab"]')) as HTMLButtonElement[];
 
-        tabButtons[2].click();
+        nth(tabButtons, 2).click();
 
-        expect(tabButtons[2].getAttribute('aria-selected')).toBe('true');
-        expect(tabButtons[0].getAttribute('aria-selected')).toBe('false');
+        expect(nth(tabButtons, 2).getAttribute('aria-selected')).toBe('true');
+        expect(nth(tabButtons, 0).getAttribute('aria-selected')).toBe('false');
         expect(onChange).toHaveBeenCalledWith('quiz');
     });
 
@@ -71,17 +85,17 @@ describe('createTabs', () => {
         const tabButtons = Array.from(tabs.querySelectorAll('[role="tab"]')) as HTMLButtonElement[];
         const list = tabs.querySelector('[role="tablist"]') as HTMLDivElement;
 
-        tabButtons[0].focus();
+        nth(tabButtons, 0).focus();
         list.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
-        expect(document.activeElement).toBe(tabButtons[1]);
-        expect(tabButtons[1].getAttribute('aria-selected')).toBe('true');
+        expect(document.activeElement).toBe(nth(tabButtons, 1));
+        expect(nth(tabButtons, 1).getAttribute('aria-selected')).toBe('true');
 
         list.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
-        expect(document.activeElement).toBe(tabButtons[0]);
-        expect(tabButtons[0].getAttribute('aria-selected')).toBe('true');
+        expect(document.activeElement).toBe(nth(tabButtons, 0));
+        expect(nth(tabButtons, 0).getAttribute('aria-selected')).toBe('true');
 
         list.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
-        expect(document.activeElement).toBe(tabButtons[2]);
+        expect(document.activeElement).toBe(nth(tabButtons, 2));
 
         tabs.remove();
     });
@@ -98,17 +112,17 @@ describe('createTabs', () => {
         document.body.append(tabs);
 
         const tabButtons = Array.from(tabs.querySelectorAll('[role="tab"]')) as HTMLButtonElement[];
-        expect(tabButtons[1].getAttribute('aria-disabled')).toBe('true');
+        expect(nth(tabButtons, 1).getAttribute('aria-disabled')).toBe('true');
 
-        tabButtons[1].dispatchEvent(new Event('click'));
+        nth(tabButtons, 1).dispatchEvent(new Event('click'));
         expect(onChange).not.toHaveBeenCalled();
 
         const list = tabs.querySelector('[role="tablist"]') as HTMLDivElement;
-        tabButtons[0].focus();
+        nth(tabButtons, 0).focus();
         list.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
 
-        expect(document.activeElement).toBe(tabButtons[2]);
-        expect(tabButtons[2].getAttribute('aria-selected')).toBe('true');
+        expect(document.activeElement).toBe(nth(tabButtons, 2));
+        expect(nth(tabButtons, 2).getAttribute('aria-selected')).toBe('true');
 
         tabs.remove();
     });
@@ -123,9 +137,9 @@ describe('createTabs', () => {
         const tabs = createTabs({ tabs: tabsData });
         const tabButtons = Array.from(tabs.querySelectorAll('[role="tab"]')) as HTMLButtonElement[];
 
-        expect(tabButtons[0].tabIndex).toBe(0);
-        expect(tabButtons[1].tabIndex).toBe(-1);
-        expect(tabButtons[2].tabIndex).toBe(0);
+        expect(nth(tabButtons, 0).tabIndex).toBe(0);
+        expect(nth(tabButtons, 1).tabIndex).toBe(-1);
+        expect(nth(tabButtons, 2).tabIndex).toBe(0);
     });
 
     it('mantiene el tabIndex de cada pestaña habilitada al cambiar la pestaña activa (no usa roving tabindex)', () => {
@@ -133,11 +147,11 @@ describe('createTabs', () => {
         const tabs = createTabs({ tabs: buildTabs(), onChange });
         const tabButtons = Array.from(tabs.querySelectorAll('[role="tab"]')) as HTMLButtonElement[];
 
-        tabButtons[2].click();
+        nth(tabButtons, 2).click();
 
-        expect(tabButtons[0].tabIndex).toBe(0);
-        expect(tabButtons[1].tabIndex).toBe(0);
-        expect(tabButtons[2].tabIndex).toBe(0);
+        expect(nth(tabButtons, 0).tabIndex).toBe(0);
+        expect(nth(tabButtons, 1).tabIndex).toBe(0);
+        expect(nth(tabButtons, 2).tabIndex).toBe(0);
     });
 
     it('renderiza un icono decorativo por pestaña cuando todas lo definen (FR-042)', () => {
@@ -149,8 +163,8 @@ describe('createTabs', () => {
         const tabs = createTabs({ tabs: tabsData });
         const tabButtons = Array.from(tabs.querySelectorAll('[role="tab"]')) as HTMLButtonElement[];
 
-        expect(tabButtons[0].querySelector('svg')).not.toBeNull();
-        expect(tabButtons[1].querySelector('svg')).not.toBeNull();
+        expect(nth(tabButtons, 0).querySelector('svg')).not.toBeNull();
+        expect(nth(tabButtons, 1).querySelector('svg')).not.toBeNull();
     });
 
     it('lanza un error si solo algunas pestañas definen icon (validación todo-o-nada, FR-042)', () => {
