@@ -94,6 +94,6 @@ describe('serialize', () => {
         };
         circularData.self = circularData;
 
-        expect(() => serialize(circularData)).toThrow(/Failed to serialize PlayerProgress/);
+        expect(() => serialize(circularData as unknown as PlayerProgress)).toThrow(/Failed to serialize PlayerProgress/);
     });
 });
