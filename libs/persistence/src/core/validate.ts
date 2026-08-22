@@ -8,7 +8,7 @@ import { EMPTY_LENGTH, MIN_VERSION, TYPE_BOOLEAN, TYPE_NUMBER, TYPE_OBJECT, TYPE
  */
 export function validatePlayerProgress(data: unknown): data is PlayerProgress {
     if (!isObject(data)) return false;
-    if (typeof data.version !== TYPE_NUMBER || data.version < MIN_VERSION) return false;
+    if (!isNumber(data.version) || data.version < MIN_VERSION) return false;
     if (!isValidSkillMap(data.skills)) return false;
     if (!isValidDestinationMap(data.destinations)) return false;
     if (!isValidISODate(data.lastSavedTime)) return false;
@@ -35,10 +35,9 @@ function isValidDestinationMap(destinations: unknown): destinations is Destinati
 
     for (const [id, dest] of Object.entries(destinations as Record<string, unknown>)) {
         if (typeof id !== TYPE_STRING || id.length === EMPTY_LENGTH) return false;
-        if (!isObject(dest)) return false;
+        if (!isObject(dest) || !Array.isArray(dest.missionsCompleted)) return false;
         if (typeof dest.destinationId !== TYPE_STRING || dest.destinationId !== id) return false;
         if (typeof dest.completed !== TYPE_BOOLEAN) return false;
-        if (!Array.isArray(dest.missionsCompleted)) return false;
         if (!dest.missionsCompleted.every((m: string | unknown) => typeof m === TYPE_STRING)) return false;
         if (!isValidISODate(dest.lastVisitTime)) return false;
     }
@@ -47,9 +46,17 @@ function isValidDestinationMap(destinations: unknown): destinations is Destinati
 }
 
 function isValidISODate(value: unknown): boolean {
-    if (typeof value !== TYPE_STRING) return false;
+    if (!isString(value)) return false;
     const date = new Date(value);
     return !isNaN(date.getTime());
+}
+
+function isNumber(value: unknown): value is number {
+    return typeof value === TYPE_NUMBER;
+}
+
+function isString(value: unknown): value is string {
+    return typeof value === TYPE_STRING;
 }
 
 function isObject(value: unknown): value is Record<string, unknown> {

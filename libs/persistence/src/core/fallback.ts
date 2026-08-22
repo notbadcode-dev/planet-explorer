@@ -31,7 +31,7 @@ export function applyFallback(data: unknown): PlayerProgress {
     }
 
     // Try to restore version
-    if (typeof data.version === TYPE_NUMBER && data.version >= MIN_VERSION) {
+    if (isNumber(data.version) && data.version >= MIN_VERSION) {
         result.version = data.version;
     } else {
         console.warn(WARNING_MESSAGES.INVALID_VERSION);
@@ -52,7 +52,7 @@ export function applyFallback(data: unknown): PlayerProgress {
     }
 
     // Try to restore lastSavedTime
-    if (typeof data.lastSavedTime === TYPE_STRING && isValidISODate(data.lastSavedTime)) {
+    if (isString(data.lastSavedTime) && isValidISODate(data.lastSavedTime)) {
         result.lastSavedTime = data.lastSavedTime;
     } else {
         console.warn(WARNING_MESSAGES.INVALID_TIME);
@@ -103,12 +103,12 @@ function restoreValidDestinationMap(destinations: Record<string, unknown>): Dest
 }
 
 function isValidDestination(dest: unknown, expectedId: string): dest is DestinationState {
+    if (!isObject(dest) || !Array.isArray(dest.missionsCompleted)) return false;
+
     return (
-        isObject(dest) &&
-    typeof dest.destinationId === TYPE_STRING &&
+        typeof dest.destinationId === TYPE_STRING &&
     dest.destinationId === expectedId &&
     typeof dest.completed === TYPE_BOOLEAN &&
-    Array.isArray(dest.missionsCompleted) &&
     dest.missionsCompleted.every((m: string | unknown) => typeof m === TYPE_STRING) &&
     typeof dest.lastVisitTime === TYPE_STRING &&
     isValidISODate(dest.lastVisitTime)
@@ -116,9 +116,17 @@ function isValidDestination(dest: unknown, expectedId: string): dest is Destinat
 }
 
 function isValidISODate(value: unknown): boolean {
-    if (typeof value !== TYPE_STRING) return false;
+    if (!isString(value)) return false;
     const date = new Date(value);
     return !isNaN(date.getTime());
+}
+
+function isNumber(value: unknown): value is number {
+    return typeof value === TYPE_NUMBER;
+}
+
+function isString(value: unknown): value is string {
+    return typeof value === TYPE_STRING;
 }
 
 function isObject(value: unknown): value is Record<string, unknown> {
