@@ -31,12 +31,11 @@ Para `spec.md`, `plan.md` y `tasks.md` (los que existan en `FEATURE_DIR`, obteni
 - Actualiza `updated: "..."` a la fecha actual (`YYYY-MM-DD`, mismo formato que el resto del front matter de esa feature).
 - No toques ningún otro campo (`version`, `tags`, `dependencies`, `related_specs`, etc.).
 
-### 2. Marcar la entrada en `specs_pending/`
+### 2. Eliminar la entrada en `specs_pending/`
 
 Busca `specs_pending/<feature>.md` (mismo id que la carpeta de `specs/<feature>/`). Si existe:
 
-- Añade/actualiza `status: "Implemented"` en el front matter YAML — **el mismo valor y vocabulario** que se usa en `specs/<feature>/{spec,plan,tasks}.md` (enum de `.specify/templates/*-template.md`), sin inventar valores propios de `specs_pending/` (p. ej. nunca `"done"`, `"Hecha"` o `"En progreso"`). No toques `id`/`name`/`phase`/`depends_on`.
-- Justo debajo del título `# <id> — <name>`, añade una línea `**Implementado en**: specs/<feature>/` si no está ya presente (o una nota equivalente, si la ficha ya tiene una nota de reconstrucción retroactiva que enlaza a `specs/<feature>/spec.md`).
+- Elimina el fichero (`rm specs_pending/<feature>.md`) — `specs_pending/` es un backlog vivo de ideas sin spec formal. Una vez que una idea se implementa, deja de ser "pendiente" y vive únicamente en `specs/<feature>/`.
 
 Si no existe (la feature se creó sin pasar por `specs_pending/`), omite este paso silenciosamente — no es un error.
 
