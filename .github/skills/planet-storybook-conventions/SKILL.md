@@ -49,6 +49,22 @@ parameters: {
 
 Nombra la story de forma descriptiva del estado real (p. ej. `SoloEtiquetaAccesible`), no de una supuesta feature que no existe (`SoloIcono` cuando no hay icono).
 
+## Componentes con `position: fixed` se ven cortados en la vista "Docs"
+
+En la vista "Docs" (`?path=/docs/...`), cada historia se renderiza por defecto **inline** (sin iframe propio) dentro de un recuadro pequeño con overflow. Un elemento con `position: fixed` (p. ej. `Dialog`, y potencialmente `Toast`/`Tooltip`) se posiciona respecto a **toda la ventana del navegador**, no respecto a ese recuadro — el overlay "flota" fuera de su caja y se ve cortado igual en todas las historias apiladas de la página Docs, aunque en modo Canvas (`?path=/story/...`) se vea perfectamente bien.
+
+MUST: en el `meta` de la story (`*.stories.ts`) de cualquier componente `position: fixed`, forzar que Storybook renderice esa historia dentro de su propio iframe real también en Docs, igual que en Canvas:
+
+```ts
+parameters: {
+  docs: {
+    story: { inline: false, iframeHeight: 400 },
+  },
+},
+```
+
+Sin esto, el bug es fácil de confundir con un error de CSS del propio componente — no lo es; es un artefacto de cómo Storybook Docs renderiza stories inline por defecto.
+
 ## Referencias
 
 - Configuración global: `.storybook/preview.ts`, `.storybook/main.ts`.

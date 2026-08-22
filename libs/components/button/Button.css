@@ -29,6 +29,7 @@
         box-shadow 160ms ease,
         color 160ms ease,
         transform 120ms ease;
+    -webkit-user-select: none;
     user-select: none;
 }
 

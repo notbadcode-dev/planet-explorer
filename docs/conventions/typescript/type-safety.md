@@ -1,11 +1,11 @@
 ---
 title: "Convención: Seguridad de tipos en TypeScript"
 type: "convention"
-version: "1.0"
+version: "1.1"
 created: "2026-08-22"
 updated: "2026-08-22"
 status: "Draft"
-source: "Auditoría de `npx tsc --noEmit` (2026-08-22): 162 errores bajo la configuración estricta ya vigente (`strict: true` + `noUncheckedIndexedAccess: true`), nunca corregidos porque el gate real de CI no ejecuta `tsc --noEmit` (ver `docs/conventions/typescript/tsc-noemit-gate.md` si existe, o la nota en `Fuera de alcance`)."
+source: "Auditoría de `npx tsc --noEmit` (2026-08-22): 162 errores bajo la configuración estricta ya vigente (`strict: true` + `noUncheckedIndexedAccess: true`), corregidos íntegramente el mismo día en la rama `chore/tsc-strict-fixes`. Desde entonces `npx tsc --noEmit` (con `\"types\": [\"vite/client\"]` en `tsconfig.json`) da 0 errores y se ejecuta como gate adicional junto a `npm run lint && npm test && npm run build`."
 tags: ["typescript", "type-safety", "convention", "quality"]
 ---
 
@@ -231,26 +231,50 @@ reintroduce exactamente el problema que `unknown` existe para prevenir (asumir u
 forma que el dato podría no tener, típicamente en datos persistidos con un
 `schemaVersion` antiguo).
 
+### TS6 — `typeof x === CONST` (constante nombrada) NO estrecha el tipo; envolver en un guard con predicado
+
+Confirmado en TypeScript 6.0.3 (`strict` + `noUncheckedIndexedAccess`): `typeof x ===
+'number'` con un **literal inline** SÍ estrecha `x` a `number`, pero `typeof x ===
+TYPE_NUMBER` con una **constante nombrada** (aunque esté declarada `as const`, local
+o importada) **NO** estrecha — TypeScript sigue viendo `x` con su tipo original tanto
+en el resto del `&&`/`||` como en el cuerpo del `if`. Esto choca de frente con la
+convención "sin literales mágicos" (`scripts/check-components.mjs`), que obliga a usar
+constantes tipo `TYPE_NUMBER = 'number' as const` en vez del literal inline.
+
+```ts
+// ❌ Incorrecto — TS sigue viendo `data.version` como el tipo original
+// (normalmente `unknown` o el de una propiedad de índice), no como `number`
+if (typeof data.version === TYPE_NUMBER) {
+  return data.version; // sin estrechar: sigue fallando TS18046/TS2322 según el contexto
+}
+
+// ✅ Correcto — envolver la comparación en una función guard con predicado
+// explícito de tipo (`value is T`): el predicado estrecha SIEMPRE en el call site,
+// independientemente de que la implementación interna use una constante
+function isNumber(value: unknown): value is number {
+  return typeof value === TYPE_NUMBER; // constante, sin problema aquí dentro
+}
+
+if (isNumber(data.version)) {
+  return data.version; // ✅ estrechado a `number`
+}
+```
+
+**MUST** replicar guards pequeños (`isNumber`, `isString`, `isRecord`, etc.) definidos
+localmente por fichero cuando se necesite este patrón — no existe (ni se debe crear)
+un módulo compartido de guards genéricos; seguir el mismo precedente que `isObject`
+en `libs/persistence/src/core/fallback.ts`/`validate.ts`.
+
 ## Verificación
 
 Ejecuta `npx tsc --noEmit` tras aplicar estas reglas a un fichero para confirmar que
-el error puntual desaparece. **No** uses `tsc --noEmit` como gate de aceptación
-completo del proyecto todavía: sigue habiendo un falso positivo conocido y no forma
-parte del pipeline real (`npm run lint && npm test && npm run build`) — ver "Fuera de
-alcance".
+el error puntual desaparece. Este comando **SÍ** forma parte del conjunto de gates a
+ejecutar tras tocar tipos (junto a `npm run lint && npm test && npm run build`):
+desde que `tsconfig.json` incluye `"types": ["vite/client"]`, da 0 errores en todo
+el proyecto.
 
 ## Fuera de alcance
 
-* El falso positivo `TS2882` en imports de efecto lateral (`import './X.css'`) — no
-  es un bug de tipos, es una limitación de la resolución de módulos de `tsc` con CSS;
-  documentado en la memoria de repositorio del proyecto, no requiere una regla de
-  código aquí.
-* Decidir si `tsc --noEmit` debe incorporarse al gate real de CI (`.github/workflows/ci.yml`)
-  — es una decisión de pipeline, no una convención de código; si se decide adoptarla,
-  documentarla en `docs/conventions/architecture/overview.md`, no aquí.
-* Corregir los 162 errores existentes detectados en la auditoría — queda fuera de
-  este documento a propósito: esta convención fija las reglas para que el código
-  *nuevo* no repita el patrón; la corrección del código existente se aborda aparte.
 * **Reglas de ESLint equivalentes** — ver la sección siguiente: requieren un cambio
   de configuración (`parserOptions.project`) no incluido en este documento; queda
   como propuesta a decidir/aplicar por separado.
